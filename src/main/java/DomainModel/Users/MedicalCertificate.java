@@ -6,8 +6,8 @@ public class MedicalCertificate {
     private final LocalDate expiryDate;
     private final boolean isCompetitive;
 
-    public MedicalCertificate(LocalDate expiryDate, boolean isCompetitive) {
-        this.expiryDate = expiryDate;
+    public MedicalCertificate(LocalDate activationDate, int durationInMonths, boolean isCompetitive) {
+        this.expiryDate = activationDate.plusMonths(durationInMonths);
         this.isCompetitive = isCompetitive;
     }
 
