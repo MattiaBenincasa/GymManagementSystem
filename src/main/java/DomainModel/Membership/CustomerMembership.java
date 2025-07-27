@@ -16,11 +16,11 @@ public class CustomerMembership {
     }
 
     public Customer getCustomer() {
-        return customer;
+        return new Customer(this.customer);
     }
 
     public Membership getMembership() {
-        return membership;
+        return membership.copy();
     }
 
     public LocalDate getExpiryDate() {

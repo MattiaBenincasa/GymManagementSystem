@@ -14,6 +14,14 @@ public class Customer extends User {
         super(id);
     }
 
+    public Customer(Customer customer) {
+        super(customer);
+        this.gender = customer.gender;
+        this.registrationFeeExpiryDate = customer.registrationFeeExpiryDate;
+        this.insuranceFeeExpiryDate = customer.insuranceFeeExpiryDate;
+        this.medicalCertificate = customer.medicalCertificate;
+    }
+
     public boolean registrationFeeIsExpired() {
         return LocalDate.now().isEqual(this.registrationFeeExpiryDate)||
                 LocalDate.now().isAfter(this.registrationFeeExpiryDate);

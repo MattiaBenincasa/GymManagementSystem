@@ -17,6 +17,16 @@ public abstract class User {
         this.id = id;
     }
 
+    public User(User user) {
+        this.id = user.id;
+        this.username = user.username;
+        this.name = user.name;
+        this.surname = user.surname;
+        this.mail = user.name;
+        this.phoneNumber = user.phoneNumber;
+        this.birthDate = user.birthDate;
+    }
+
     public int getId() {
         return this.id;
     }

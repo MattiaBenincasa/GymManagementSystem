@@ -13,6 +13,16 @@ public abstract class Membership {
         this.id = id;
     }
 
+    public Membership(Membership membership) {
+        this.id = membership.id;
+        this.name = membership.name;
+        this.price = membership.price;
+        this.description = membership.description;
+        this.durationInDays = membership.durationInDays;
+    }
+
+    public abstract Membership copy();
+
     public int getId() {
         return id;
     }
