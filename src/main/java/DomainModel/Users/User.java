@@ -78,4 +78,9 @@ public abstract class User {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.surname;
+    }
 }

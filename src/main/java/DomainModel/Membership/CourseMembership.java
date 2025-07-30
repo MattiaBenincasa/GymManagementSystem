@@ -1,9 +1,10 @@
 package DomainModel.Membership;
 
+import DomainModel.Course;
+
 public class CourseMembership extends Membership{
     private int weeklyAccess;
-
-    //TODO add course attribute of Course class
+    private Course course;
 
     public CourseMembership() {}
 
@@ -13,6 +14,7 @@ public class CourseMembership extends Membership{
 
     public CourseMembership(CourseMembership courseMembership) {
         super(courseMembership);
+        this.course = courseMembership.course;
         this.weeklyAccess = courseMembership.weeklyAccess;
     }
 
@@ -27,5 +29,13 @@ public class CourseMembership extends Membership{
     @Override
     public CourseMembership copy() {
         return new CourseMembership(this);
+    }
+
+    public Course getCourse() {
+        return new Course(course);
+    }
+
+    public void setCourse(Course course) {
+        this.course = new Course(course);
     }
 }
