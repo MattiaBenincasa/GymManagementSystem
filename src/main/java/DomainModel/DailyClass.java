@@ -8,9 +8,11 @@ public class DailyClass {
     private LocalTime time;
     private int maxParticipants;
     private final Course course;
+    private boolean isActive;
 
     public DailyClass(Course course) {
         this.course = new Course(course);
+        isActive = true;
     }
 
     public DailyClass(DailyClass dailyClass) {
@@ -18,6 +20,7 @@ public class DailyClass {
         this.time = dailyClass.time;
         this.maxParticipants = dailyClass.maxParticipants;
         this.course = new Course(dailyClass.course);
+        this.isActive = dailyClass.isActive;
     }
 
     public Course getCourse() {
@@ -47,4 +50,14 @@ public class DailyClass {
     public void setMaxParticipants(int maxParticipants) {
         this.maxParticipants = maxParticipants;
     }
+
+    public boolean isActive() {
+        return this.isActive;
+    }
+
+    // once set isActive=false, you cannot change it anymore
+    public void deleteDailyClass() {
+        this.isActive = false;
+    }
+
 }
