@@ -1,30 +1,35 @@
 package DomainModel.PurchaseItems;
 
+import DomainModel.Membership.Membership;
+import DomainModel.PurchaseItems.PurchaseCalculator.DiscountStrategy;
+
 import java.util.ArrayList;
 
-public class Bundle implements PurchaseBundle{
+public class Bundle {
     private String name;
     private String description;
-    private final ArrayList<Bundle> bundles;
+    private final ArrayList<Membership> memberships;
+    private DiscountStrategy discounts;
 
     public Bundle() {
-        this.bundles = new ArrayList<>();
+        this.memberships = new ArrayList<>();
     }
 
-    public void addBundle(Bundle bundle) {
-        this.bundles.add(bundle);
+    public void addMembership(Membership membership) {
+        this.memberships.add(membership);
     }
 
-    public void remove(Bundle bundle) {
-        this.bundles.remove(bundle);
+    public void remove(Membership membership) {
+        this.memberships.remove(membership);
     }
 
-    @Override
     public float calculateTotal() {
         float total = 0;
-        for (Bundle bundle : this.bundles)
-            total += bundle.calculateTotal();
+        for (Membership membership : this.memberships)
+            total += membership.getPrice();
 
+        if (this.discounts != null)
+            total = discounts.applyDiscount(total);
         return total;
     }
 }

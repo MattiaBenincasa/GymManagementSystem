@@ -1,19 +1,35 @@
 package DomainModel.PurchaseItems.PurchaseCalculator;
 
-public class FixedDiscount implements PurchaseCalculator{
-    private float discount;
+public class FixedDiscount implements DiscountStrategy {
+    private String description;
+    private float discountInEuro;
 
-    public FixedDiscount(float discount) {
-        this.discount = discount;
+    public FixedDiscount(float discountInEuro) {
+        this.discountInEuro = discountInEuro;
     }
 
     @Override
-    public float executePurchaseStrategy(float price) {
-        return price - this.discount;
+    public float applyDiscount(float price) {
+        return this.fixedDiscount(price, this.discountInEuro);
     }
 
-    public void setDiscount(float discount) {
-        this.discount = discount;
+    public void setDiscount(float discountInEuro) {
+        this.discountInEuro = discountInEuro;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getDiscountInEuro() {
+        return discountInEuro;
+    }
+
+    public void setDiscountInEuro(float discountInEuro) {
+        this.discountInEuro = discountInEuro;
+    }
 }

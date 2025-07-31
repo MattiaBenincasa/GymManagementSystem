@@ -1,6 +1,7 @@
 package DomainModel.PurchaseItems.PurchaseCalculator;
 
-public class PercentageDiscount implements PurchaseCalculator {
+public class PercentageDiscount implements DiscountStrategy {
+    private String description;
     private float percentage;
 
     public PercentageDiscount(float percentage) {
@@ -8,11 +9,23 @@ public class PercentageDiscount implements PurchaseCalculator {
     }
 
     @Override
-    public float executePurchaseStrategy(float price) {
-        return price*(1-this.percentage);
+    public float applyDiscount(float price) {
+        return this.percentageDiscount(price, this.percentage);
     }
 
     public void setPercentage(float percentage) {
         this.percentage = percentage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getPercentage() {
+        return percentage;
     }
 }

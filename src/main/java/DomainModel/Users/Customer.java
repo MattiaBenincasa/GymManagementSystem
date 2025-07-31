@@ -3,7 +3,6 @@ package DomainModel.Users;
 import java.time.LocalDate;
 
 public class Customer extends User {
-    private Gender gender;
     private LocalDate registrationFeeExpiryDate;
     private LocalDate insuranceFeeExpiryDate;
     private MedicalCertificate medicalCertificate;
@@ -16,7 +15,6 @@ public class Customer extends User {
 
     public Customer(Customer customer) {
         super(customer);
-        this.gender = customer.gender;
         this.registrationFeeExpiryDate = customer.registrationFeeExpiryDate;
         this.insuranceFeeExpiryDate = customer.insuranceFeeExpiryDate;
         this.medicalCertificate = customer.medicalCertificate;
@@ -42,14 +40,6 @@ public class Customer extends User {
         if (!insuranceFeeIsExpired())
             throw new IllegalStateException("You cannot change insuranceFeeExpiryDate: it has not expired yet.");
         this.insuranceFeeExpiryDate = expiryDate;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Gender getGender() {
-        return this.gender;
     }
 
     public MedicalCertificate getMedicalCertificate() {
