@@ -1,7 +1,7 @@
 package DomainModel.PurchaseItems;
 
 import DomainModel.Membership.Membership;
-import DomainModel.PurchaseItems.PurchaseCalculator.DiscountStrategy;
+import DomainModel.PurchaseItems.DiscountStrategy.DiscountStrategy;
 
 import java.util.ArrayList;
 

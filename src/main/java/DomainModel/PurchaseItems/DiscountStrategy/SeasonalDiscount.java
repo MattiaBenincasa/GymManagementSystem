@@ -1,4 +1,4 @@
-package DomainModel.PurchaseItems.PurchaseCalculator;
+package DomainModel.PurchaseItems.DiscountStrategy;
 
 import java.time.LocalDate;
 import java.time.Month;

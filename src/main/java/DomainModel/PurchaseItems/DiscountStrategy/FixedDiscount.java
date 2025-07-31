@@ -1,4 +1,4 @@
-package DomainModel.PurchaseItems.PurchaseCalculator;
+package DomainModel.PurchaseItems.DiscountStrategy;
 
 public class FixedDiscount implements DiscountStrategy {
     private String description;
