@@ -1,15 +1,15 @@
-package DomainModel.PurchaseItems;
+package DomainModel.Membership;
 
-import DomainModel.Membership.Membership;
-import DomainModel.PurchaseItems.DiscountStrategy.DiscountStrategy;
+import DomainModel.DiscountStrategy.DiscountStrategy;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Bundle {
     private String name;
     private String description;
     private final ArrayList<Membership> memberships;
-    private DiscountStrategy discounts;
+    private DiscountStrategy discount;
 
     public Bundle() {
         this.memberships = new ArrayList<>();
@@ -23,13 +23,13 @@ public class Bundle {
         this.memberships.remove(membership);
     }
 
-    public float calculateTotal() {
-        float total = 0;
+    public BigDecimal calculateTotal() {
+        BigDecimal total = new BigDecimal("0");
         for (Membership membership : this.memberships)
-            total += membership.getPrice();
+            total = total.add(membership.getPrice());
 
-        if (this.discounts != null)
-            total = discounts.applyDiscount(total);
+        if (this.discount != null)
+            total = discount.applyDiscount(total);
         return total;
     }
 }
