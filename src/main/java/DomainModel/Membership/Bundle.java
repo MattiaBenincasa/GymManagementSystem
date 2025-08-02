@@ -6,23 +6,17 @@ import DomainModel.Users.Customer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class Bundle {
-    private String name;
-    private String description;
+public class Bundle extends Purchasable{
     private final ArrayList<Membership> memberships;
-    private final ArrayList<DiscountStrategy> discounts;
 
     public Bundle() {
+        super();
         this.memberships = new ArrayList<>();
-        this.discounts = new ArrayList<>();
     }
 
-    public void addDiscount(DiscountStrategy discountStrategy) {
-        this.discounts.add(discountStrategy);
-    }
-
-    public void removeDiscount(DiscountStrategy discountStrategy) {
-        this.discounts.remove(discountStrategy);
+    public Bundle(int id) {
+        super(id);
+        this.memberships = new ArrayList<>();
     }
 
     public void addMembership(Membership membership) {
@@ -33,11 +27,17 @@ public class Bundle {
         this.memberships.remove(membership);
     }
 
-    public BigDecimal calculateTotal(Customer customer) {
-        BigDecimal total = new BigDecimal("0");
+    @Override
+    public BigDecimal getPrice() {
+        BigDecimal total = BigDecimal.ZERO;
         for (Membership membership : this.memberships)
             total = total.add(membership.getPrice());
 
+        return total;
+    }
+
+    public BigDecimal getDiscountedPrice(Customer customer) {
+        BigDecimal total = getPrice();
         return DiscountStrategy.totalDiscounted(total, this.discounts, customer);
     }
 }
