@@ -1,29 +1,20 @@
 package DomainModel.DiscountStrategy;
 
+import DomainModel.Users.Customer;
+
 import java.math.BigDecimal;
 
-public class FixedDiscount implements DiscountStrategy {
-    private String description;
+public class FixedDiscount extends DiscountStrategy {
     private BigDecimal discountInEuro;
 
-    public FixedDiscount(BigDecimal discountInEuro) {
+    public FixedDiscount(BigDecimal discountInEuro, boolean isSpecialOffer, String description) {
+        super(description, isSpecialOffer);
         this.discountInEuro = discountInEuro;
     }
 
     @Override
-    public BigDecimal applyDiscount(BigDecimal price) {
-        BigDecimal discountedPrice = price.subtract(this.discountInEuro);
-        if (discountedPrice.compareTo(BigDecimal.ZERO) <= 0)
-            throw new IllegalArgumentException("Invalid discount: price must be greater than 0 euro.");
-        return discountedPrice;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public BigDecimal applyDiscount(BigDecimal price, Customer customer) {
+        return this.fixedDiscount(price, this.discountInEuro);
     }
 
     public BigDecimal getDiscountInEuro() {

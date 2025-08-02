@@ -1,8 +1,10 @@
 package DomainModel.Membership;
 
 import DomainModel.DiscountStrategy.DiscountStrategy;
+import DomainModel.Users.Customer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public abstract class Membership {
     private int id;
@@ -10,12 +12,13 @@ public abstract class Membership {
     private BigDecimal price;
     private String description;
     private int durationInDays;
-    private DiscountStrategy discountStrategy;
+    private ArrayList<DiscountStrategy> discounts;
 
     public Membership() {}
 
     public Membership(int id) {
         this.id = id;
+        this.discounts = new ArrayList<>();
     }
 
     public Membership(Membership membership) {
@@ -24,7 +27,7 @@ public abstract class Membership {
         this.price = membership.price;
         this.description = membership.description;
         this.durationInDays = membership.durationInDays;
-        this.discountStrategy = membership.discountStrategy;
+        this.discounts = membership.discounts;
     }
 
     public abstract Membership copy();
@@ -65,18 +68,15 @@ public abstract class Membership {
         this.durationInDays = durationInDays;
     }
 
-    public DiscountStrategy getDiscountStrategy() {
-        return discountStrategy;
+    public void addDiscount(DiscountStrategy discountStrategy) {
+        this.discounts.add(discountStrategy);
     }
 
-    public void setDiscountStrategy(DiscountStrategy discountStrategy) {
-        this.discountStrategy = discountStrategy;
+    public void remove(DiscountStrategy discountStrategy) {
+        this.discounts.remove(discountStrategy);
     }
 
-    public BigDecimal getDiscountedPrice() {
-        BigDecimal discountedPrice = this.price;
-        if (this.discountStrategy != null)
-            discountedPrice = this.discountStrategy.applyDiscount(discountedPrice);
-        return discountedPrice;
+    public BigDecimal getDiscountedPrice(Customer customer) {
+        return DiscountStrategy.totalDiscounted(this.price, this.discounts, customer);
     }
 }

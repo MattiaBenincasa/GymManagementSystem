@@ -1,36 +1,27 @@
 package DomainModel.DiscountStrategy;
 
+import DomainModel.Users.Customer;
+
 import java.math.BigDecimal;
 
-public class PercentageDiscount implements DiscountStrategy {
-    private String description;
-    private float percentage;
+public class PercentageDiscount extends DiscountStrategy {
+    private int percentage;
 
-    public PercentageDiscount(float percentage) {
+    public PercentageDiscount(int percentage, boolean isSpecialOffer, String description) {
+        super(description, isSpecialOffer);
         this.percentage = percentage;
     }
 
     @Override
-    public BigDecimal applyDiscount(BigDecimal price) {
-        BigDecimal discountedPrice = price.multiply(new BigDecimal(1-percentage));
-        if (discountedPrice.compareTo(BigDecimal.ZERO) <= 0)
-            throw new IllegalArgumentException("Invalid discount: price must be greater than 0 euro.");
-        return discountedPrice;
+    public BigDecimal applyDiscount(BigDecimal price, Customer customer) {
+        return this.percentageDiscount(price, this.percentage);
     }
 
-    public void setPercentage(float percentage) {
+    public void setPercentage(int percentage) {
         this.percentage = percentage;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public float getPercentage() {
+    public int getPercentage() {
         return percentage;
     }
 }
