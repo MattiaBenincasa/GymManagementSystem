@@ -5,13 +5,15 @@ import DomainModel.Users.Customer;
 import java.time.LocalDate;
 
 public class CustomerMembership {
-    Customer customer;
-    Membership membership;
-    LocalDate expiryDate;
+    private final Customer customer;
+    private final Membership membership;
+    private final LocalDate startDay;
+    private final LocalDate expiryDate;
 
     public CustomerMembership(LocalDate activationDate, Membership membership, Customer customer) {
         this.customer = customer;
         this.membership = membership;
+        this.startDay = activationDate;
         this.expiryDate = activationDate.plusDays(membership.getDurationInDays());
     }
 
@@ -20,10 +22,14 @@ public class CustomerMembership {
     }
 
     public Membership getMembership() {
-        return membership.copy();
+        return this.membership.copy();
+    }
+
+    public LocalDate getStartDay() {
+        return this.startDay;
     }
 
     public LocalDate getExpiryDate() {
-        return expiryDate;
+        return this.expiryDate;
     }
 }
