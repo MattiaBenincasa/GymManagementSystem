@@ -11,6 +11,10 @@ public class MedicalCertificate {
         this.isCompetitive = isCompetitive;
     }
 
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
     //medical certificate status
     public boolean isExpired() {
         return LocalDate.now().isEqual(this.expiryDate)||
