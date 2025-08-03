@@ -1,6 +1,5 @@
 package BusinessLogic;
 
-import DomainModel.Fee;
 import DomainModel.Membership.CustomerFee;
 import DomainModel.Membership.CustomerMembership;
 import DomainModel.Membership.Membership;
@@ -16,8 +15,8 @@ public class ActivationMembershipService {
         //TODO save customerMembership in DB with DAO
     }
 
-    public void activateFee(LocalDate activationDate, Fee fee, Customer customer) {
-        CustomerFee customerFee = new CustomerFee(activationDate, customer, fee);
+    public void activateFee(LocalDate activationDate, Customer customer) {
+        CustomerFee customerFee = new CustomerFee(activationDate, customer);
         //TODO save customerFee in DB with DAO
     }
 }

@@ -1,6 +1,6 @@
 package DomainModel.Membership;
 
-import DomainModel.Fee;
+import DomainModel.RegistrationFee;
 import DomainModel.Users.Customer;
 
 import java.time.LocalDate;
@@ -9,12 +9,12 @@ public class CustomerFee {
     private final Customer customer;
     private final LocalDate startDate;
     private final LocalDate expiryDate;
-    private final Fee fee;
+    private final RegistrationFee registrationFee;
 
-    public CustomerFee(LocalDate startDate, Customer customer, Fee fee) {
+    public CustomerFee(LocalDate startDate, Customer customer) {
         this.customer = new Customer(customer);
         this.startDate = startDate;
-        this.fee = fee;
+        this.registrationFee = RegistrationFee.getRegistrationFee();
         this.expiryDate = startDate.plusYears(1);
     }
 
@@ -30,7 +30,7 @@ public class CustomerFee {
         return expiryDate;
     }
 
-    public Fee getFee() {
-        return fee;
+    public RegistrationFee getFee() {
+        return this.registrationFee;
     }
 }
