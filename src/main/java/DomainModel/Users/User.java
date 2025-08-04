@@ -43,8 +43,12 @@ public abstract class User {
         this.username = username;
     }
 
+    public String getHashPassword() {
+        return this.passwordHash;
+    }
+
     public void changePassword(String newPlainPassword) {
-        this.passwordHash = PasswordUtils.changePassword(this, newPlainPassword);
+        this.passwordHash = PasswordUtils.hashPassword(newPlainPassword);
     }
 
     public String getName() {

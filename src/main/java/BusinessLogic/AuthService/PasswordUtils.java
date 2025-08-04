@@ -13,9 +13,4 @@ public class PasswordUtils {
         return BCrypt.checkpw(plainPassword, hashedPassword);
     }
 
-    public static String changePassword(User user, String newPlainPassword) {
-        //TODO save new password into DB with DAO
-        return hashPassword(newPlainPassword);
-    }
-
 }
