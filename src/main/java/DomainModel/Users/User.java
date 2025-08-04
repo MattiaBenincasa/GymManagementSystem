@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public abstract class User {
     private int id;
     private String username;
+    private String passwordHash;
     private String name;
     private String surname;
     private String mail;
