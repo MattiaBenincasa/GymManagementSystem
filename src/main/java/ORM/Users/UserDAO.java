@@ -1,7 +1,8 @@
-package ORM;
+package ORM.Users;
 
 import BusinessLogic.Exceptions.DAOException;
 import DomainModel.Users.User;
+import ORM.ConnectionManager;
 
 import java.sql.*;
 
@@ -42,6 +43,7 @@ public class UserDAO {
             statement.setString(5, user.getMail());
             statement.setString(6, user.getPhoneNumber());
             statement.setDate(7, Date.valueOf(user.getBirthDate()));
+            statement.setString(8, role);
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();

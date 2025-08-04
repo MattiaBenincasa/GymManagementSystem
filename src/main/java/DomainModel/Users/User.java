@@ -47,7 +47,7 @@ public abstract class User {
         return this.passwordHash;
     }
 
-    public void changePassword(String newPlainPassword) {
+    public void setPassword(String newPlainPassword) {
         this.passwordHash = PasswordUtils.hashPassword(newPlainPassword);
     }
 
