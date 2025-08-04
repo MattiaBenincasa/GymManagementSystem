@@ -19,12 +19,6 @@ public enum CustomerCategory {
             return age > 60;
         }
     },
-    MOTHER {
-        @Override
-        public boolean isValidFor(Customer customer) {
-            return true;
-        }
-    },
     MILITARY {
         @Override
         public boolean isValidFor(Customer customer) {
