@@ -1,5 +1,7 @@
 package DomainModel.Users;
 
+import BusinessLogic.AuthService.PasswordUtils;
+
 import java.time.LocalDate;
 
 public abstract class User {
@@ -21,6 +23,7 @@ public abstract class User {
     public User(User user) {
         this.id = user.id;
         this.username = user.username;
+        this.passwordHash = user.passwordHash;
         this.name = user.name;
         this.surname = user.surname;
         this.mail = user.name;
@@ -38,6 +41,10 @@ public abstract class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void changePassword(String newPlainPassword) {
+        this.passwordHash = PasswordUtils.changePassword(this, newPlainPassword);
     }
 
     public String getName() {
