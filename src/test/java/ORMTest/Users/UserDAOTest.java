@@ -31,9 +31,4 @@ public class UserDAOTest {
 
     }
 
-    @AfterAll
-    static void tearDown() {
-        DAOTestUtils.resetDatabase();
-    }
-
 }

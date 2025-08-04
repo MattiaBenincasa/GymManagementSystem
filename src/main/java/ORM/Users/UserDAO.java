@@ -81,11 +81,11 @@ public class UserDAO {
         }
     }
 
-    public void deleteUser(User user) throws DAOException {
+    public void deleteUser(int userId) {
         String sql = "DELETE FROM \"User\" WHERE id = ?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            statement.setInt(1, user.getId());
+            statement.setInt(1, userId);
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
