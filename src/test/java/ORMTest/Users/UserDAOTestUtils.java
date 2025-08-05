@@ -28,6 +28,8 @@ public class UserDAOTestUtils {
         trainer.setMail("mail@mail.it");
         trainer.setPhoneNumber("343434343434");
         trainer.setBirthDate(LocalDate.of(2003, 2, 18));
+        trainer.setIsPersonalTrainer(true);
+        trainer.setIsCourseCoach(true);
         return trainer;
     }
 
