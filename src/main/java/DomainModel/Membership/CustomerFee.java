@@ -6,15 +6,21 @@ import DomainModel.Users.Customer;
 import java.time.LocalDate;
 
 public class CustomerFee {
+    private int id;
     private final Customer customer;
     private final LocalDate startDate;
     private final LocalDate expiryDate;
-    private final RegistrationFee registrationFee;
+
+    public CustomerFee(int id, LocalDate startDate, LocalDate expiryDate, Customer customer) {
+        this.id = id;
+        this.startDate = startDate;
+        this.expiryDate = expiryDate;
+        this.customer = customer;
+    }
 
     public CustomerFee(LocalDate startDate, Customer customer) {
         this.customer = new Customer(customer);
         this.startDate = startDate;
-        this.registrationFee = RegistrationFee.getRegistrationFee();
         this.expiryDate = startDate.plusYears(1);
     }
 
@@ -30,7 +36,8 @@ public class CustomerFee {
         return expiryDate;
     }
 
-    public RegistrationFee getFee() {
-        return this.registrationFee;
+    public int getId() {
+        return this.id;
     }
+
 }

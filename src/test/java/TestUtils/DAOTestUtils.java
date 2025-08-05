@@ -14,10 +14,12 @@ public class DAOTestUtils {
         String[] tables = {
                 "appointment",
                 "booking",
-                "customerfee",
+                "registrationfee",
                 "customermedcertificate",
                 "customermembership",
                 "coursemembership",
+                "coursetrainer",
+                "customerfee",
                 "wrmembership",
                 "membershipinbundle",
                 "bundle",
