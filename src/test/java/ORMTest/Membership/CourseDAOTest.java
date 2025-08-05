@@ -9,8 +9,6 @@ import ORM.Users.UserDAO;
 import TestUtils.DAOTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import ORMTest.Users.UserDAOTestUtils;
 
@@ -28,15 +26,16 @@ class CourseDAOTest {
     }
 
     @Test
-    void testCreateCourseAndTrainers() throws DAOException {
-        Trainer trainer1 = UserDAOTestUtils.createTrainer();
+    void testCreateCourseAndTrainers() {
+        Trainer trainer1 = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
+        Trainer trainer2 = UserDAOTestUtils.createTrainer("trainer_2", "mailTrainer2@mail.it");
         int id = this.trainerDAO.createTrainer(trainer1);
+        int id2 = this.trainerDAO.createTrainer(trainer2);
         trainer1 = this.trainerDAO.getTrainerByID(id);
-        ArrayList<Trainer> trainers = new ArrayList<>();
-        trainers.add(trainer1);
+        trainer2 = this.trainerDAO.getTrainerByID(id2);
         Course newCourse = new Course("Corso di Yoga", "Un corso di yoga avanzato");
-        newCourse.setTrainers(trainers);
-
+        newCourse.addTrainer(trainer1);
+        newCourse.addTrainer(trainer2);
         assertDoesNotThrow(()->{
             int courseId = courseDAO.createCourse(newCourse);
             courseDAO.getCourseByID(courseId);
@@ -45,7 +44,7 @@ class CourseDAOTest {
 
     @Test
     void testGetCourseByID_CourseExists() throws DAOException {
-        Trainer trainer1 = UserDAOTestUtils.createTrainer();
+        Trainer trainer1 = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = this.trainerDAO.createTrainer(trainer1);
         trainer1 = this.trainerDAO.getTrainerByID(id);
 
@@ -67,7 +66,7 @@ class CourseDAOTest {
 
         originalCourse = new Course(courseId, originalCourse.getName(), originalCourse.getDescription());
 
-        Trainer trainer = UserDAOTestUtils.createTrainer();
+        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = this.trainerDAO.createTrainer(trainer);
         trainer = this.trainerDAO.getTrainerByID(id);
         originalCourse.setName("Corso Aggiornato");
@@ -85,7 +84,7 @@ class CourseDAOTest {
 
     @Test
     void testDeleteCourse() throws DAOException {
-        Trainer trainer = UserDAOTestUtils.createTrainer();
+        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = trainerDAO.createTrainer(trainer);
         trainer = this.trainerDAO.getTrainerByID(id);
         Course courseToDelete = new Course("Zumba", "Corso da eliminare");

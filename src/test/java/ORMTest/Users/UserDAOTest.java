@@ -18,7 +18,7 @@ public class UserDAOTest {
     @Test
     void hashPasswordShouldRetrievedFromUsername() {
         UserDAO userDAO = new UserDAO();
-        Customer customer = UserDAOTestUtils.createCustomer();
+        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         userDAO.createUser(customer, "CUSTOMER");
         String retrievedHashPassword = userDAO.getHashPasswordFromUsername("customer");
         Assertions.assertDoesNotThrow(
@@ -30,7 +30,7 @@ public class UserDAOTest {
     void userIDShouldRetrievedFromUsername() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer();
+        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         int real_id = customerDAO.createCustomer(customer);
         int id_retrieved = userDAO.getIdFromUsername(customer.getUsername());
         Assertions.assertEquals(real_id, id_retrieved);
@@ -40,7 +40,7 @@ public class UserDAOTest {
     void roleShouldRetrievedFromUsername() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer();
+        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         customerDAO.createCustomer(customer);
         String role = userDAO.getRoleFromUsername(customer.getUsername());
         Assertions.assertEquals(role, "CUSTOMER");

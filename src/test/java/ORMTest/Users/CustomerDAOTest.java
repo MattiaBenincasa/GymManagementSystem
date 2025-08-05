@@ -24,7 +24,7 @@ public class CustomerDAOTest {
     void aCustomerShouldBeCreated() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer();
+        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         Assertions.assertDoesNotThrow(()->{
                     int id = customerDAO.createCustomer(customer);
                     customerDAO.getCustomerByID(id);
@@ -36,7 +36,7 @@ public class CustomerDAOTest {
     void aCustomerShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer();
+        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         int id = customerDAO.createCustomer(customer);
         Assertions.assertDoesNotThrow(()->{
             userDAO.deleteUser(id);
@@ -50,7 +50,7 @@ public class CustomerDAOTest {
     void aCustomerShouldBeUpdate() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer();
+        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         int id = customerDAO.createCustomer(customer);
         //get customer with right id
         customer = customerDAO.getCustomerByID(id);

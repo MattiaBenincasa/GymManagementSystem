@@ -22,7 +22,7 @@ public class TrainerDAOTest {
     void aTrainerShouldBeCreated() {
         UserDAO userDAO = new UserDAO();
         TrainerDAO trainerDAO = new TrainerDAO(userDAO);
-        Trainer trainer = UserDAOTestUtils.createTrainer();
+        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         Assertions.assertDoesNotThrow(()->{
             int id = trainerDAO.createTrainer(trainer);
             trainerDAO.getTrainerByID(id);
@@ -33,7 +33,7 @@ public class TrainerDAOTest {
     void aTrainerShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         TrainerDAO trainerDAO = new TrainerDAO(userDAO);
-        Trainer trainer = UserDAOTestUtils.createTrainer();
+        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = trainerDAO.createTrainer(trainer);
         Assertions.assertDoesNotThrow(()->{
             userDAO.deleteUser(id);
@@ -47,7 +47,7 @@ public class TrainerDAOTest {
     void aTrainerShouldBeUpdated() {
         UserDAO userDAO = new UserDAO();
         TrainerDAO trainerDAO = new TrainerDAO(userDAO);
-        Trainer trainer = UserDAOTestUtils.createTrainer();
+        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = trainerDAO.createTrainer(trainer);
 
         trainer = trainerDAO.getTrainerByID(id);

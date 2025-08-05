@@ -22,7 +22,7 @@ public class StaffDAOTest {
     void aStaffShouldBeCreated() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = UserDAOTestUtils.createStaff();
+        Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
         Assertions.assertDoesNotThrow(()->{
             int id = staffDAO.createStaff(staff);
             staffDAO.getStaffByID(id);
@@ -33,7 +33,7 @@ public class StaffDAOTest {
     void aStaffShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = UserDAOTestUtils.createStaff();
+        Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
         int id = staffDAO.createStaff(staff);
         Assertions.assertDoesNotThrow(()->{
             userDAO.deleteUser(id);
@@ -47,7 +47,7 @@ public class StaffDAOTest {
     void aStaffShouldBeUpdated() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = UserDAOTestUtils.createStaff();
+        Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
         int id = staffDAO.createStaff(staff);
 
         staff = staffDAO.getStaffByID(id);
