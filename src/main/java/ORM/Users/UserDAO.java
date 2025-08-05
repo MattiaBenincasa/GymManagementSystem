@@ -13,7 +13,7 @@ public class UserDAO {
         this.connection = ConnectionManager.getSingleInstance().getConnection();
     }
 
-    public String getHashPasswordFromUsername(String username) throws DAOException {
+    public String getHashPasswordFromUsername(String username) {
         String sql = "SELECT hashPassword FROM \"User\" WHERE username = ?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
@@ -22,6 +22,38 @@ public class UserDAO {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getString("hashPassword");
+                } else {
+                    throw new DAOException("User with username " + username + " not found.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT: " + e.getMessage(), e);
+        }
+    }
+
+    public int getIdFromUsername(String username) {
+        String sql = "SELECT id FROM \"User\" WHERE username = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                } else {
+                    throw new DAOException("User with username " + username + " not found.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT: " + e.getMessage(), e);
+        }
+    }
+
+    public String getRoleFromUsername(String username) {
+        String sql = "SELECT role FROM \"User\" WHERE username = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("role");
                 } else {
                     throw new DAOException("User with username " + username + " not found.");
                 }

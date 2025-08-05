@@ -2,33 +2,48 @@ package ORMTest.Users;
 
 import BusinessLogic.AuthService.PasswordUtils;
 import DomainModel.Users.Customer;
+import ORM.Users.CustomerDAO;
 import ORM.Users.UserDAO;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.Assertions;
 import TestUtils.DAOTestUtils;
 
 public class UserDAOTest {
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         DAOTestUtils.resetDatabase();
-        UserDAO userDAO = new UserDAO();
-        // insert a customer into DB to test getHashPasswordFromUsername()
-        Customer customer = UserDAOTestUtils.createCustomer();
-        userDAO.createUser(customer, "CUSTOMER");
     }
 
     @Test
     void hashPasswordShouldRetrievedFromUsername() {
         UserDAO userDAO = new UserDAO();
+        Customer customer = UserDAOTestUtils.createCustomer();
+        userDAO.createUser(customer, "CUSTOMER");
         String retrievedHashPassword = userDAO.getHashPasswordFromUsername("customer");
         Assertions.assertDoesNotThrow(
                 ()->PasswordUtils.checkPassword("password", retrievedHashPassword)
         );
+    }
 
+    @Test
+    void userIDShouldRetrievedFromUsername() {
+        UserDAO userDAO = new UserDAO();
+        CustomerDAO customerDAO = new CustomerDAO(userDAO);
+        Customer customer = UserDAOTestUtils.createCustomer();
+        int real_id = customerDAO.createCustomer(customer);
+        int id_retrieved = userDAO.getIdFromUsername(customer.getUsername());
+        Assertions.assertEquals(real_id, id_retrieved);
+    }
+
+    @Test
+    void roleShouldRetrievedFromUsername() {
+        UserDAO userDAO = new UserDAO();
+        CustomerDAO customerDAO = new CustomerDAO(userDAO);
+        Customer customer = UserDAOTestUtils.createCustomer();
+        customerDAO.createCustomer(customer);
+        String role = userDAO.getRoleFromUsername(customer.getUsername());
+        Assertions.assertEquals(role, "CUSTOMER");
     }
 
 }
