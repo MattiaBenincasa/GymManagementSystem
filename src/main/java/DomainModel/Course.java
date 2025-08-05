@@ -8,7 +8,7 @@ public class Course {
     private int id;
     private String name;
     private String description;
-    private final ArrayList<Trainer> trainers;
+    private ArrayList<Trainer> trainers;
 
     public Course(Course course) {
         this.id = course.id;
@@ -62,5 +62,9 @@ public class Course {
 
     public ArrayList<Trainer> getTrainers() {
         return new ArrayList<>(this.trainers);
+    }
+
+    public void setTrainers(ArrayList<Trainer> trainers) {
+        this.trainers = trainers;
     }
 }
