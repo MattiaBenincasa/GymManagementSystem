@@ -11,6 +11,11 @@ public class MedicalCertificate {
         this.isCompetitive = isCompetitive;
     }
 
+    public MedicalCertificate(LocalDate expiryDate, boolean isCompetitive) {
+        this.expiryDate = expiryDate;
+        this.isCompetitive = isCompetitive;
+    }
+
     public LocalDate getExpiryDate() {
         return expiryDate;
     }
@@ -25,4 +30,17 @@ public class MedicalCertificate {
         return this.isCompetitive;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this==obj)
+            return true;
+
+        if (obj == null || getClass() !=obj.getClass())
+            return false;
+
+        MedicalCertificate medicalCertificate = (MedicalCertificate) obj;
+
+        return expiryDate.equals(medicalCertificate.expiryDate) &&
+                isCompetitive == medicalCertificate.isCompetitive();
+    }
 }

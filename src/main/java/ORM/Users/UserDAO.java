@@ -70,7 +70,7 @@ public class UserDAO {
             statement.setString(5, user.getMail());
             statement.setString(6, user.getPhoneNumber());
             statement.setDate(7, Date.valueOf(user.getBirthDate()));
-            statement.setInt(9, user.getId());
+            statement.setInt(8, user.getId());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {

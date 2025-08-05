@@ -65,6 +65,7 @@ public class TrainerDAO {
                 if (resultSet.next()) {
                     Trainer trainer = new Trainer(resultSet.getInt("id"));
                     trainer.setUsername(resultSet.getString("username"));
+                    trainer.setPasswordHash(resultSet.getString("hashpassword"));
                     trainer.setName(resultSet.getString("name"));
                     trainer.setSurname(resultSet.getString("surname"));
                     trainer.setMail(resultSet.getString("mail"));

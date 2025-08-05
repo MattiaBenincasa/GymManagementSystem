@@ -40,6 +40,7 @@ public class StaffDAO {
                     StaffRole role = StaffRole.valueOf(resultSet.getString("role"));
                     Staff staff = new Staff(id, role);
                     staff.setUsername(resultSet.getString("username"));
+                    staff.setPasswordHash(resultSet.getString("hashpassword"));
                     staff.setName(resultSet.getString("name"));
                     staff.setSurname(resultSet.getString("surname"));
                     staff.setMail(resultSet.getString("mail"));

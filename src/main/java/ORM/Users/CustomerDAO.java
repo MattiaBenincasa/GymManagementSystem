@@ -3,12 +3,10 @@ package ORM.Users;
 import BusinessLogic.Exceptions.DAOException;
 import DomainModel.Users.Customer;
 import DomainModel.Users.CustomerCategory;
+import DomainModel.Users.MedicalCertificate;
 import ORM.ConnectionManager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class CustomerDAO {
     private final Connection connection;
@@ -23,12 +21,22 @@ public class CustomerDAO {
         int userId = this.userDAO.createUser(customer, "CUSTOMER");
 
         String sql = "INSERT INTO Customers (id, customerCategory) VALUES (?, ?)";
-
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+        String sql_med_cert = "INSERT INTO CustomerMedCertificate (customer_id, expiryDate, isCompetitive) VALUES (?, ?, ?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(sql);
+             PreparedStatement statement_med_cert = this.connection.prepareStatement(sql_med_cert)){
             statement.setInt(1, userId);
             statement.setString(2, customer.getCustomerCategory().name());
-
             statement.executeUpdate();
+
+            statement_med_cert.setInt(1, userId);
+            if (customer.getMedicalCertificate() != null){
+                statement_med_cert.setDate(2, Date.valueOf(customer.getMedicalCertificate().getExpiryDate()));
+                statement_med_cert.setBoolean(3, customer.getMedicalCertificate().isCompetitive());
+            } else {
+                statement_med_cert.setNull(2, Types.DATE);
+                statement_med_cert.setNull(3, Types.BOOLEAN);
+            }
+            statement_med_cert.executeUpdate();
             return userId;
         } catch (SQLException e) {
             throw new DAOException("Error during INSERT into Customers: " + e.getMessage(), e);
@@ -45,6 +53,10 @@ public class CustomerDAO {
             statement.setInt(2, customer.getId());
 
             int affectedRows = statement.executeUpdate();
+
+            if (customer.getMedicalCertificate() != null)
+                this.updateCustomerMedCertificate(customer.getId(), customer.getMedicalCertificate());
+
             if (affectedRows == 0) {
                 throw new DAOException("Updating customer failed, no rows affected in Customers table.");
             }
@@ -64,12 +76,14 @@ public class CustomerDAO {
                 if (resultSet.next()) {
                     Customer customer = new Customer(resultSet.getInt("id"));
                     customer.setUsername(resultSet.getString("username"));
+                    customer.setPasswordHash(resultSet.getString("hashpassword"));
                     customer.setName(resultSet.getString("name"));
                     customer.setSurname(resultSet.getString("surname"));
                     customer.setMail(resultSet.getString("mail"));
                     customer.setPhoneNumber(resultSet.getString("phoneNumber"));
                     customer.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
                     customer.setCustomerCategory(CustomerCategory.valueOf(resultSet.getString("customerCategory")));
+                    customer.setMedicalCertificate(this.getMedicalCertificateByCustomerID(customerID));
                     return customer;
                 } else {
                     throw new DAOException("Customer with ID " + customerID + " not found.");
@@ -80,4 +94,44 @@ public class CustomerDAO {
         }
     }
 
+    private void updateCustomerMedCertificate(int customerID, MedicalCertificate medicalCertificate) {
+        String sql = "UPDATE customerMedCertificate SET expirydate=?, iscompetitive=? WHERE customer_id = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setDate(1, Date.valueOf(medicalCertificate.getExpiryDate()));
+            statement.setBoolean(2, medicalCertificate.isCompetitive());
+            statement.setInt(3, customerID);
+
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DAOException("Updating customer failed, no rows affected in Customers table.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during UPDATE from customerMedCertificate: " + e.getMessage(), e);
+        }
+    }
+
+    private MedicalCertificate getMedicalCertificateByCustomerID(int customerID) {
+        String sql = "SELECT expirydate, iscompetitive FROM customerMedCertificate WHERE customer_id = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setInt(1, customerID);
+
+            try (ResultSet resultSet = statement.executeQuery() ) {
+                if (resultSet.next()) {
+                    Date expiryDate = resultSet.getDate("expirydate");
+                    boolean isCompetitive = resultSet.getBoolean("iscompetitive");
+                    if (resultSet.wasNull())
+                        return null;
+                    else
+                        return new MedicalCertificate(expiryDate.toLocalDate(), isCompetitive);
+                } else {
+                    return null;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error during UPDATE from customerMedCertificate: " + e.getMessage(), e);
+        }
+    }
 }

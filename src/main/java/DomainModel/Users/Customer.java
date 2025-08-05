@@ -33,4 +33,22 @@ public class Customer extends User {
             throw new IllegalStateException("This category is not applicable to this customer");
         this.customerCategory = customerCategory;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+
+        Customer customer = (Customer) obj;
+
+        boolean medicalCertificateEquals;
+
+        if (medicalCertificate != null)
+            medicalCertificateEquals = medicalCertificate.equals(customer.medicalCertificate);
+        else
+            medicalCertificateEquals = (medicalCertificate==customer.getMedicalCertificate());
+
+        return medicalCertificateEquals &&
+                customerCategory == customer.customerCategory;
+    }
 }

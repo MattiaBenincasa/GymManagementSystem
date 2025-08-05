@@ -3,6 +3,7 @@ package DomainModel.Users;
 import BusinessLogic.AuthService.PasswordUtils;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class User {
     private int id;
@@ -51,6 +52,10 @@ public abstract class User {
         this.passwordHash = PasswordUtils.hashPassword(newPlainPassword);
     }
 
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
     public String getName() {
         return name;
     }
@@ -94,5 +99,23 @@ public abstract class User {
     @Override
     public String toString() {
         return this.name + " " + this.surname;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this==obj)
+            return true;
+
+        if (obj == null || getClass() !=obj.getClass())
+            return false;
+
+        User user = (User) obj;
+        return id == user.getId() &&
+                Objects.equals(username, user.getUsername()) &&
+                Objects.equals(name, user.getName()) &&
+                Objects.equals(surname, user.getSurname()) &&
+                Objects.equals(mail, user.getMail()) &&
+                Objects.equals(phoneNumber, user.getPhoneNumber()) &&
+                birthDate.equals(user.getBirthDate());
     }
 }
