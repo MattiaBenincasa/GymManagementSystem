@@ -1,10 +1,13 @@
 package ORM.Users;
 
+import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.Exceptions.DAOException;
+import DomainModel.Users.Customer;
 import DomainModel.Users.User;
 import ORM.ConnectionManager;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class UserDAO {
     private final Connection connection;
@@ -128,4 +131,31 @@ public class UserDAO {
         }
     }
 
+    public CustomerInfo getCustomerBookingInfo(Customer customer) {
+        String query = """
+            SELECT cmc.expiryDate AS medCertExpiry, cf.expiry_date AS feeExpiry, cf.start_date AS feeBegin
+            FROM Customers c
+            LEFT JOIN CustomerMedCertificate cmc ON c.id = cmc.customer_id
+            LEFT JOIN CustomerFee cf ON c.id = cf.customer_id
+            WHERE cmc.customer_id = ?
+            ORDER BY cf.expiry_date DESC
+            LIMIT 1;
+        """;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, customer.getId());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    LocalDate medCert = rs.getDate("medCertExpiry").toLocalDate();
+                    LocalDate feeBegin = rs.getDate("feeBegin").toLocalDate();
+                    LocalDate feeExpiry = rs.getDate("feeExpiry").toLocalDate();
+                    return new CustomerInfo(medCert, feeBegin, feeExpiry);
+                } else {
+                    throw new IllegalStateException("Customer info not found");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT: " + e.getMessage(), e);
+        }
+    }
 }

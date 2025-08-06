@@ -7,16 +7,17 @@ import BusinessLogic.Validators.*;
 import DomainModel.Booking;
 import DomainModel.DailyClass;
 import DomainModel.Users.Customer;
+import ORM.Users.UserDAO;
 import ORM.bookings.BookingDAO;
-
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ClassBookingService {
     private final BookingDAO bookingDAO;
+    private final UserDAO userDAO;
 
-    public ClassBookingService(BookingDAO bookingDAO) {
+    public ClassBookingService(BookingDAO bookingDAO, UserDAO userDAO) {
         this.bookingDAO = bookingDAO;
+        this.userDAO = userDAO;
     }
 
     /*
@@ -25,7 +26,7 @@ public class ClassBookingService {
     * it with BookingDAO
     * */
     public void bookAClass(Customer customer, DailyClass dailyClass) {
-        CustomerInfo customerInfo = this.bookingDAO.getCustomerBookingInfo(customer);
+        CustomerInfo customerInfo = this.userDAO.getCustomerBookingInfo(customer);
         ClassBookingInfo classBookingInfo = this.bookingDAO.getClassBookingInfo(customer, dailyClass);
 
         Validator classBookingValidators = new FeeValidator(customerInfo)

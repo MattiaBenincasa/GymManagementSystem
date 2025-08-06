@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class DailyClass {
+    private int id;
     private LocalDate day;
     private LocalTime time;
     private int maxParticipants;
-    private final Course course;
+    private Course course;
     private boolean isActive;
+
+    public DailyClass(int id) {
+        this.id = id;
+    }
 
     public DailyClass(Course course) {
         this.course = new Course(course);
@@ -16,11 +21,16 @@ public class DailyClass {
     }
 
     public DailyClass(DailyClass dailyClass) {
+        this.id = dailyClass.id;
         this.day = dailyClass.day;
         this.time = dailyClass.time;
         this.maxParticipants = dailyClass.maxParticipants;
         this.course = new Course(dailyClass.course);
         this.isActive = dailyClass.isActive;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Course getCourse() {
