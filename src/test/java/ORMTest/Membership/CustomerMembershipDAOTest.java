@@ -56,8 +56,7 @@ class CustomerMembershipDAOTest {
         wrMembership.setPrice(new BigDecimal("300"));
         wrMembership.setType(WRMembershipType.PERSONAL);
         wrMembership.setDurationInDays(90);
-        int wrMembershipId = wrMembershipDAO.createWeightRoomMembership(wrMembership);
-        wrMembership = wrMembershipDAO.getWeightRoomMembershipByID(wrMembershipId);
+        wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
 
         CustomerMembership customerMembership = new CustomerMembership(LocalDate.now(), wrMembership, customer);
 
@@ -84,8 +83,8 @@ class CustomerMembershipDAOTest {
         wrMembership.setPrice(new BigDecimal("300"));
         wrMembership.setType(WRMembershipType.PERSONAL);
         wrMembership.setDurationInDays(90);
-        int wrMembershipId = wrMembershipDAO.createWeightRoomMembership(wrMembership);
-        wrMembership = wrMembershipDAO.getWeightRoomMembershipByID(wrMembershipId);
+        wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
+        wrMembership = wrMembershipDAO.getWeightRoomMembershipByID(wrMembership.getId());
 
         //membership 2
         CourseMembership courseMembership = new CourseMembership();
@@ -94,12 +93,10 @@ class CustomerMembershipDAOTest {
         courseMembership.setPrice(new BigDecimal("300"));
         courseMembership.setDurationInDays(90);
 
-        Course course = new Course("corso Yoga", "Descrizione");
-        int courseId = courseDAO.createCourse(course);
-        course = courseDAO.getCourseByID(courseId);
+        Course course = courseDAO.createCourse(new Course("corso Yoga", "Descrizione"));
+        course = courseDAO.getCourseByID(course.getId());
         courseMembership.setCourse(course);
-        int courseMembershipID = courseMembershipDAO.createCourseMembership(courseMembership);
-        courseMembership = courseMembershipDAO.getCourseMembershipByID(courseMembershipID);
+        courseMembership = courseMembershipDAO.createCourseMembership(courseMembership);
 
         CustomerMembership wrCustomerMembership = new CustomerMembership(LocalDate.now(), wrMembership, customer);
         CustomerMembership courseCustomerMembership = new CustomerMembership(LocalDate.now(), courseMembership, customer);
@@ -110,7 +107,7 @@ class CustomerMembershipDAOTest {
 
         assertEquals(2, retrievedMemberships.size());
 
-        assertEquals(wrMembershipId, retrievedMemberships.getFirst().getMembership().getId());
-        assertEquals(courseMembershipID, retrievedMemberships.get(1).getMembership().getId());
+        assertEquals(wrMembership.getId(), retrievedMemberships.getFirst().getMembership().getId());
+        assertEquals(courseMembership.getId(), retrievedMemberships.get(1).getMembership().getId());
     }
 }

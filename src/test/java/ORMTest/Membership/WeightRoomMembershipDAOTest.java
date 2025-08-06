@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
-class WRMembershipDAOTest {
+class WeightRoomMembershipDAOTest {
     private WeightRoomMembershipDAO wrMembershipDAO;
 
     @BeforeEach
@@ -29,8 +29,8 @@ class WRMembershipDAOTest {
         wrMembership.setDurationInDays(90);
         wrMembership.setType(WRMembershipType.BASE);
         assertDoesNotThrow(()->{
-            int id = wrMembershipDAO.createWeightRoomMembership(wrMembership);
-            wrMembershipDAO.getWeightRoomMembershipByID(id);
+            WeightRoomMembership created = wrMembershipDAO.createWeightRoomMembership(wrMembership);
+            wrMembershipDAO.getWeightRoomMembershipByID(created.getId());
         });
     }
 
@@ -42,9 +42,9 @@ class WRMembershipDAOTest {
         wrMembership.setPrice(new BigDecimal("99.99"));
         wrMembership.setDurationInDays(90);
         wrMembership.setType(WRMembershipType.BASE);
-        int id = wrMembershipDAO.createWeightRoomMembership(wrMembership);
+        wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
 
-        wrMembership = wrMembershipDAO.getWeightRoomMembershipByID(id);
+        wrMembership = wrMembershipDAO.getWeightRoomMembershipByID(wrMembership.getId());
         wrMembership.setName("WRUpdated");
         wrMembership.setDescription("Descrizione Updated");
         wrMembership.setDurationInDays(90);
@@ -53,7 +53,7 @@ class WRMembershipDAOTest {
 
         wrMembershipDAO.updateWeightRoomMembership(wrMembership);
 
-        WeightRoomMembership retrieved = wrMembershipDAO.getWeightRoomMembershipByID(id);
+        WeightRoomMembership retrieved = wrMembershipDAO.getWeightRoomMembershipByID(wrMembership.getId());
         assertEquals("WRUpdated", retrieved.getName());
         assertEquals(WRMembershipType.PERSONAL, retrieved.getType());
         assertEquals("Descrizione Updated", retrieved.getDescription());
@@ -69,7 +69,8 @@ class WRMembershipDAOTest {
         wrMembership.setPrice(new BigDecimal("99.99"));
         wrMembership.setDurationInDays(90);
         wrMembership.setType(WRMembershipType.BASE);
-        int id = wrMembershipDAO.createWeightRoomMembership(wrMembership);
+        wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
+        int id = wrMembership.getId();
 
         wrMembershipDAO.deleteWRMembership(id);
 

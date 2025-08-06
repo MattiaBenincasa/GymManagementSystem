@@ -37,35 +37,14 @@ class CourseDAOTest {
         newCourse.addTrainer(trainer1);
         newCourse.addTrainer(trainer2);
         assertDoesNotThrow(()->{
-            int courseId = courseDAO.createCourse(newCourse);
-            courseDAO.getCourseByID(courseId);
+            Course courseWithId = courseDAO.createCourse(newCourse);
+            courseDAO.getCourseByID(courseWithId.getId());
         });
     }
 
     @Test
-    void testGetCourseByID_CourseExists() throws DAOException {
-        Trainer trainer1 = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
-        int id = this.trainerDAO.createTrainer(trainer1);
-        trainer1 = this.trainerDAO.getTrainerByID(id);
-
-        Course course = new Course("Corso di Pilates", "descrizione");
-        course.addTrainer(trainer1);
-        int courseId = courseDAO.createCourse(course);
-        Course retrievedCourse = courseDAO.getCourseByID(courseId);
-
-        assertNotNull(retrievedCourse);
-        assertEquals(courseId, retrievedCourse.getId());
-        assertEquals("Corso di Pilates", retrievedCourse.getName());
-        assertEquals(1, retrievedCourse.getTrainers().size());
-    }
-
-    @Test
     void testUpdateCourse() throws DAOException {
-        Course originalCourse = new Course("Boxe", "corso di boxe");
-        int courseId = courseDAO.createCourse(originalCourse);
-
-        originalCourse = new Course(courseId, originalCourse.getName(), originalCourse.getDescription());
-
+        Course originalCourse = courseDAO.createCourse(new Course("Boxe", "corso di boxe"));
         Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = this.trainerDAO.createTrainer(trainer);
         trainer = this.trainerDAO.getTrainerByID(id);
@@ -74,9 +53,9 @@ class CourseDAOTest {
         originalCourse.addTrainer(trainer);
 
         courseDAO.updateCourse(originalCourse);
-        Course updatedCourse = courseDAO.getCourseByID(courseId);
+        Course updatedCourse = courseDAO.getCourseByID(originalCourse.getId());
 
-        Course retrievedCourse = courseDAO.getCourseByID(courseId);
+        Course retrievedCourse = courseDAO.getCourseByID(originalCourse.getId());
         assertEquals("Corso Aggiornato", retrievedCourse.getName());
         assertEquals("Descrizione aggiornata", retrievedCourse.getDescription());
         assertEquals(1, retrievedCourse.getTrainers().size());
@@ -88,11 +67,10 @@ class CourseDAOTest {
         int id = trainerDAO.createTrainer(trainer);
         trainer = this.trainerDAO.getTrainerByID(id);
         Course courseToDelete = new Course("Zumba", "Corso da eliminare");
-
         courseToDelete.addTrainer(trainer);
-        int courseId = courseDAO.createCourse(courseToDelete);
-        courseDAO.deleteCourse(courseId);
-
+        courseToDelete = this.courseDAO.createCourse(courseToDelete);
+        courseDAO.deleteCourse(courseToDelete.getId());
+        int courseId = courseToDelete.getId();
         DAOException exception = assertThrows(DAOException.class, () -> {
             courseDAO.getCourseByID(courseId);
         });

@@ -6,8 +6,8 @@ import DomainModel.Users.Customer;
 import java.math.BigDecimal;
 
 public abstract class Membership extends Purchasable{
-    private BigDecimal price;
-    private int durationInDays;
+    protected BigDecimal price;
+    protected int durationInDays;
 
     public Membership() {
         super();

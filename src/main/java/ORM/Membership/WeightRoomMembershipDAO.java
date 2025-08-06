@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class WeightRoomMembershipDAO {
     private Connection connection;
@@ -19,7 +20,7 @@ public class WeightRoomMembershipDAO {
         this.membershipDAO = membershipDAO;
     }
 
-    public int createWeightRoomMembership(WeightRoomMembership wrMembership) {
+    public WeightRoomMembership createWeightRoomMembership(WeightRoomMembership wrMembership) {
         int membershipId = membershipDAO.createMembership(wrMembership);
 
         String sql = "INSERT INTO WRMembership (id, type) VALUES (?, ?)";
@@ -29,7 +30,7 @@ public class WeightRoomMembershipDAO {
             statement.setString(2, wrMembership.getType().name());
 
             statement.executeUpdate();
-            return membershipId;
+            return new WeightRoomMembership(membershipId, wrMembership);
         } catch (SQLException e) {
             throw new DAOException("Error during INSERT into WRMembership: " + e.getMessage(), e);
         }
@@ -80,6 +81,29 @@ public class WeightRoomMembershipDAO {
 
     public void deleteWRMembership(int wrMembershipID) {
         membershipDAO.deleteMembership(wrMembershipID);
+    }
+
+    public ArrayList<WeightRoomMembership> getAllWRMembership() throws DAOException {
+        ArrayList<WeightRoomMembership> memberships = new ArrayList<>();
+        String sql = "SELECT m.id, m.name, m.description, m.durationInDays, m.price, wr.type " +
+                "FROM Membership m JOIN WRMembership wr ON m.id = wr.id";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                WeightRoomMembership wrMembership = new WeightRoomMembership(resultSet.getInt("id"));
+                wrMembership.setName(resultSet.getString("name"));
+                wrMembership.setDescription(resultSet.getString("description"));
+                wrMembership.setDurationInDays(resultSet.getInt("durationInDays"));
+                wrMembership.setPrice(resultSet.getBigDecimal("price"));
+                wrMembership.setType(WRMembershipType.valueOf(resultSet.getString("type")));
+                memberships.add(wrMembership);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT ALL from WRMembership: " + e.getMessage(), e);
+        }
+        return memberships;
     }
 
 }

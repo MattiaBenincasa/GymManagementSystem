@@ -1,5 +1,7 @@
 package DomainModel.Membership;
 
+import DomainModel.Course;
+
 public class WeightRoomMembership extends Membership{
     private WRMembershipType type;
 
@@ -7,6 +9,15 @@ public class WeightRoomMembership extends Membership{
 
     public WeightRoomMembership(int id) {
         super(id);
+    }
+
+    public WeightRoomMembership(int id, WeightRoomMembership weightRoomMembership) {
+        this.id = id;
+        this.name = weightRoomMembership.name;
+        this.description = weightRoomMembership.description;
+        this.price = weightRoomMembership.price;
+        this.durationInDays = weightRoomMembership.durationInDays;
+        this.type = weightRoomMembership.type;
     }
 
     public WeightRoomMembership(WeightRoomMembership weightRoomMembership) {

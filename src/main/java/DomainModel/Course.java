@@ -30,6 +30,13 @@ public class Course {
         this.trainers = new ArrayList<>();
     }
 
+    public Course(int id, Course course) {
+        this.id = id;
+        this.name = course.name;
+        this.description = course.description;
+        this.trainers = new ArrayList<>(course.getTrainers());
+    }
+
     public String getName() {
         return name;
     }

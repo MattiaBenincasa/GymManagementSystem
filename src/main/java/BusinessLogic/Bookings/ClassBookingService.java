@@ -1,4 +1,4 @@
-package BusinessLogic;
+package BusinessLogic.Bookings;
 
 import BusinessLogic.DTOs.ClassBookingInfo;
 import BusinessLogic.DTOs.CustomerInfo;

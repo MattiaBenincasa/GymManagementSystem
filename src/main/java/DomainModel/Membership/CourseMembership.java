@@ -12,6 +12,16 @@ public class CourseMembership extends Membership{
         super(id);
     }
 
+    public CourseMembership(int id, CourseMembership courseMembership) {
+        this.id = id;
+        this.name = courseMembership.name;
+        this.description = courseMembership.description;
+        this.price = courseMembership.price;
+        this.durationInDays = courseMembership.durationInDays;
+        this.weeklyAccess = courseMembership.weeklyAccess;
+        this.course = new Course(courseMembership.course);
+    }
+
     public CourseMembership(CourseMembership courseMembership) {
         super(courseMembership);
         this.course = courseMembership.course;

@@ -9,6 +9,7 @@ import ORM.Membership.MembershipDAO;
 import ORM.Users.TrainerDAO;
 import ORM.Users.UserDAO;
 import TestUtils.DAOTestUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
@@ -24,82 +25,86 @@ class CourseMembershipDAOTest {
         DAOTestUtils.resetDatabase();
         trainerDAO = new TrainerDAO(new UserDAO());
         courseDAO = new CourseDAO(this.trainerDAO);
-        courseMembershipDAO = new CourseMembershipDAO(new MembershipDAO(), courseDAO);
+        courseMembershipDAO = new CourseMembershipDAO(new MembershipDAO(), this.courseDAO);
     }
 
     @Test
-    void testCreateCourseMembership() throws DAOException {
-        Course course = new Course("Corso di Yoga", "Descrizione corso");
-        int courseId = courseDAO.createCourse(course);
-
+    void testCreateCourseMembership() {
+        Course course = courseDAO.createCourse(new Course("Corso di Yoga", "Descrizione corso"));
         CourseMembership courseMembership = new CourseMembership();
         courseMembership.setName("Abbonamento Yoga");
         courseMembership.setDescription("Abbonamento per il corso di Yoga");
         courseMembership.setPrice(new BigDecimal("75.00"));
         courseMembership.setDurationInDays(30);
-        courseMembership.setCourse(courseDAO.getCourseByID(courseId));
+        courseMembership.setCourse(course);
         courseMembership.setWeeklyAccess(2);
 
         assertDoesNotThrow(() -> {
-            int id = courseMembershipDAO.createCourseMembership(courseMembership);
-            courseMembershipDAO.getCourseMembershipByID(id);
+            CourseMembership courseMembershipWithID = courseMembershipDAO.createCourseMembership(courseMembership);
+            CourseMembership retrieved = courseMembershipDAO.getCourseMembershipByID(courseMembershipWithID.getId());
+            assertEquals(courseMembershipWithID.getId(), retrieved.getId());
+            assertEquals(courseMembershipWithID.getName(), retrieved.getName());
+            assertEquals(courseMembershipWithID.getDescription(), retrieved.getDescription());
+            assertEquals(courseMembershipWithID.getCourse().getId(), retrieved.getCourse().getId());
         });
     }
 
     @Test
     void testUpdateCourseMembership() throws DAOException {
-        Course course1 = new Course("Corso di Yoga", "Descrizione corso");
-        int course1Id = courseDAO.createCourse(course1);
+        Course course1 = courseDAO.createCourse(new Course("Corso di Yoga", "Descrizione corso"));
 
         CourseMembership courseMembership = new CourseMembership();
         courseMembership.setName("Abbonamento Yoga");
         courseMembership.setDescription("Abbonamento per il corso di Yoga");
         courseMembership.setPrice(new BigDecimal("75.00"));
         courseMembership.setDurationInDays(30);
-        courseMembership.setCourse(courseDAO.getCourseByID(course1Id));
+        courseMembership.setCourse(course1);
         courseMembership.setWeeklyAccess(2);
 
-        int id = courseMembershipDAO.createCourseMembership(courseMembership);
+        CourseMembership courseMembershipWithID = courseMembershipDAO.createCourseMembership(courseMembership);
 
-        Course course2 = new Course("Pilates", "nuova descrizione");
-        int course2Id = courseDAO.createCourse(course2);
+        Course course2 = courseDAO.createCourse(new Course("Pilates", "nuova descrizione"));
 
-        courseMembership = courseMembershipDAO.getCourseMembershipByID(id);
-        courseMembership.setName("Abbonamento Pilates Updated");
-        courseMembership.setDescription("Descrizione Updated");
-        courseMembership.setPrice(new BigDecimal("85.00"));
-        courseMembership.setCourse(courseDAO.getCourseByID(course2Id));
-        courseMembership.setWeeklyAccess(3);
-        courseMembershipDAO.updateCourseMembership(courseMembership);
+        courseMembershipWithID.setName("Abbonamento Pilates Updated");
+        courseMembershipWithID.setDescription("Descrizione Updated");
+        courseMembershipWithID.setPrice(new BigDecimal("85.00"));
+        courseMembershipWithID.setCourse(course2);
+        courseMembershipWithID.setWeeklyAccess(3);
+        courseMembershipDAO.updateCourseMembership(courseMembershipWithID);
 
-        CourseMembership retrieved = courseMembershipDAO.getCourseMembershipByID(id);
+        CourseMembership retrieved = courseMembershipDAO.getCourseMembershipByID(courseMembershipWithID.getId());
         assertEquals("Abbonamento Pilates Updated", retrieved.getName());
         assertEquals("Descrizione Updated", retrieved.getDescription());
         assertEquals(new BigDecimal("85.00"), retrieved.getPrice());
         assertEquals(3, retrieved.getWeeklyAccess());
-        assertEquals(course2Id, retrieved.getCourse().getId());
+        assertEquals(course2.getId(), retrieved.getCourse().getId());
     }
 
     @Test
     void testDeleteCourseMembership() throws DAOException {
 
-        Course course1 = new Course("Corso di Yoga", "Descrizione corso");
-        int course1Id = courseDAO.createCourse(course1);
+        Course course = this.courseDAO.createCourse(new Course("Corso di Yoga", "Descrizione corso"));
 
         CourseMembership courseMembership = new CourseMembership();
         courseMembership.setName("Abbonamento Yoga");
         courseMembership.setDescription("Abbonamento per il corso di Yoga");
         courseMembership.setPrice(new BigDecimal("75.00"));
         courseMembership.setDurationInDays(30);
-        courseMembership.setCourse(courseDAO.getCourseByID(course1Id));
+        courseMembership.setCourse(course);
         courseMembership.setWeeklyAccess(2);
 
-        int id = courseMembershipDAO.createCourseMembership(courseMembership);
+        courseMembership = courseMembershipDAO.createCourseMembership(courseMembership);
 
-        courseMembershipDAO.deleteCourseMembership(id);
-
+        courseMembershipDAO.deleteCourseMembership(courseMembership.getId());
+        int id = courseMembership.getId();
         assertThrows(DAOException.class, () -> {
             courseMembershipDAO.getCourseMembershipByID(id);
         });
     }
+
+    @AfterAll
+    static void tearDown() {
+        DAOTestUtils.resetDatabase();
+    }
+
 }

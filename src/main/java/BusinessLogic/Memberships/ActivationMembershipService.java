@@ -1,4 +1,4 @@
-package BusinessLogic;
+package BusinessLogic.Memberships;
 
 import DomainModel.Membership.CustomerFee;
 import DomainModel.Membership.CustomerMembership;

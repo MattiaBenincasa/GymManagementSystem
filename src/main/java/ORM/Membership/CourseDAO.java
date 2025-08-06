@@ -23,7 +23,7 @@ public class CourseDAO {
         this.trainerDAO = trainerDAO;
     }
 
-    public int createCourse(Course course) throws DAOException {
+    public Course createCourse(Course course) throws DAOException {
         String sql = "INSERT INTO Course (name, description) VALUES (?, ?)";
         int courseId = 0;
 
@@ -53,7 +53,7 @@ public class CourseDAO {
                     trainerStatement.executeBatch();
                 }
             }
-            return courseId;
+            return new Course(courseId, course);
         } catch (SQLException e) {
             throw new DAOException("Error during INSERT into Course: " + e.getMessage(), e);
         }
