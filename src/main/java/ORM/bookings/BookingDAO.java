@@ -1,6 +1,10 @@
 package ORM.bookings;
 
+import BusinessLogic.DTOs.ClassBookingInfo;
+import BusinessLogic.DTOs.CustomerInfo;
 import DomainModel.Booking;
+import DomainModel.DailyClass;
+import DomainModel.Users.Customer;
 import ORM.ConnectionManager;
 
 import java.sql.Connection;
@@ -17,5 +21,7 @@ public class BookingDAO {
 
     public void deleteBooking(Booking booking) {}
 
+    public ClassBookingInfo getClassBookingInfo(Customer customer, DailyClass dailyClass) {}
 
+    public CustomerInfo getCustomerBookingInfo(Customer customer) {}
 }

@@ -1,23 +1,34 @@
 package BusinessLogic.Validators;
 
-import BusinessLogic.DTOs.CustomerInfoDTO;
+import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.Exceptions.ValidatorException;
+import DomainModel.Users.MedicalCertificate;
 
 import java.time.LocalDate;
 
 public class MedCertificateValidator extends Validator{
-    private CustomerInfoDTO customerInfoDTO;
+    private CustomerInfo customerInfo;
 
-    public MedCertificateValidator(CustomerInfoDTO customerInfoDTO) {
-        this.customerInfoDTO = customerInfoDTO;
+    public MedCertificateValidator(CustomerInfo customerInfoDTO) {
+        this.customerInfo = customerInfoDTO;
     }
 
-    // FIXME it must manage also the case that the customer does not have the medical certificate
     @Override
     public void Validate() {
-        LocalDate expiryDate = this.customerInfoDTO.getCustomer().getMedicalCertificate().getExpiryDate();
-        if (expiryDate.plusDays(20).isAfter(LocalDate.now()))
-            throw new ValidatorException("Exceeded the maximum time to obtain medical certificate");
-        super.Validate();
+
+        LocalDate firstDeadline = this.customerInfo.getFeeBegin().plusDays(20);
+
+        if (this.customerInfo.getMedCertExpiry() == null) {
+            if (LocalDate.now().isBefore(firstDeadline))
+                super.Validate();
+            else throw new ValidatorException("Exceeded the maximum time to obtain medical certificate");
+            // new customer passed the deadline for bringing the first medical certificate
+        } else {
+            LocalDate deadline = this.customerInfo.getMedCertExpiry().plusDays(20);
+            if (LocalDate.now().isBefore(deadline))
+                super.Validate();
+            else throw new ValidatorException("Exceeded the maximum time to bring new medical certificate");
+            // Customer passed the deadline for bringing new medical certificate
+        }
     }
 }

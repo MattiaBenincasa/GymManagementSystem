@@ -1,11 +1,15 @@
 package BusinessLogic;
 
+import BusinessLogic.DTOs.ClassBookingInfo;
+import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.Exceptions.LateBookingDeletionException;
+import BusinessLogic.Validators.*;
 import DomainModel.Booking;
 import DomainModel.DailyClass;
 import DomainModel.Users.Customer;
 import ORM.bookings.BookingDAO;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ClassBookingService {
@@ -21,7 +25,15 @@ public class ClassBookingService {
     * it with BookingDAO
     * */
     public void bookAClass(Customer customer, DailyClass dailyClass) {
-        //TODO execute validators
+        CustomerInfo customerInfo = this.bookingDAO.getCustomerBookingInfo(customer);
+        ClassBookingInfo classBookingInfo = this.bookingDAO.getClassBookingInfo(customer, dailyClass);
+
+        Validator classBookingValidators = new FeeValidator(customerInfo)
+                .setNextValidator(new MedCertificateValidator(customerInfo))
+                .setNextValidator(new MembershipValidator(classBookingInfo))
+                .setNextValidator(new CheckBookingsValidator(classBookingInfo));
+
+        classBookingValidators.Validate();
 
         Booking booking = new Booking(customer, dailyClass);
         bookingDAO.createBooking(booking);
