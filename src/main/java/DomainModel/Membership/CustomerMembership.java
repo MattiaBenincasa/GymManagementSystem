@@ -17,6 +17,13 @@ public class CustomerMembership {
         this.expiryDate = activationDate.plusDays(membership.getDurationInDays());
     }
 
+    public CustomerMembership(Customer customer, Membership membership, LocalDate startDay, LocalDate expiryDate) {
+        this.customer = customer;
+        this.membership = membership;
+        this.startDay = startDay;
+        this.expiryDate = expiryDate;
+    }
+
     public Customer getCustomer() {
         return new Customer(this.customer);
     }

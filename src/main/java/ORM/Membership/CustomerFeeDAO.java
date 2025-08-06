@@ -2,7 +2,6 @@ package ORM.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
 import DomainModel.Membership.CustomerFee;
-import DomainModel.Users.Customer;
 import ORM.ConnectionManager;
 import ORM.Users.CustomerDAO;
 import ORM.Users.UserDAO;
@@ -52,11 +51,10 @@ public class CustomerFeeDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    CustomerFee customerFee = new CustomerFee(resultSet.getInt("id"),
+                    return new CustomerFee(resultSet.getInt("id"),
                             resultSet.getDate("start_date").toLocalDate(),
                             resultSet.getDate("expiry_date").toLocalDate(),
                             customerDAO.getCustomerByID(resultSet.getInt("customer_id")));
-                    return customerFee;
                 } else {
                     throw new DAOException("CustomerFee with ID " + feeId + " not found.");
                 }
