@@ -31,16 +31,16 @@ public class ClassBookingService {
 
         Validator classBookingValidators = new FeeValidator(customerInfo)
                 .setNextValidator(new MedCertificateValidator(customerInfo))
-                .setNextValidator(new MembershipValidator(classBookingInfo))
+                .setNextValidator(new MembershipValidator(classBookingInfo.getMembershipExpiry()))
                 .setNextValidator(new CheckBookingsValidator(classBookingInfo));
 
-        classBookingValidators.Validate();
+        classBookingValidators.validate();
 
         Booking booking = new Booking(customer, dailyClass);
         bookingDAO.createBooking(booking);
     }
 
-    // A customer can cancel a class no later than one hour before the class starts.
+    // A customer can delete a class no later than one hour before the class starts.
     public void deleteClassBooking(Booking booking) {
         LocalTime startTime = booking.getDailyClass().getTime();
 

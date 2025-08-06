@@ -1,7 +1,5 @@
 package BusinessLogic.Validators;
 
-import DomainModel.Users.Customer;
-
 public abstract class Validator {
     protected Validator nextValidator;
 
@@ -10,9 +8,9 @@ public abstract class Validator {
         return nextValidator;
     }
 
-    public void Validate() {
+    public void validate() {
         if (this.nextValidator != null)
-            this.nextValidator.Validate();
+            this.nextValidator.validate();
     }
 
 }

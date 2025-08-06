@@ -1,24 +1,21 @@
 package BusinessLogic.Validators;
 
-import BusinessLogic.DTOs.ClassBookingInfo;
 import BusinessLogic.Exceptions.ValidatorException;
-import DomainModel.Membership.CustomerMembership;
 
 import java.time.LocalDate;
 
 public class MembershipValidator extends Validator{
-    private ClassBookingInfo classBookingInfo;
+    private final LocalDate expiryDate;
 
-    public MembershipValidator(ClassBookingInfo classBookingInfo) {
-        this.classBookingInfo = classBookingInfo;
+    public MembershipValidator(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     @Override
-    public void Validate() {
-        if (this.classBookingInfo.getMembershipExpiry() != null) {
-            LocalDate deadline = this.classBookingInfo.getMembershipExpiry();
-            if (LocalDate.now().isBefore(deadline))
-                super.Validate();
+    public void validate() {
+        if (this.expiryDate != null) {
+            if (LocalDate.now().isBefore(this.expiryDate))
+                super.validate();
             else throw new ValidatorException("Membership has expired");
         } else {
             throw new ValidatorException("You do not have the necessary subscription to book this class");

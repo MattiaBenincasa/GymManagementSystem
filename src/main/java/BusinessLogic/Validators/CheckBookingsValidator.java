@@ -11,11 +11,11 @@ public class CheckBookingsValidator extends Validator{
     }
 
     @Override
-    public void Validate() {
+    public void validate() {
         if (this.classBookingInfo.getTotalBookingsInClass() >= this.classBookingInfo.getClassMaxParticipants())
             throw new ValidatorException("Class is full");
         if (this.classBookingInfo.getBookingsDoneByCustomerThisWeek() >= this.classBookingInfo.getWeeklyBookingLimit())
             throw  new ValidatorException("You have exceeded your weekly booking allowed");
-        super.Validate();
+        super.validate();
     }
 }

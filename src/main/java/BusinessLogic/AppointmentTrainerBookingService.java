@@ -1,4 +1,58 @@
 package BusinessLogic;
 
+import BusinessLogic.DTOs.CustomerInfo;
+import BusinessLogic.DTOs.WeightRoomBookingInfo;
+import BusinessLogic.Exceptions.LateBookingDeletionException;
+import BusinessLogic.Validators.*;
+import DomainModel.Appointment;
+import DomainModel.TrainerAvailability;
+import DomainModel.Users.Customer;
+import ORM.Membership.AppointmentDAO;
+import ORM.Users.UserDAO;
+
+import java.time.LocalTime;
+
 public class AppointmentTrainerBookingService {
+    private final UserDAO userDAO;
+    private final AppointmentDAO appointmentDAO;
+
+    public AppointmentTrainerBookingService(UserDAO userDAO, AppointmentDAO appointmentDAO) {
+        this.userDAO = userDAO;
+        this.appointmentDAO = appointmentDAO;
+    }
+
+    /*
+     * execute a sequence of validators to check if a specific customer can book a
+     * specific appointment. If all validators pass then instantiate an Appointment and save
+     * it with AppointmentDAO
+     * */
+    public void takeAppointmentWithTrainer(Customer customer, TrainerAvailability trainerAvailability) {
+        CustomerInfo customerInfo = userDAO.getCustomerBookingInfo(customer);
+        WeightRoomBookingInfo weightRoomBookingInfo = appointmentDAO.getWeightRoomBookingInfo(customer, trainerAvailability.getDay());
+        Validator appointmentTrainerValidator = new FeeValidator(customerInfo)
+                .setNextValidator(new MedCertificateValidator(customerInfo))
+                .setNextValidator(new MembershipValidator(weightRoomBookingInfo.getMembershipExpiry()))
+                .setNextValidator(new WeightRoomBookingValidator(weightRoomBookingInfo));
+
+        appointmentTrainerValidator.validate();
+
+        Appointment appointment = new Appointment(customer, trainerAvailability);
+        this.appointmentDAO.createAppointment(appointment);
+    }
+
+    // A customer can delete an appointment no later than one hour before the start time.
+    public void deleteAnAppointmentWithTrainer(Appointment appointment) {
+        LocalTime startTime = appointment.getTrainerAvailability().getStartTime();
+
+        if (LocalTime.now().plusHours(1).isAfter(startTime))
+            throw new LateBookingDeletionException("A booking can be deleted no later than one hour before the class starts.");
+
+        this.appointmentDAO.deleteAppointment(appointment);
+    }
+
+    public void changeNotesForTrainer(String newNotes, Appointment appointment) {
+        appointment.setAppointmentPurpose(newNotes);
+        this.appointmentDAO.updateAppointment(appointment);
+    }
+
 }

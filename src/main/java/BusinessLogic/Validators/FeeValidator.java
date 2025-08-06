@@ -14,9 +14,9 @@ public class FeeValidator extends Validator{
     }
 
     @Override
-    public void Validate() {
+    public void validate() {
         if (LocalDate.now().isBefore(customerInfo.getFeeExpiry()))
-            super.Validate();
+            super.validate();
         else throw new ValidatorException("Registration fee is expired");
     }
 }
