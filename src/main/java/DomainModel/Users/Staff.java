@@ -7,9 +7,9 @@ public class Staff extends User{
         this.staffRole = staffRole;
     }
 
-    public Staff(int id, StaffRole staffRole) {
-        super(id);
-        this.staffRole = staffRole;
+    public Staff(int id, Staff staff) {
+        super(id, staff);
+        this.staffRole = staff.staffRole;
     }
 
     public StaffRole getStaffRole() {

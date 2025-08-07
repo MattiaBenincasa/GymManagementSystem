@@ -18,7 +18,7 @@ public class TrainerDAO {
         this.userDAO = userDAO;
     }
 
-    public int createTrainer(Trainer trainer) {
+    public Trainer createTrainer(Trainer trainer) {
         int userId = this.userDAO.createUser(trainer, "TRAINER");
 
         String sql = "INSERT INTO Trainer (id, isPersonalTrainer, isCourseCoach) VALUES (?, ?, ?)";
@@ -29,7 +29,7 @@ public class TrainerDAO {
             statement.setBoolean(3, trainer.isCourseCoach());
 
             statement.executeUpdate();
-            return userId;
+            return new Trainer(userId, trainer);
         } catch (SQLException e) {
             throw new DAOException("Error during INSERT into Trainer: " + e.getMessage(), e);
         }
@@ -63,7 +63,7 @@ public class TrainerDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Trainer trainer = new Trainer(resultSet.getInt("id"));
+                    Trainer trainer = new Trainer();
                     trainer.setUsername(resultSet.getString("username"));
                     trainer.setPasswordHash(resultSet.getString("hashpassword"));
                     trainer.setName(resultSet.getString("name"));
@@ -73,7 +73,7 @@ public class TrainerDAO {
                     trainer.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
                     trainer.setIsPersonalTrainer(resultSet.getBoolean("isPersonalTrainer"));
                     trainer.setIsCourseCoach(resultSet.getBoolean("isCourseCoach"));
-                    return trainer;
+                    return new Trainer(resultSet.getInt("id"), trainer);
                 } else {
                     throw new DAOException("Trainer with ID " + trainerID + " not found.");
                 }

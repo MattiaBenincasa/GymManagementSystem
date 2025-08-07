@@ -30,10 +30,9 @@ public class UserDAOTest {
     void userIDShouldRetrievedFromUsername() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
-        int real_id = customerDAO.createCustomer(customer);
+        Customer customer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "mail@mail.it"));
         int id_retrieved = userDAO.getIdFromUsername(customer.getUsername());
-        Assertions.assertEquals(real_id, id_retrieved);
+        Assertions.assertEquals(customer.getId(), id_retrieved);
     }
 
     @Test

@@ -6,8 +6,10 @@ public class Customer extends User {
 
     public Customer() {}
 
-    public Customer(int id) {
-        super(id);
+    public Customer(int id, Customer customer) {
+        super(id, customer);
+        this.medicalCertificate = customer.medicalCertificate;
+        this.customerCategory = customer.customerCategory;
     }
 
     public Customer(Customer customer) {

@@ -27,29 +27,23 @@ class CourseDAOTest {
 
     @Test
     void testCreateCourseAndTrainers() {
-        Trainer trainer1 = UserDAOTestUtils.createTrainer("trainer_1", "mailTrainer1@mail.it");
-        Trainer trainer2 = UserDAOTestUtils.createTrainer("trainer_2", "mailTrainer2@mail.it");
-        int id = this.trainerDAO.createTrainer(trainer1);
-        int id2 = this.trainerDAO.createTrainer(trainer2);
-        trainer1 = this.trainerDAO.getTrainerByID(id);
-        trainer2 = this.trainerDAO.getTrainerByID(id2);
+        Trainer trainer1 = this.trainerDAO.createTrainer(UserDAOTestUtils.createTrainer("trainer_1", "mailTrainer1@mail.it"));
+        Trainer trainer2 = this.trainerDAO.createTrainer(UserDAOTestUtils.createTrainer("trainer_2", "mailTrainer2@mail.it"));
         Course newCourse = new Course("Corso di Yoga", "Un corso di yoga avanzato");
         newCourse.addTrainer(trainer1);
         newCourse.addTrainer(trainer2);
         assertDoesNotThrow(()->{
             Course courseWithId = courseDAO.createCourse(newCourse);
             courseDAO.getCourseByID(courseWithId.getId());
-            assertEquals(id, courseWithId.getTrainers().getFirst().getId());
-            assertEquals(id2, courseWithId.getTrainers().get(1).getId());
+            assertEquals(trainer1.getId(), courseWithId.getTrainers().getFirst().getId());
+            assertEquals(trainer2.getId(), courseWithId.getTrainers().get(1).getId());
         });
     }
 
     @Test
     void testUpdateCourse() {
         Course originalCourse = courseDAO.createCourse(new Course("Boxe", "corso di boxe"));
-        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
-        int id = this.trainerDAO.createTrainer(trainer);
-        trainer = this.trainerDAO.getTrainerByID(id);
+        Trainer trainer = this.trainerDAO.createTrainer(UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it"));
         originalCourse.setName("Corso Aggiornato");
         originalCourse.setDescription("Descrizione aggiornata");
         originalCourse.addTrainer(trainer);
@@ -65,9 +59,7 @@ class CourseDAOTest {
 
     @Test
     void testDeleteCourse() throws DAOException {
-        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
-        int id = trainerDAO.createTrainer(trainer);
-        trainer = this.trainerDAO.getTrainerByID(id);
+        Trainer trainer = this.trainerDAO.createTrainer(UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it"));
         Course courseToDelete = new Course("Zumba", "Corso da eliminare");
         courseToDelete.addTrainer(trainer);
         courseToDelete = this.courseDAO.createCourse(courseToDelete);

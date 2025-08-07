@@ -17,7 +17,7 @@ public class CustomerDAO {
         this.userDAO = userDAO;
     }
 
-    public int createCustomer(Customer customer) {
+    public Customer createCustomer(Customer customer) {
         int userId = this.userDAO.createUser(customer, "CUSTOMER");
 
         String sql = "INSERT INTO Customers (id, customerCategory) VALUES (?, ?)";
@@ -37,7 +37,7 @@ public class CustomerDAO {
                 statement_med_cert.setNull(3, Types.BOOLEAN);
             }
             statement_med_cert.executeUpdate();
-            return userId;
+            return new Customer(userId, customer);
         } catch (SQLException e) {
             throw new DAOException("Error during INSERT into Customers: " + e.getMessage(), e);
         }
@@ -74,7 +74,7 @@ public class CustomerDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Customer customer = new Customer(resultSet.getInt("id"));
+                    Customer customer = new Customer();
                     customer.setUsername(resultSet.getString("username"));
                     customer.setPasswordHash(resultSet.getString("hashpassword"));
                     customer.setName(resultSet.getString("name"));
@@ -84,7 +84,7 @@ public class CustomerDAO {
                     customer.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
                     customer.setCustomerCategory(CustomerCategory.valueOf(resultSet.getString("customerCategory")));
                     customer.setMedicalCertificate(this.getMedicalCertificateByCustomerID(customerID));
-                    return customer;
+                    return new Customer(resultSet.getInt("id"), customer);
                 } else {
                     throw new DAOException("Customer with ID " + customerID + " not found.");
                 }

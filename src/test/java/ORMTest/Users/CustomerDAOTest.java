@@ -26,8 +26,8 @@ public class CustomerDAOTest {
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
         Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
         Assertions.assertDoesNotThrow(()->{
-                    int id = customerDAO.createCustomer(customer);
-                    customerDAO.getCustomerByID(id);
+                    Customer customerWithId = customerDAO.createCustomer(customer);
+                    customerDAO.getCustomerByID(customerWithId.getId());
         });
 
     }
@@ -36,13 +36,12 @@ public class CustomerDAOTest {
     void aCustomerShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
-        int id = customerDAO.createCustomer(customer);
+        Customer customer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "mail@mail.it"));
         Assertions.assertDoesNotThrow(()->{
-            userDAO.deleteUser(id);
+            userDAO.deleteUser(customer.getId());
         });
         Assertions.assertThrows(DAOException.class, ()->{
-            customerDAO.getCustomerByID(id);
+            customerDAO.getCustomerByID(customer.getId());
         });
     }
 
@@ -50,10 +49,7 @@ public class CustomerDAOTest {
     void aCustomerShouldBeUpdate() {
         UserDAO userDAO = new UserDAO();
         CustomerDAO customerDAO = new CustomerDAO(userDAO);
-        Customer customer = UserDAOTestUtils.createCustomer("customer", "mail@mail.it");
-        int id = customerDAO.createCustomer(customer);
-        //get customer with right id
-        customer = customerDAO.getCustomerByID(id);
+        Customer customer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "mail@mail.it"));
 
         //update username
         customer.setUsername("new_username");
@@ -65,7 +61,7 @@ public class CustomerDAOTest {
         customer.setBirthDate(LocalDate.of(1990, 1, 1));
         customer.setCustomerCategory(CustomerCategory.MILITARY);
         customerDAO.updateCustomer(customer);
-        Customer updatedCustomer = customerDAO.getCustomerByID(id);
+        Customer updatedCustomer = customerDAO.getCustomerByID(customer.getId());
         Assertions.assertEquals(customer, updatedCustomer);
 
         //update med. Certificate
@@ -73,7 +69,7 @@ public class CustomerDAOTest {
         MedicalCertificate medicalCertificate = new MedicalCertificate(LocalDate.now(), 12, false);
         customer.setMedicalCertificate(medicalCertificate);
         customerDAO.updateCustomer(customer);
-        updatedCustomer = customerDAO.getCustomerByID(id);
+        updatedCustomer = customerDAO.getCustomerByID(customer.getId());
         Assertions.assertEquals(customer, updatedCustomer);
         Assertions.assertEquals(customer.getMedicalCertificate(), updatedCustomer.getMedicalCertificate());
 

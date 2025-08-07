@@ -17,8 +17,15 @@ public abstract class User {
 
     public User() {}
 
-    public User(int id) {
+    public User(int id, User user) {
         this.id = id;
+        this.username = user.username;
+        this.passwordHash = user.passwordHash;
+        this.name = user.name;
+        this.surname = user.surname;
+        this.mail = user.mail;
+        this.phoneNumber = user.phoneNumber;
+        this.birthDate = user.birthDate;
     }
 
     public User(User user) {
@@ -30,6 +37,10 @@ public abstract class User {
         this.mail = user.name;
         this.phoneNumber = user.phoneNumber;
         this.birthDate = user.birthDate;
+    }
+
+    public User(int id) {
+        this.id = id;
     }
 
     public int getId() {

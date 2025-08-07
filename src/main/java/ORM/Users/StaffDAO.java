@@ -19,8 +19,9 @@ public class StaffDAO {
         this.userDAO = userDAO;
     }
 
-    public int createStaff(Staff staff) {
-        return this.userDAO.createUser(staff, staff.getStaffRole().name());
+    public Staff createStaff(Staff staff) {
+        int id = this.userDAO.createUser(staff, staff.getStaffRole().name());
+        return new Staff(id, staff);
     }
 
     public void updateStaff(Staff staff) {
@@ -38,7 +39,7 @@ public class StaffDAO {
                 if (resultSet.next()) {
                     int id = resultSet.getInt("id");
                     StaffRole role = StaffRole.valueOf(resultSet.getString("role"));
-                    Staff staff = new Staff(id, role);
+                    Staff staff = new Staff(role);
                     staff.setUsername(resultSet.getString("username"));
                     staff.setPasswordHash(resultSet.getString("hashpassword"));
                     staff.setName(resultSet.getString("name"));
@@ -46,7 +47,7 @@ public class StaffDAO {
                     staff.setMail(resultSet.getString("mail"));
                     staff.setPhoneNumber(resultSet.getString("phoneNumber"));
                     staff.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
-                    return staff;
+                    return new Staff(id, staff);
                 } else {
                     throw new DAOException("Trainer with ID " + staffID + " not found.");
                 }

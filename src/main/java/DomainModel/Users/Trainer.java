@@ -10,6 +10,12 @@ public class Trainer extends User {
         super(id);
     }
 
+    public Trainer(int id, Trainer trainer) {
+        super(id, trainer);
+        this.isPersonalTrainer = trainer.isPersonalTrainer;
+        this.isCourseCoach = trainer.isCourseCoach;
+    }
+
     public Trainer(Trainer trainer) {
         super(trainer);
         this.isPersonalTrainer = trainer.isPersonalTrainer;

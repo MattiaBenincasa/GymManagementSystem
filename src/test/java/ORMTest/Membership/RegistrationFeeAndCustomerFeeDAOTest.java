@@ -68,17 +68,16 @@ class RegistrationFeeAndCustomerFeeDAOTest {
     @Test
     void test4_assignCustomerFee_shouldCreateRecord() throws DAOException {
         // Creiamo un cliente di prova
-        Customer customer = UserDAOTestUtils.createCustomer("mario.rossi", "password");
-        int customerId = customerDAO.createCustomer(customer);
-        customer = customerDAO.getCustomerByID(customerId);
+        Customer customer = this.customerDAO.createCustomer(UserDAOTestUtils.createCustomer("mario.rossi", "password"));
+        customer = customerDAO.getCustomerByID(customer.getId());
         // Creiamo un CustomerFee
         CustomerFee customerFee = new CustomerFee(LocalDate.now(), customer);
-
+        int customerID = customer.getId();
         assertDoesNotThrow(() -> {
             int feeId = customerFeeDAO.createCustomerFee(customerFee);
             CustomerFee retrievedFee = customerFeeDAO.getCustomerFeeByID(feeId);
             assertNotNull(retrievedFee);
-            assertEquals(customerId, retrievedFee.getCustomer().getId());
+            assertEquals(customerID, retrievedFee.getCustomer().getId());
             assertEquals(LocalDate.now(), retrievedFee.getStartDate());
             assertEquals(LocalDate.now().plusYears(1), retrievedFee.getExpiryDate());
         });

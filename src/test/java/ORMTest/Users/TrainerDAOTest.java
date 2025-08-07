@@ -24,8 +24,8 @@ public class TrainerDAOTest {
         TrainerDAO trainerDAO = new TrainerDAO(userDAO);
         Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         Assertions.assertDoesNotThrow(()->{
-            int id = trainerDAO.createTrainer(trainer);
-            trainerDAO.getTrainerByID(id);
+            Trainer trainerWithId = trainerDAO.createTrainer(trainer);
+            trainerDAO.getTrainerByID(trainerWithId.getId());
         });
     }
 
@@ -33,13 +33,13 @@ public class TrainerDAOTest {
     void aTrainerShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         TrainerDAO trainerDAO = new TrainerDAO(userDAO);
-        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
-        int id = trainerDAO.createTrainer(trainer);
+        Trainer trainer = trainerDAO.createTrainer(UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it"));
+
         Assertions.assertDoesNotThrow(()->{
-            userDAO.deleteUser(id);
+            userDAO.deleteUser(trainer.getId());
         });
         Assertions.assertThrows(DAOException.class, ()->{
-            trainerDAO.getTrainerByID(id);
+            trainerDAO.getTrainerByID(trainer.getId());
         });
     }
 
@@ -47,10 +47,9 @@ public class TrainerDAOTest {
     void aTrainerShouldBeUpdated() {
         UserDAO userDAO = new UserDAO();
         TrainerDAO trainerDAO = new TrainerDAO(userDAO);
-        Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
-        int id = trainerDAO.createTrainer(trainer);
+        Trainer trainer = trainerDAO.createTrainer(UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it"));
 
-        trainer = trainerDAO.getTrainerByID(id);
+        trainer = trainerDAO.getTrainerByID(trainer.getId());
         trainer.setUsername("new_username");
         trainer.setPassword("new_plain_password");
         trainer.setName("new_name");
@@ -62,7 +61,7 @@ public class TrainerDAOTest {
         trainer.setIsCourseCoach(false);
         trainerDAO.updateTrainer(trainer);
 
-        Trainer updatedTrainer = trainerDAO.getTrainerByID(id);
+        Trainer updatedTrainer = trainerDAO.getTrainerByID(trainer.getId());
 
         Assertions.assertEquals(trainer, updatedTrainer);
     }

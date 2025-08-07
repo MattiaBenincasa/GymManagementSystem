@@ -24,8 +24,8 @@ public class StaffDAOTest {
         StaffDAO staffDAO = new StaffDAO(userDAO);
         Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
         Assertions.assertDoesNotThrow(()->{
-            int id = staffDAO.createStaff(staff);
-            staffDAO.getStaffByID(id);
+            Staff staffWithId = staffDAO.createStaff(staff);
+            staffDAO.getStaffByID(staffWithId.getId());
         });
     }
 
@@ -33,13 +33,12 @@ public class StaffDAOTest {
     void aStaffShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
-        int id = staffDAO.createStaff(staff);
+        Staff staff = staffDAO.createStaff(UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it"));
         Assertions.assertDoesNotThrow(()->{
-            userDAO.deleteUser(id);
+            userDAO.deleteUser(staff.getId());
         });
         Assertions.assertThrows(DAOException.class, ()->{
-            staffDAO.getStaffByID(id);
+            staffDAO.getStaffByID(staff.getId());
         });
     }
 
@@ -47,10 +46,9 @@ public class StaffDAOTest {
     void aStaffShouldBeUpdated() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
-        int id = staffDAO.createStaff(staff);
+        Staff staff = staffDAO.createStaff(UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it"));
 
-        staff = staffDAO.getStaffByID(id);
+        staff = staffDAO.getStaffByID(staff.getId());
         staff.setUsername("new_username");
         staff.setPassword("new_plain_password");
         staff.setName("new_name");
@@ -60,7 +58,7 @@ public class StaffDAOTest {
         staff.setBirthDate(LocalDate.of(1990, 1, 1));
         staffDAO.updateStaff(staff);
 
-        Staff updatedStaff = staffDAO.getStaffByID(id);
+        Staff updatedStaff = staffDAO.getStaffByID(staff.getId());
 
         Assertions.assertEquals(staff, updatedStaff);
     }

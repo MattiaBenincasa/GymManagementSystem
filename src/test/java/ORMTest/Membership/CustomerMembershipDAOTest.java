@@ -48,9 +48,7 @@ class CustomerMembershipDAOTest {
 
     @Test
     void testAddOneMembershipToCustomer() {
-        Customer customer = UserDAOTestUtils.createCustomer("customer", "customer@customer.it");
-        int customerId = customerDAO.createCustomer(customer);
-        customer = customerDAO.getCustomerByID(customerId);
+        Customer customer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "customer@customer.it"));
         WeightRoomMembership wrMembership = new WeightRoomMembership();
         wrMembership.setName("abbonamento base");
         wrMembership.setPrice(new BigDecimal("300"));
@@ -73,9 +71,7 @@ class CustomerMembershipDAOTest {
 
     @Test
     void testAddTwoMembershipsToSameCustomer() {
-        Customer customer = UserDAOTestUtils.createCustomer("customer", "email@email.it");
-        int customerId = customerDAO.createCustomer(customer);
-        customer = customerDAO.getCustomerByID(customerId);
+        Customer customer = this.customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "email@email.it"));
 
         //membership 1
         WeightRoomMembership wrMembership = new WeightRoomMembership();
@@ -84,7 +80,6 @@ class CustomerMembershipDAOTest {
         wrMembership.setType(WRMembershipType.PERSONAL);
         wrMembership.setDurationInDays(90);
         wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
-        wrMembership = wrMembershipDAO.getWeightRoomMembershipByID(wrMembership.getId());
 
         //membership 2
         CourseMembership courseMembership = new CourseMembership();
@@ -92,9 +87,7 @@ class CustomerMembershipDAOTest {
         courseMembership.setDescription("descrizione");
         courseMembership.setPrice(new BigDecimal("300"));
         courseMembership.setDurationInDays(90);
-
         Course course = courseDAO.createCourse(new Course("corso Yoga", "Descrizione"));
-        course = courseDAO.getCourseByID(course.getId());
         courseMembership.setCourse(course);
         courseMembership = courseMembershipDAO.createCourseMembership(courseMembership);
 
