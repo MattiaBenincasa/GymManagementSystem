@@ -27,7 +27,7 @@ class CourseDAOTest {
 
     @Test
     void testCreateCourseAndTrainers() {
-        Trainer trainer1 = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
+        Trainer trainer1 = UserDAOTestUtils.createTrainer("trainer_1", "mailTrainer1@mail.it");
         Trainer trainer2 = UserDAOTestUtils.createTrainer("trainer_2", "mailTrainer2@mail.it");
         int id = this.trainerDAO.createTrainer(trainer1);
         int id2 = this.trainerDAO.createTrainer(trainer2);
@@ -39,11 +39,13 @@ class CourseDAOTest {
         assertDoesNotThrow(()->{
             Course courseWithId = courseDAO.createCourse(newCourse);
             courseDAO.getCourseByID(courseWithId.getId());
+            assertEquals(id, courseWithId.getTrainers().getFirst().getId());
+            assertEquals(id2, courseWithId.getTrainers().get(1).getId());
         });
     }
 
     @Test
-    void testUpdateCourse() throws DAOException {
+    void testUpdateCourse() {
         Course originalCourse = courseDAO.createCourse(new Course("Boxe", "corso di boxe"));
         Trainer trainer = UserDAOTestUtils.createTrainer("trainer", "mailTrainer@mail.it");
         int id = this.trainerDAO.createTrainer(trainer);

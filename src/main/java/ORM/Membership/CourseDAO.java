@@ -6,6 +6,7 @@ import DomainModel.Users.Trainer;
 import ORM.ConnectionManager;
 import ORM.Users.TrainerDAO;
 
+import javax.lang.model.type.ArrayType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -150,6 +151,59 @@ public class CourseDAO {
         } catch (SQLException e) {
             throw new DAOException("Error during DELETE from Course: " + e.getMessage(), e);
         }
+    }
+
+    public ArrayList<Course> getAllCourse() {
+        ArrayList<Course> courses = new ArrayList<>();
+        String sql = "SELECT c.id, c.name, c.description, t.id AS trainerId, t.name AS trainerName, t.surname AS trainerSurname " +
+                "FROM Course c LEFT JOIN CourseTrainer ct ON c.id = ct.course_id " +
+                "LEFT JOIN Trainer t ON ct.trainer_id = t.id";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            Course currentCourse = null;
+            while (resultSet.next()) {
+                int courseId = resultSet.getInt("id");
+
+                if (currentCourse == null || currentCourse.getId() != courseId) {
+                    currentCourse = new Course(courseId, resultSet.getString("name"), resultSet.getString("description"));
+                    courses.add(currentCourse);
+                }
+
+                int trainerId = resultSet.getInt("trainerId");
+                if (trainerId != 0) {
+                    Trainer trainer = new Trainer(trainerId);
+                    trainer.setName(resultSet.getString("trainerName"));
+                    trainer.setSurname(resultSet.getString("trainerSurname"));
+                    currentCourse.addTrainer(trainer);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT ALL from Course: " + e.getMessage(), e);
+        }
+        return courses;
+    }
+
+    public ArrayList<Course> getCoursesByTrainerID(int trainerID) {
+        ArrayList<Course> courses = new ArrayList<>();
+        String sql = "SELECT c.id, c.name, c.description " +
+                "FROM Course c JOIN CourseTrainer ct ON c.id = ct.course_id " +
+                "WHERE ct.trainer_id = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setInt(1, trainerID);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Course course = new Course(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"));
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT courses by trainer ID: " + e.getMessage(), e);
+        }
+        return courses;
     }
 
 }
