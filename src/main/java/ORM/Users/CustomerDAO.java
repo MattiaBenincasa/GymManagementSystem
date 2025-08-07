@@ -7,6 +7,7 @@ import DomainModel.Users.MedicalCertificate;
 import ORM.ConnectionManager;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class CustomerDAO {
     private final Connection connection;
@@ -134,4 +135,6 @@ public class CustomerDAO {
             throw new DAOException("Error during UPDATE from customerMedCertificate: " + e.getMessage(), e);
         }
     }
+
+    public ArrayList<Customer> getAllCustomers() {}
 }

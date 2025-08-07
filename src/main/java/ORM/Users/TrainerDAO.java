@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class TrainerDAO {
     private final Connection connection;
@@ -82,5 +83,7 @@ public class TrainerDAO {
             throw new DAOException("Error during SELECT from User and Trainer: " + e.getMessage(), e);
         }
     }
+
+    public ArrayList<Trainer> getAllTrainers() {}
 
 }
