@@ -73,4 +73,9 @@ public class MembershipDAO {
             throw new DAOException("Error during UPDATE of Membership: " + e.getMessage(), e);
         }
     }
+
+    public Membership getMembershipByID(int membershipID) {
+        //check if the ID is in CourseMembership -> new CourseMembership
+        //or if the ID is in WeightRoomMembership -> new WeightRoomMembership
+    }
 }

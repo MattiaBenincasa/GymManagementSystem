@@ -11,6 +11,7 @@ import ORM.Membership.AppointmentDAO;
 import ORM.Users.UserDAO;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class AppointmentTrainerBookingService {
     private final UserDAO userDAO;
@@ -53,6 +54,10 @@ public class AppointmentTrainerBookingService {
     public void changeNotesForTrainer(String newNotes, Appointment appointment) {
         appointment.setAppointmentPurpose(newNotes);
         this.appointmentDAO.updateAppointment(appointment);
+    }
+
+    public ArrayList<Appointment> getAllDailyAppointment(int trainerID) {
+        return this.appointmentDAO.getAllDailyAppointment(trainerID);
     }
 
 }

@@ -7,6 +7,7 @@ import ORM.ConnectionManager;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 public class AppointmentDAO {
@@ -62,5 +63,8 @@ public class AppointmentDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<Appointment> getAllDailyAppointment(int trainerID) {}
+
 
 }
