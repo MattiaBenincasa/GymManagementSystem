@@ -42,7 +42,7 @@ public class DailyClassService {
         LocalDateTime oneDaysFromNow = classStartDateTime.plusDays(1);
 
         if (classStartDateTime.isBefore(oneDaysFromNow))
-            throw new LateCancellationException("A class can be cancelled up to two hours before the start time.");
+            throw new LateCancellationException("A class can be removed at least 1 day before the class starts");
 
         this.dailyClassDAO.deleteDailyClass(dailyClassID);
     }

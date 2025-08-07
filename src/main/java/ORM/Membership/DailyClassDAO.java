@@ -15,9 +15,7 @@ public class DailyClassDAO {
         this.connection = ConnectionManager.getSingleInstance().getConnection();
     }
 
-    public DailyClass createDailyClass(DailyClass dailyClass) {
-
-    }
+    public DailyClass createDailyClass(DailyClass dailyClass) {}
 
     public void deleteDailyClass(int dailyClassID) {}
 
