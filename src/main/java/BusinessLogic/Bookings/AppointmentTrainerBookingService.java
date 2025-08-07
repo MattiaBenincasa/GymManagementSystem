@@ -2,7 +2,7 @@ package BusinessLogic.Bookings;
 
 import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.DTOs.WeightRoomBookingInfo;
-import BusinessLogic.Exceptions.LateBookingDeletionException;
+import BusinessLogic.Exceptions.LateCancellationException;
 import BusinessLogic.Validators.*;
 import DomainModel.Appointment;
 import DomainModel.TrainerAvailability;
@@ -45,7 +45,7 @@ public class AppointmentTrainerBookingService {
         LocalTime startTime = appointment.getTrainerAvailability().getStartTime();
 
         if (LocalTime.now().plusHours(1).isAfter(startTime))
-            throw new LateBookingDeletionException("A booking can be deleted no later than one hour before the class starts.");
+            throw new LateCancellationException("A booking can be deleted no later than one hour before the class starts.");
 
         this.appointmentDAO.deleteAppointment(appointment);
     }

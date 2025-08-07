@@ -2,7 +2,7 @@ package BusinessLogic.Bookings;
 
 import BusinessLogic.DTOs.ClassBookingInfo;
 import BusinessLogic.DTOs.CustomerInfo;
-import BusinessLogic.Exceptions.LateBookingDeletionException;
+import BusinessLogic.Exceptions.LateCancellationException;
 import BusinessLogic.Validators.*;
 import DomainModel.Booking;
 import DomainModel.DailyClass;
@@ -26,6 +26,9 @@ public class ClassBookingService {
     * it with BookingDAO
     * */
     public void bookAClass(Customer customer, DailyClass dailyClass) {
+        if (!dailyClass.isActive())
+            throw new IllegalStateException("Daily class selected is cancelled");
+
         CustomerInfo customerInfo = this.userDAO.getCustomerBookingInfo(customer);
         ClassBookingInfo classBookingInfo = this.bookingDAO.getClassBookingInfo(customer, dailyClass);
 
@@ -42,10 +45,10 @@ public class ClassBookingService {
 
     // A customer can delete a class no later than one hour before the class starts.
     public void deleteClassBooking(Booking booking) {
-        LocalTime startTime = booking.getDailyClass().getTime();
+        LocalTime startTime = booking.getDailyClass().getStartTime();
 
         if (LocalTime.now().plusHours(1).isAfter(startTime))
-            throw new LateBookingDeletionException("A booking can be deleted no later than one hour before the class starts.");
+            throw new LateCancellationException("A booking can be deleted no later than one hour before the class starts.");
 
         this.bookingDAO.deleteBooking(booking);
     }
