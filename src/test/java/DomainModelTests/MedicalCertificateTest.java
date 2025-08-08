@@ -32,4 +32,24 @@ public class MedicalCertificateTest {
         Assertions.assertFalse(medCertIsAboutToExpire.isExpired());
     }
 
+    @Test
+    void twoMedCertShouldBeEquals() {
+        MedicalCertificate medicalCertificate_1 = new MedicalCertificate(LocalDate.now(), 12, true);
+        MedicalCertificate medicalCertificate_2 = new MedicalCertificate(LocalDate.now(), 12, true);
+
+
+        Assertions.assertEquals(medicalCertificate_1, medicalCertificate_2);
+    }
+
+    @Test
+    void twoMedCertShouldNotBeEquals() {
+        MedicalCertificate medicalCertificate_1 = new MedicalCertificate(LocalDate.now(), 12, true);
+        MedicalCertificate medicalCertificate_2 = new MedicalCertificate(LocalDate.now().minusMonths(1), 12, true);
+        MedicalCertificate medicalCertificate_3 = new MedicalCertificate(LocalDate.now(), 12, false);
+
+        Assertions.assertNotEquals(medicalCertificate_1, medicalCertificate_2);
+        Assertions.assertNotEquals(medicalCertificate_1, medicalCertificate_3);
+        Assertions.assertNotEquals(medicalCertificate_2, medicalCertificate_3);
+    }
+
 }

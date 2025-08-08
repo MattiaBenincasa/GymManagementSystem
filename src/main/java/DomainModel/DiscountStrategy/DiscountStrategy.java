@@ -3,6 +3,7 @@ package DomainModel.DiscountStrategy;
 import DomainModel.Users.Customer;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,14 +30,16 @@ public abstract class DiscountStrategy {
     public abstract int getValue();
 
     protected BigDecimal percentageDiscount(BigDecimal price, int percentage) {
-        BigDecimal discountedPrice = price.multiply(new BigDecimal(1-percentage));
+        BigDecimal multiplier = BigDecimal.ONE
+                .subtract(BigDecimal.valueOf(percentage).divide(BigDecimal.valueOf(100)));
+        BigDecimal discountedPrice = price.multiply(multiplier).setScale(2, RoundingMode.HALF_UP);;
         if (discountedPrice.compareTo(BigDecimal.ZERO) <= 0)
             throw new IllegalArgumentException("Invalid discount: price must be greater than 0 euro.");
         return discountedPrice;
     }
 
     protected BigDecimal fixedDiscount(BigDecimal price, BigDecimal discountInEuro) {
-        BigDecimal discountedPrice = price.subtract(discountInEuro);
+        BigDecimal discountedPrice = price.subtract(discountInEuro).setScale(2, RoundingMode.HALF_UP);
         if (discountedPrice.compareTo(BigDecimal.ZERO) <= 0)
             throw new IllegalArgumentException("Invalid discount: discounted price must be greater than 0 euro.");
         return discountedPrice;
