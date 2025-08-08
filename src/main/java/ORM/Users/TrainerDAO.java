@@ -84,6 +84,6 @@ public class TrainerDAO {
         }
     }
 
-    public ArrayList<Trainer> getAllTrainers() {}
+    public ArrayList<Trainer> getAllTrainers() {return null;}
 
 }

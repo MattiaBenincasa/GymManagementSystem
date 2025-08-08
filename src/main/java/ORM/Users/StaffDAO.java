@@ -58,8 +58,8 @@ public class StaffDAO {
         }
     }
 
-    public ArrayList<Staff> getAllReceptionists() {}
+    public ArrayList<Staff> getAllReceptionists() {return null;}
 
-    public ArrayList<Staff> getAllAdmins() {}
+    public ArrayList<Staff> getAllAdmins() {return null;}
 
 }

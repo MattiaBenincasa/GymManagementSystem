@@ -12,6 +12,16 @@ public class PercentageDiscount extends DiscountStrategy {
         this.percentage = percentage;
     }
 
+    public PercentageDiscount(int id, String description, boolean isSpecialOffer, int percentage) {
+        super(id, description, isSpecialOffer);
+        this.percentage = percentage;
+    }
+
+    @Override
+    public int getValue() {
+        return percentage;
+    }
+
     @Override
     public BigDecimal applyDiscount(BigDecimal price, Customer customer) {
         return this.percentageDiscount(price, this.percentage);

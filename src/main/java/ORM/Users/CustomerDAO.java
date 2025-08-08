@@ -136,5 +136,5 @@ public class CustomerDAO {
         }
     }
 
-    public ArrayList<Customer> getAllCustomers() {}
+    public ArrayList<Customer> getAllCustomers() {return null;}
 }

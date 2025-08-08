@@ -17,6 +17,17 @@ public class SeasonDiscount extends DiscountStrategy {
         this.percentage = percentage;
     }
 
+    public SeasonDiscount(int id, String description, boolean isSpecialOffer, HashSet<Month> monthsWithDiscount, int percentage) {
+        super(id, description, isSpecialOffer);
+        this.monthsWithDiscount = monthsWithDiscount;
+        this.percentage = percentage;
+    }
+
+    @Override
+    public int getValue() {
+        return percentage;
+    }
+
     @Override
     BigDecimal applyDiscount(BigDecimal price, Customer customer) {
         BigDecimal discountedPrice = price;

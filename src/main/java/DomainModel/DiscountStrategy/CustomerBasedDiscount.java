@@ -15,6 +15,17 @@ public class CustomerBasedDiscount extends DiscountStrategy{
         this.customerCategory = customerCategory;
     }
 
+    public CustomerBasedDiscount(int id, String description, boolean isSpecialOffer, CustomerCategory customerCategory, int percentage) {
+        super(id, description, isSpecialOffer);
+        this.customerCategory = customerCategory;
+        this.percentage = percentage;
+    }
+
+    @Override
+    public int getValue() {
+        return percentage;
+    }
+
     @Override
     BigDecimal applyDiscount(BigDecimal price, Customer customer) {
         BigDecimal discountedPrice = price;

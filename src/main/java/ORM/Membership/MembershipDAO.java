@@ -77,5 +77,6 @@ public class MembershipDAO {
     public Membership getMembershipByID(int membershipID) {
         //check if the ID is in CourseMembership -> new CourseMembership
         //or if the ID is in WeightRoomMembership -> new WeightRoomMembership
+        return null;
     }
 }

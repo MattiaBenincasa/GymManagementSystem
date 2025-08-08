@@ -10,8 +10,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class DiscountStrategy {
+    private int id;
     private String description;
     private boolean isSpecialOffer;
+
+    public DiscountStrategy(int id, String description, boolean isSpecialOffer) {
+        this.id = id;
+        this.description = description;
+        this.isSpecialOffer = isSpecialOffer;
+    }
 
     public DiscountStrategy(String description, boolean isSpecialOffer) {
         this.description = description;
@@ -19,6 +26,7 @@ public abstract class DiscountStrategy {
     }
 
     abstract BigDecimal applyDiscount(BigDecimal price, Customer customer);
+    public abstract int getValue();
 
     protected BigDecimal percentageDiscount(BigDecimal price, int percentage) {
         BigDecimal discountedPrice = price.multiply(new BigDecimal(1-percentage));
@@ -72,4 +80,7 @@ public abstract class DiscountStrategy {
         return specialDiscounts.values().stream().min(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
     }
 
+    public int getId() {
+        return id;
+    }
 }

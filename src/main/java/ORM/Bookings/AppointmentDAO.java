@@ -64,7 +64,9 @@ public class AppointmentDAO {
         }
     }
 
-    public ArrayList<Appointment> getAllDailyAppointment(int trainerID) {}
+    public ArrayList<Appointment> getAllDailyAppointment(int trainerID) {
+        return null;
+    }
 
 
 }

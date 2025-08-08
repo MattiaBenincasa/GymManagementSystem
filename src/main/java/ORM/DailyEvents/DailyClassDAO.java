@@ -14,7 +14,7 @@ public class DailyClassDAO {
         this.connection = ConnectionManager.getSingleInstance().getConnection();
     }
 
-    public DailyClass createDailyClass(DailyClass dailyClass) {}
+    public DailyClass createDailyClass(DailyClass dailyClass) {return null;}
 
     public void deleteDailyClass(int dailyClassID) {}
 
@@ -22,10 +22,10 @@ public class DailyClassDAO {
     //set isActive to False
     public void cancelDailyClass(int dailyClassID) {}
 
-    public DailyClass getDailyClassByID(int dailyClassID) {}
+    public DailyClass getDailyClassByID(int dailyClassID) {return null;}
 
-    public ArrayList<DailyClass> getAllDailyClasses() {}
+    public ArrayList<DailyClass> getAllDailyClasses() {return null;}
 
-    public ArrayList<DailyClass> getAllDailyClassesByCourse(int courseID) {}
+    public ArrayList<DailyClass> getAllDailyClassesByCourse(int courseID) {return null;}
 
 }
