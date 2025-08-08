@@ -2,7 +2,7 @@ package ORM.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
 import DomainModel.Membership.CourseMembership;
-import DomainModel.Course;
+import DomainModel.Membership.Course;
 import ORM.ConnectionManager;
 
 import java.sql.Connection;

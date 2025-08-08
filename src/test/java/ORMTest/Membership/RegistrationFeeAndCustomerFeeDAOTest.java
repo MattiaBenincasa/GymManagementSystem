@@ -2,7 +2,7 @@ package ORMTest.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
 import DomainModel.Membership.CustomerFee;
-import DomainModel.RegistrationFee;
+import DomainModel.Membership.RegistrationFee;
 import DomainModel.Users.Customer;
 import ORM.Users.CustomerDAO;
 import ORM.Membership.CustomerFeeDAO;

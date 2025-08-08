@@ -1,7 +1,6 @@
-package ORM.Membership;
+package ORM.DailyEvents;
 
-import DomainModel.DailyClass;
-import DomainModel.TrainerAvailability;
+import DomainModel.DailyEvents.TrainerAvailability;
 import ORM.ConnectionManager;
 
 import java.sql.Connection;

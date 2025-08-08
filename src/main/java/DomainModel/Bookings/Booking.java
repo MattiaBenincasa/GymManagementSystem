@@ -1,5 +1,6 @@
-package DomainModel;
+package DomainModel.Bookings;
 
+import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Customer;
 
 

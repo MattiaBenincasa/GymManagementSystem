@@ -1,6 +1,6 @@
 package BusinessLogic.Memberships;
 
-import DomainModel.Course;
+import DomainModel.Membership.Course;
 import DomainModel.Users.Trainer;
 import ORM.Membership.CourseDAO;
 import ORM.Users.TrainerDAO;

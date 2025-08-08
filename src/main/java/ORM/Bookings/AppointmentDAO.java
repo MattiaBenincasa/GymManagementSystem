@@ -1,6 +1,6 @@
-package ORM.Membership;
+package ORM.Bookings;
 import BusinessLogic.DTOs.WeightRoomBookingInfo;
-import DomainModel.Appointment;
+import DomainModel.Bookings.Appointment;
 import DomainModel.Membership.WRMembershipType;
 import DomainModel.Users.Customer;
 import ORM.ConnectionManager;

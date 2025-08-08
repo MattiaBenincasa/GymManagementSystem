@@ -1,11 +1,10 @@
-package ORM.Membership;
+package ORM.DailyEvents;
 
-import DomainModel.DailyClass;
+import DomainModel.DailyEvents.DailyClass;
 import ORM.ConnectionManager;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DailyClassDAO {
     private final Connection connection;

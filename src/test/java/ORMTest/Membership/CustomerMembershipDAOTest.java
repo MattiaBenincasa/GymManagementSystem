@@ -1,7 +1,7 @@
 package ORMTest.Membership;
 
 import DomainModel.Membership.CustomerMembership;
-import DomainModel.Course;
+import DomainModel.Membership.Course;
 import DomainModel.Membership.CourseMembership;
 import DomainModel.Membership.WeightRoomMembership;
 import DomainModel.Membership.WRMembershipType;

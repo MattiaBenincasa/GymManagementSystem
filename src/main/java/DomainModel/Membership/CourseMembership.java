@@ -1,7 +1,5 @@
 package DomainModel.Membership;
 
-import DomainModel.Course;
-
 public class CourseMembership extends Membership{
     private int weeklyAccess;
     private Course course;

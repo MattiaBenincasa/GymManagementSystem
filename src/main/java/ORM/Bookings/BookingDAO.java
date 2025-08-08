@@ -1,10 +1,9 @@
-package ORM.bookings;
+package ORM.Bookings;
 
 import BusinessLogic.DTOs.ClassBookingInfo;
-import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.Exceptions.DAOException;
-import DomainModel.Booking;
-import DomainModel.DailyClass;
+import DomainModel.Bookings.Booking;
+import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Customer;
 import ORM.ConnectionManager;
 

@@ -4,11 +4,11 @@ import BusinessLogic.DTOs.ClassBookingInfo;
 import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.Exceptions.LateCancellationException;
 import BusinessLogic.Validators.*;
-import DomainModel.Booking;
-import DomainModel.DailyClass;
+import DomainModel.Bookings.Booking;
+import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Customer;
 import ORM.Users.UserDAO;
-import ORM.bookings.BookingDAO;
+import ORM.Bookings.BookingDAO;
 import java.time.LocalTime;
 
 public class ClassBookingService {

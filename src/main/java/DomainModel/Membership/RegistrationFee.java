@@ -1,4 +1,4 @@
-package DomainModel;
+package DomainModel.Membership;
 
 import java.math.BigDecimal;
 

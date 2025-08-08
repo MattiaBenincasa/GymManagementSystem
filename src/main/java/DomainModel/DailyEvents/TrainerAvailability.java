@@ -1,4 +1,4 @@
-package DomainModel;
+package DomainModel.DailyEvents;
 
 import DomainModel.Users.Trainer;
 

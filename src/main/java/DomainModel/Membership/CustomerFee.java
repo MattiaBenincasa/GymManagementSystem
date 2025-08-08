@@ -1,6 +1,5 @@
 package DomainModel.Membership;
 
-import DomainModel.RegistrationFee;
 import DomainModel.Users.Customer;
 
 import java.time.LocalDate;

@@ -1,10 +1,10 @@
 package BusinessLogic.DailyEvents;
 
 import BusinessLogic.Exceptions.LateCancellationException;
-import DomainModel.Course;
-import DomainModel.DailyClass;
+import DomainModel.Membership.Course;
+import DomainModel.DailyEvents.DailyClass;
 import ORM.Membership.CourseDAO;
-import ORM.Membership.DailyClassDAO;
+import ORM.DailyEvents.DailyClassDAO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

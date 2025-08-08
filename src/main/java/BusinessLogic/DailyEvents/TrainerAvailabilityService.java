@@ -1,9 +1,9 @@
 package BusinessLogic.DailyEvents;
 
 import BusinessLogic.Exceptions.LateCancellationException;
-import DomainModel.TrainerAvailability;
+import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Trainer;
-import ORM.Membership.TrainerAvailabilityDAO;
+import ORM.DailyEvents.TrainerAvailabilityDAO;
 import ORM.Users.TrainerDAO;
 
 import java.time.DayOfWeek;

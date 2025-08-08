@@ -1,7 +1,5 @@
 package DomainModel.Membership;
 
-import DomainModel.Course;
-
 public class WeightRoomMembership extends Membership{
     private WRMembershipType type;
 

@@ -1,6 +1,7 @@
-package DomainModel;
+package DomainModel.DailyEvents;
 
 import BusinessLogic.Exceptions.LateCancellationException;
+import DomainModel.Membership.Course;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

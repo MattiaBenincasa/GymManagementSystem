@@ -1,12 +1,11 @@
 package ORM.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
-import DomainModel.Course;
+import DomainModel.Membership.Course;
 import DomainModel.Users.Trainer;
 import ORM.ConnectionManager;
 import ORM.Users.TrainerDAO;
 
-import javax.lang.model.type.ArrayType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

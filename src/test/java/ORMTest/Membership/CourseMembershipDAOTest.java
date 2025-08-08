@@ -1,7 +1,7 @@
 package ORMTest.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
-import DomainModel.Course;
+import DomainModel.Membership.Course;
 import DomainModel.Membership.CourseMembership;
 import ORM.Membership.CourseDAO;
 import ORM.Membership.CourseMembershipDAO;

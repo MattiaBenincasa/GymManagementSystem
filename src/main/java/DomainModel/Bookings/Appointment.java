@@ -1,5 +1,6 @@
-package DomainModel;
+package DomainModel.Bookings;
 
+import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Customer;
 
 public class Appointment {

@@ -4,10 +4,10 @@ import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.DTOs.WeightRoomBookingInfo;
 import BusinessLogic.Exceptions.LateCancellationException;
 import BusinessLogic.Validators.*;
-import DomainModel.Appointment;
-import DomainModel.TrainerAvailability;
+import DomainModel.Bookings.Appointment;
+import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Customer;
-import ORM.Membership.AppointmentDAO;
+import ORM.Bookings.AppointmentDAO;
 import ORM.Users.UserDAO;
 
 import java.time.LocalTime;
