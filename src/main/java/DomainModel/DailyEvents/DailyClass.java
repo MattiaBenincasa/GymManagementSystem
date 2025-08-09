@@ -69,7 +69,7 @@ public final class DailyClass {
     }
 
     public Trainer getCoach() {
-        return new Trainer(this.coach);
+        return this.coach;
     }
 
     public void changeCoach(Trainer trainer) {
@@ -77,7 +77,7 @@ public final class DailyClass {
             throw new IllegalStateException("Only course coach can be set as coach");
         if(!course.getTrainers().contains(trainer))
             throw new IllegalStateException("Only trainers of " + this.course.getName() + " can be selected as trainers of this class");
-        this.coach = new Trainer(trainer);
+        this.coach = trainer;
     }
 
     public void cancel() {
