@@ -1,4 +1,4 @@
-package ORMTest.Membership;
+package ORMTest.MembershipTest;
 
 import DomainModel.Membership.CustomerMembership;
 import DomainModel.Membership.Course;
@@ -6,6 +6,7 @@ import DomainModel.Membership.CourseMembership;
 import DomainModel.Membership.WeightRoomMembership;
 import DomainModel.Membership.WRMembershipType;
 import DomainModel.Users.Customer;
+import ORM.DiscountStrategy.DiscountsDAO;
 import ORM.Membership.*;
 import ORM.Users.CustomerDAO;
 import ORM.Users.TrainerDAO;
@@ -36,7 +37,7 @@ class CustomerMembershipDAOTest {
     void setUp() {
         DAOTestUtils.resetDatabase();
         userDAO = new UserDAO();
-        membershipDAO = new MembershipDAO();
+        membershipDAO = new MembershipDAO(new DiscountsDAO());
         courseDAO = new CourseDAO(trainerDAO);
         customerMembershipDAO = new CustomerMembershipDAO(courseDAO, membershipDAO);
         customerDAO = new CustomerDAO(userDAO);

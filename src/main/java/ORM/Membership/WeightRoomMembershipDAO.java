@@ -1,6 +1,7 @@
 package ORM.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
+import DomainModel.DiscountStrategy.DiscountStrategy;
 import DomainModel.Membership.WRMembershipType;
 import DomainModel.Membership.WeightRoomMembership;
 import ORM.ConnectionManager;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WeightRoomMembershipDAO {
     private Connection connection;
@@ -50,6 +52,11 @@ public class WeightRoomMembershipDAO {
                     wrMembership.setDurationInDays(resultSet.getInt("durationInDays"));
                     wrMembership.setPrice(resultSet.getBigDecimal("price"));
                     wrMembership.setType(WRMembershipType.valueOf(resultSet.getString("type")));
+
+                    List<DiscountStrategy> discounts = this.membershipDAO.getDiscountsForMembership(membershipID);
+                    for (DiscountStrategy discountStrategy : discounts)
+                        wrMembership.addDiscount(discountStrategy);
+
                     return wrMembership;
                 } else {
                     throw new DAOException("WRMembership with ID " + membershipID + " not found.");

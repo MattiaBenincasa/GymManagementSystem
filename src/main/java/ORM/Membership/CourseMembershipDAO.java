@@ -1,6 +1,7 @@
 package ORM.Membership;
 
 import BusinessLogic.Exceptions.DAOException;
+import DomainModel.DiscountStrategy.DiscountStrategy;
 import DomainModel.Membership.CourseMembership;
 import DomainModel.Membership.Course;
 import ORM.ConnectionManager;
@@ -10,11 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CourseMembershipDAO {
-    private Connection connection;
-    private MembershipDAO membershipDAO;
-    private CourseDAO courseDAO;
+    private final Connection connection;
+    private final MembershipDAO membershipDAO;
+    private final CourseDAO courseDAO;
 
     public CourseMembershipDAO(MembershipDAO membershipDAO, CourseDAO courseDAO) {
         this.connection = ConnectionManager.getSingleInstance().getConnection();
@@ -43,7 +45,7 @@ public class CourseMembershipDAO {
         }
     }
 
-    public CourseMembership getCourseMembershipByID(int membershipID) throws DAOException {
+    public CourseMembership getCourseMembershipByID(int membershipID) {
         String sql = "SELECT m.id, m.name, m.description, m.durationInDays, m.price, cm.course, cm.weeklyAccess " +
                 "FROM Membership m JOIN CourseMembership cm ON m.id = cm.id WHERE m.id = ?";
 
@@ -62,6 +64,10 @@ public class CourseMembershipDAO {
                         courseMembership.setCourse(course);
                     }
                     courseMembership.setWeeklyAccess(resultSet.getInt("weeklyAccess"));
+                    List<DiscountStrategy> discounts = this.membershipDAO.getDiscountsForMembership(membershipID);
+                    for (DiscountStrategy discountStrategy : discounts)
+                        courseMembership.addDiscount(discountStrategy);
+
                     return courseMembership;
                 } else {
                     throw new DAOException("CourseMembership with ID " + membershipID + " not found.");
