@@ -42,7 +42,7 @@ public class Bundle extends Purchasable{
         return DiscountStrategy.totalDiscounted(total, this.discounts, customer);
     }
 
-    public List<Membership> getMemberships() {
+    public ArrayList<Membership> getMemberships() {
         return new ArrayList<>(this.memberships);
     }
 }
