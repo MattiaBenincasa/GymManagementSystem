@@ -6,6 +6,7 @@ import DomainModel.Membership.CourseMembership;
 import DomainModel.Membership.WeightRoomMembership;
 import DomainModel.Membership.WRMembershipType;
 import DomainModel.Users.Customer;
+import DomainModel.Users.Trainer;
 import ORM.DiscountStrategy.DiscountsDAO;
 import ORM.Membership.*;
 import ORM.Users.CustomerDAO;
@@ -25,41 +26,50 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerMembershipDAOTest {
     private CustomerMembershipDAO customerMembershipDAO;
-    private CustomerDAO customerDAO;
     private WeightRoomMembershipDAO wrMembershipDAO;
     private CourseMembershipDAO courseMembershipDAO;
-    private CourseDAO courseDAO;
-    private TrainerDAO trainerDAO;
-    private UserDAO userDAO;
-    private MembershipDAO membershipDAO;
+
+    private Customer customer;
+    private WeightRoomMembership wrMembership;
+    private CourseMembership courseMembership;
 
     @BeforeEach
     void setUp() {
         DAOTestUtils.resetDatabase();
-        userDAO = new UserDAO();
-        membershipDAO = new MembershipDAO(new DiscountsDAO());
-        courseDAO = new CourseDAO(trainerDAO);
-        customerMembershipDAO = new CustomerMembershipDAO(courseDAO, membershipDAO);
-        customerDAO = new CustomerDAO(userDAO);
-        wrMembershipDAO = new WeightRoomMembershipDAO(membershipDAO);
-        courseMembershipDAO = new CourseMembershipDAO(membershipDAO, courseDAO);
-        trainerDAO = new TrainerDAO(userDAO);
+        MembershipDAO membershipDAO = new MembershipDAO(new DiscountsDAO());
+        UserDAO userDAO = new UserDAO();
+        TrainerDAO trainerDAO = new TrainerDAO(userDAO);
+        CourseDAO courseDAO = new CourseDAO(trainerDAO);
+        this.customerMembershipDAO = new CustomerMembershipDAO(courseDAO, membershipDAO);
+        CustomerDAO customerDAO = new CustomerDAO(userDAO);
+        this.wrMembershipDAO = new WeightRoomMembershipDAO(membershipDAO);
+        this.courseMembershipDAO = new CourseMembershipDAO(membershipDAO, courseDAO);
+
+        //creating customers and memberships
+        this.customer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "customer@customer.it"));
+        this.wrMembership = new WeightRoomMembership();
+        this.wrMembership.setName("abbonamento base");
+        this.wrMembership.setPrice(new BigDecimal("300"));
+        this.wrMembership.setType(WRMembershipType.PERSONAL);
+        this.wrMembership.setDurationInDays(90);
+
+        this.courseMembership = new CourseMembership();
+        this.courseMembership.setName("Abbonamento Corso Yoga");
+        this.courseMembership.setDescription("descrizione");
+        this.courseMembership.setPrice(new BigDecimal("300"));
+        this.courseMembership.setDurationInDays(90);
+        Course course = courseDAO.createCourse(new Course("corso Yoga", "Descrizione"));
+        this.courseMembership.setCourse(course);
+        this.courseMembership = courseMembershipDAO.createCourseMembership(courseMembership);
+
     }
 
 
     @Test
     void testAddOneMembershipToCustomer() {
-        Customer customer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "customer@customer.it"));
-        WeightRoomMembership wrMembership = new WeightRoomMembership();
-        wrMembership.setName("abbonamento base");
-        wrMembership.setPrice(new BigDecimal("300"));
-        wrMembership.setType(WRMembershipType.PERSONAL);
-        wrMembership.setDurationInDays(90);
-        wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
-
-        CustomerMembership customerMembership = new CustomerMembership(LocalDate.now(), wrMembership, customer);
-
-        assertDoesNotThrow(() -> customerMembershipDAO.createCustomerMembership(customerMembership));
+        this.wrMembership = this.wrMembershipDAO.createWeightRoomMembership(this.wrMembership);
+        CustomerMembership customerMembership = new CustomerMembership(LocalDate.now(), this.wrMembership, this.customer);
+        assertDoesNotThrow(() -> this.customerMembershipDAO.createCustomerMembership(customerMembership));
 
         List<CustomerMembership> retrievedMemberships = customerMembershipDAO.getAllCustomerMembership(customer);
 
@@ -72,28 +82,10 @@ class CustomerMembershipDAOTest {
 
     @Test
     void testAddTwoMembershipsToSameCustomer() {
-        Customer customer = this.customerDAO.createCustomer(UserDAOTestUtils.createCustomer("customer", "email@email.it"));
-
-        //membership 1
-        WeightRoomMembership wrMembership = new WeightRoomMembership();
-        wrMembership.setName("abbonamento base");
-        wrMembership.setPrice(new BigDecimal("300"));
-        wrMembership.setType(WRMembershipType.PERSONAL);
-        wrMembership.setDurationInDays(90);
-        wrMembership = wrMembershipDAO.createWeightRoomMembership(wrMembership);
-
-        //membership 2
-        CourseMembership courseMembership = new CourseMembership();
-        courseMembership.setName("Abbonamento Corso Yoga");
-        courseMembership.setDescription("descrizione");
-        courseMembership.setPrice(new BigDecimal("300"));
-        courseMembership.setDurationInDays(90);
-        Course course = courseDAO.createCourse(new Course("corso Yoga", "Descrizione"));
-        courseMembership.setCourse(course);
-        courseMembership = courseMembershipDAO.createCourseMembership(courseMembership);
-
-        CustomerMembership wrCustomerMembership = new CustomerMembership(LocalDate.now(), wrMembership, customer);
-        CustomerMembership courseCustomerMembership = new CustomerMembership(LocalDate.now(), courseMembership, customer);
+        this.courseMembership = this.courseMembershipDAO.createCourseMembership(this.courseMembership);
+        this.wrMembership = this.wrMembershipDAO.createWeightRoomMembership(this.wrMembership);
+        CustomerMembership wrCustomerMembership = new CustomerMembership(LocalDate.now(), this.wrMembership, this.customer);
+        CustomerMembership courseCustomerMembership = new CustomerMembership(LocalDate.now(), this.courseMembership, this.customer);
         customerMembershipDAO.createCustomerMembership(wrCustomerMembership);
         customerMembershipDAO.createCustomerMembership(courseCustomerMembership);
 

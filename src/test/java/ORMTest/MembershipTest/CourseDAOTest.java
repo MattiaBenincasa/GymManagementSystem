@@ -49,7 +49,7 @@ class CourseDAOTest {
         originalCourse.addTrainer(trainer);
 
         courseDAO.updateCourse(originalCourse);
-        Course updatedCourse = courseDAO.getCourseByID(originalCourse.getId());
+        courseDAO.getCourseByID(originalCourse.getId());
 
         Course retrievedCourse = courseDAO.getCourseByID(originalCourse.getId());
         assertEquals("Corso Aggiornato", retrievedCourse.getName());
