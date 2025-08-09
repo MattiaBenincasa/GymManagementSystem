@@ -5,6 +5,7 @@ import DomainModel.Users.Customer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bundle extends Purchasable{
     private final ArrayList<Membership> memberships;
@@ -39,5 +40,9 @@ public class Bundle extends Purchasable{
     public BigDecimal getDiscountedPrice(Customer customer) {
         BigDecimal total = getPrice();
         return DiscountStrategy.totalDiscounted(total, this.discounts, customer);
+    }
+
+    public List<Membership> getMemberships() {
+        return new ArrayList<>(this.memberships);
     }
 }
