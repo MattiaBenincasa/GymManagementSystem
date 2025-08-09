@@ -2,6 +2,7 @@ package DomainModel.DailyEvents;
 
 import BusinessLogic.Exceptions.LateCancellationException;
 import DomainModel.Membership.Course;
+import DomainModel.Users.Trainer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public final class DailyClass {
     private final int maxParticipants;
     private final Course course;
     private boolean isActive;
+    private Trainer coach;
 
     public DailyClass(DailyClass dailyClass) {
         this.id = dailyClass.id;
@@ -24,6 +26,7 @@ public final class DailyClass {
         this.maxParticipants = dailyClass.maxParticipants;
         this.course = dailyClass.course;
         this.isActive = dailyClass.isActive;
+        this.coach = new Trainer(dailyClass.coach);
     }
 
     private DailyClass(Builder builder) {
@@ -34,6 +37,7 @@ public final class DailyClass {
         this.maxParticipants = builder.maxParticipants;
         this.course = builder.course;
         this.isActive = builder.isActive;
+        this.coach = builder.coach;
     }
 
     public int getId() {
@@ -64,6 +68,18 @@ public final class DailyClass {
         return isActive;
     }
 
+    public Trainer getCoach() {
+        return new Trainer(this.coach);
+    }
+
+    public void changeCoach(Trainer trainer) {
+        if (!trainer.isCourseCoach())
+            throw new IllegalStateException("Only course coach can be set as coach");
+        if(!course.getTrainers().contains(trainer))
+            throw new IllegalStateException("Only trainers of " + this.course.getName() + " can be selected as trainers of this class");
+        this.coach = new Trainer(trainer);
+    }
+
     public void cancel() {
         LocalDateTime classStartDateTime = LocalDateTime.of(this.day, this.startTime);
         LocalDateTime twoHoursFromNow = classStartDateTime.plusHours(2);
@@ -81,6 +97,7 @@ public final class DailyClass {
         private int maxParticipants;
         private Course course;
         private boolean isActive = true;
+        private Trainer coach;
 
         public Builder id(int id) {
             this.id = id;
@@ -117,6 +134,11 @@ public final class DailyClass {
             return this;
         }
 
+        public Builder coach(Trainer trainer) {
+            this.coach = trainer;
+            return this;
+        }
+
         public DailyClass build() {
             if (day == null || startTime == null || endTime == null || course == null) {
                 throw new IllegalStateException("Required fields (day, startTime, endTime, course) not set.");
@@ -127,6 +149,10 @@ public final class DailyClass {
             if (maxParticipants <= 0) {
                 throw new IllegalStateException("maxParticipants must be greater than 0.");
             }
+            if (!coach.isCourseCoach())
+                throw new IllegalStateException("Only course coach can be set as coach");
+            if (!course.getTrainers().contains(coach))
+                throw new IllegalStateException("Only trainers of " + this.course.getName() + " can be selected as trainers of this class");
             return new DailyClass(this);
         }
     }

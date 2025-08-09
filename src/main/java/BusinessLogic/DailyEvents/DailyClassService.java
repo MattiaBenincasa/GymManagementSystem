@@ -3,6 +3,7 @@ package BusinessLogic.DailyEvents;
 import BusinessLogic.Exceptions.LateCancellationException;
 import DomainModel.Membership.Course;
 import DomainModel.DailyEvents.DailyClass;
+import DomainModel.Users.Trainer;
 import ORM.Membership.CourseDAO;
 import ORM.DailyEvents.DailyClassDAO;
 
@@ -22,7 +23,7 @@ public class DailyClassService {
         this.courseDAO = courseDAO;
     }
 
-    public DailyClass addDailyCLass(LocalDate day, LocalTime startTime, LocalTime endTime, int maxParticipants, int courseID) {
+    public DailyClass addDailyCLass(LocalDate day, LocalTime startTime, LocalTime endTime, int maxParticipants, int courseID, Trainer coach) {
         DailyClass dailyClass = new DailyClass.Builder()
                 .day(day)
                 .startTime(startTime)
@@ -30,6 +31,7 @@ public class DailyClassService {
                 .maxParticipants(maxParticipants)
                 .course(this.courseDAO.getCourseByID(courseID))
                 .isActive(true)
+                .coach(coach)
                 .build();
         return this.dailyClassDAO.createDailyClass(dailyClass);
     }
@@ -51,7 +53,7 @@ public class DailyClassService {
         this.dailyClassDAO.cancelDailyClass(dailyClassID);
     }
 
-    public ArrayList<DailyClass> addWeeklyClassSchedule(DayOfWeek dayOfWeek, LocalDate startDate, LocalDate endDate, int courseID, LocalTime startTime, LocalTime endTime, int maxParticipants) {
+    public ArrayList<DailyClass> addWeeklyClassSchedule(DayOfWeek dayOfWeek, LocalDate startDate, LocalDate endDate, int courseID, LocalTime startTime, LocalTime endTime, int maxParticipants, Trainer coach) {
         ArrayList<DailyClass> classesCreated = new ArrayList<>();
         Course course = this.courseDAO.getCourseByID(courseID);
 
@@ -65,6 +67,8 @@ public class DailyClassService {
                         .endTime(endTime)
                         .maxParticipants(maxParticipants)
                         .course(course)
+                        .isActive(true)
+                        .coach(coach)
                         .build();
                 this.dailyClassDAO.createDailyClass(dailyClass);
                 classesCreated.add(dailyClass);
