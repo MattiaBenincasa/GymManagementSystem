@@ -79,6 +79,7 @@ public class BookingDAOTest {
                 .build();
 
         this.dailyClass = dailyClassDAO.createDailyClass(this.dailyClass);
+        this.anotherClass = dailyClassDAO.createDailyClass(this.anotherClass);
     }
 
     @Test
@@ -126,12 +127,29 @@ public class BookingDAOTest {
         assertEquals(0, classBookingInfo.getBookingsDoneByCustomerThisWeek());
 
         //new booking
-        Booking booking = new Booking(customer, this.dailyClass);
+        Booking booking = new Booking(this.customer, this.dailyClass);
         this.bookingDAO.createBooking(booking);
         ClassBookingInfo classBookingInfoAfterBooking = this.bookingDAO.getClassBookingInfo(this.customer, this.dailyClass);
         assertEquals(1, classBookingInfoAfterBooking.getTotalBookingsInClass());
         assertEquals(1, classBookingInfoAfterBooking.getBookingsDoneByCustomerThisWeek());
 
+        //new booking
+        Booking anotherBooking = new Booking(this.customer, this.anotherClass);
+        this.bookingDAO.createBooking(anotherBooking);
+        ClassBookingInfo classBookingAfterSecondBooking = this.bookingDAO.getClassBookingInfo(this.customer, this.anotherClass);
+        assertEquals(1, classBookingAfterSecondBooking.getTotalBookingsInClass());
+        assertEquals(2, classBookingAfterSecondBooking.getBookingsDoneByCustomerThisWeek());
+
+        //another customer book dailyClass
+        CustomerDAO customerDAO = new CustomerDAO(new UserDAO());
+        Customer anotherCustomer = customerDAO.createCustomer(UserDAOTestUtils.createCustomer("newCustomer", "new.customer@cust.it"));
+        Booking anotherCustomerBooking = new Booking(anotherCustomer, this.dailyClass);
+        this.bookingDAO.createBooking(anotherCustomerBooking);
+        ClassBookingInfo classBookingInfoOfAnotherCustomer = this.bookingDAO.getClassBookingInfo(anotherCustomer, this.dailyClass);
+        classBookingInfo = this.bookingDAO.getClassBookingInfo(this.customer, this.dailyClass); //update booking info of the first customer
+        assertEquals(2, classBookingInfoOfAnotherCustomer.getTotalBookingsInClass());
+        assertEquals(2, classBookingInfo.getTotalBookingsInClass());
+        assertEquals(1, classBookingInfoOfAnotherCustomer.getBookingsDoneByCustomerThisWeek());
     }
 
     @AfterAll
