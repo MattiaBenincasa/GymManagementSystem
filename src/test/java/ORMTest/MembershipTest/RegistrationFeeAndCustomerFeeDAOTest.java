@@ -33,7 +33,7 @@ class RegistrationFeeAndCustomerFeeDAOTest {
     }
 
     @Test
-    void test1_createRegistrationFee_shouldSucceed() {
+    void testCreateRegistrationFee() {
         RegistrationFee fee = RegistrationFee.getRegistrationFee();
         fee.setPrice(new BigDecimal("25.00"));
         fee.setDescription("Quota di iscrizione annuale");
@@ -47,7 +47,7 @@ class RegistrationFeeAndCustomerFeeDAOTest {
     }
 
     @Test
-    void test3_updateRegistrationFee_shouldUpdateFields() {
+    void testUpdateRegistrationFee() {
 
         RegistrationFee originalFee = RegistrationFee.getRegistrationFee();
         originalFee.setPrice(new BigDecimal("25.00"));
@@ -66,10 +66,8 @@ class RegistrationFeeAndCustomerFeeDAOTest {
     }
 
     @Test
-    void test4_assignCustomerFee_shouldCreateRecord() throws DAOException {
-        // Creiamo un cliente di prova
+    void testAssignCustomerFee() {
         Customer customer = this.customerDAO.createCustomer(UserDAOTestUtils.createCustomer("mario.rossi", "password"));
-        customer = customerDAO.getCustomerByID(customer.getId());
         // Creiamo un CustomerFee
         CustomerFee customerFee = new CustomerFee(LocalDate.now(), customer);
         int customerID = customer.getId();
@@ -81,5 +79,9 @@ class RegistrationFeeAndCustomerFeeDAOTest {
             assertEquals(LocalDate.now(), retrievedFee.getStartDate());
             assertEquals(LocalDate.now().plusYears(1), retrievedFee.getExpiryDate());
         });
+    }
+
+    void testAssignMultipleCustomerFee() {
+
     }
 }

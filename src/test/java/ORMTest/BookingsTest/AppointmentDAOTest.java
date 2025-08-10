@@ -118,6 +118,9 @@ public class AppointmentDAOTest {
         weightRoomBookingInfo = this.appointmentDAO.getWeightRoomBookingInfo(customer, appointment.getTrainerAvailability().getDay());
         assertEquals(1, weightRoomBookingInfo.getCustomerMonthlyAppointmentsDone());
 
+        //info the next mont
+        weightRoomBookingInfo = this.appointmentDAO.getWeightRoomBookingInfo(customer, LocalDate.of(2025, 3, 2));
+        assertEquals(0, weightRoomBookingInfo.getCustomerMonthlyAppointmentsDone());
 
     }
 

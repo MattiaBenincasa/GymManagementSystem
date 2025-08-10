@@ -138,12 +138,15 @@ public class UserDAO {
             LEFT JOIN CustomerMedCertificate cmc ON c.id = cmc.customer_id
             LEFT JOIN CustomerFee cf ON c.id = cf.customer_id
             WHERE cmc.customer_id = ?
-            ORDER BY cf.expiry_date DESC
+            AND cf.start_date <= ?
+            AND cf.expiry_date > ?
             LIMIT 1;
         """;
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, customer.getId());
+            statement.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+            statement.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     LocalDate medCert = rs.getDate("medCertExpiry").toLocalDate();
