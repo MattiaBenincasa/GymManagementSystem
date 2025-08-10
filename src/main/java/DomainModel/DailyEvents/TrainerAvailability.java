@@ -6,20 +6,39 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TrainerAvailability {
+    private int id;
     private LocalDate day;
     private LocalTime startTime;
     private LocalTime endTime;
     private final Trainer trainer;
+
+    public TrainerAvailability(int id, Trainer trainer) {
+        this.id = id;
+        this.trainer = trainer;
+    }
+
+    public TrainerAvailability(int id, TrainerAvailability trainerAvailability) {
+        this.id = id;
+        this.day = trainerAvailability.day;
+        this.startTime = trainerAvailability.startTime;
+        this.endTime = trainerAvailability.endTime;
+        this.trainer = trainerAvailability.trainer;
+    }
 
     public TrainerAvailability(Trainer trainer) {
         this.trainer = new Trainer(trainer);
     }
 
     public TrainerAvailability(TrainerAvailability trainerAvailability) {
+        this.id = trainerAvailability.id;
         this.day = trainerAvailability.day;
         this.startTime = trainerAvailability.startTime;
         this.endTime = trainerAvailability.endTime;
         this.trainer = new Trainer(trainerAvailability.trainer);
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public Trainer getTrainer() {
