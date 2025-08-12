@@ -13,6 +13,8 @@ public class TrainerAvailability {
     private final Trainer trainer;
 
     public TrainerAvailability(int id, Trainer trainer) {
+        if (!trainer.isPersonalTrainer())
+            throw new IllegalStateException("Trainer must be a personal trainer");
         this.id = id;
         this.trainer = trainer;
     }
@@ -26,6 +28,8 @@ public class TrainerAvailability {
     }
 
     public TrainerAvailability(Trainer trainer) {
+        if (!trainer.isPersonalTrainer())
+            throw new IllegalStateException("Trainer must be a personal trainer");
         this.trainer = new Trainer(trainer);
     }
 
