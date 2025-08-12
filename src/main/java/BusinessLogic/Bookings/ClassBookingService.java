@@ -10,6 +10,7 @@ import DomainModel.Users.Customer;
 import ORM.Users.UserDAO;
 import ORM.Bookings.BookingDAO;
 import java.time.LocalTime;
+import java.util.List;
 
 public class ClassBookingService {
     private final BookingDAO bookingDAO;
@@ -51,5 +52,9 @@ public class ClassBookingService {
             throw new LateCancellationException("A booking can be deleted no later than one hour before the class starts.");
 
         this.bookingDAO.deleteBooking(booking);
+    }
+
+    public List<Booking> getAllCustomerBookings(int customerID) {
+        return this.bookingDAO.getAllCustomerBookings(customerID);
     }
 }

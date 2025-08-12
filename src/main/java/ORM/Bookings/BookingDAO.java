@@ -58,7 +58,7 @@ public class BookingDAO {
         }
     }
 
-    public List<Booking> getAllCustomerBookings(int customerID) throws DAOException {
+    public List<Booking> getAllCustomerBookings(int customerID) {
         List<Booking> bookings = new ArrayList<>();
         String sql = "SELECT dailyclass_id FROM Booking WHERE customer_id = ?";
 
