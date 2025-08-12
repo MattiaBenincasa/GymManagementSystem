@@ -149,9 +149,18 @@ public class UserDAO {
             statement.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    LocalDate medCert = rs.getDate("medCertExpiry").toLocalDate();
-                    LocalDate feeBegin = rs.getDate("feeBegin").toLocalDate();
-                    LocalDate feeExpiry = rs.getDate("feeExpiry").toLocalDate();
+                    LocalDate medCert;
+                    LocalDate feeBegin;
+                    LocalDate feeExpiry;
+                    if (rs.getDate("medCertExpiry")==null)
+                        medCert = null;
+                    else medCert = rs.getDate("medCertExpiry").toLocalDate();
+                    if (rs.getDate("feeBegin").toLocalDate()==null)
+                        feeBegin = null;
+                    else feeBegin = rs.getDate("feeBegin").toLocalDate();
+                    if (rs.getDate("feeExpiry").toLocalDate()==null)
+                        feeExpiry = null;
+                    else feeExpiry = rs.getDate("feeExpiry").toLocalDate();
                     return new CustomerInfo(medCert, feeBegin, feeExpiry);
                 } else {
                     throw new IllegalStateException("Customer info not found");

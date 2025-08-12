@@ -10,6 +10,7 @@ import ORM.Membership.MembershipDAO;
 import ORM.Users.CustomerDAO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 public class ActivationMembershipService {
@@ -36,5 +37,10 @@ public class ActivationMembershipService {
         Customer customer = this.customerDAO.getCustomerByID(customerID);
         CustomerFee customerFee = new CustomerFee(activationDate, customer);
         this.customerFeeDAO.createCustomerFee(customerFee);
+    }
+
+    public ArrayList<CustomerMembership> getAllCustomerMembership(int customerID) {
+        Customer customer = this.customerDAO.getCustomerByID(customerID);
+        return this.customerMembershipDAO.getAllCustomerMembership(customer);
     }
 }

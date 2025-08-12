@@ -80,6 +80,8 @@ public abstract class DiscountStrategy {
         for (DiscountStrategy discount : specialOffers)
             specialDiscounts.put(discount, discount.applyDiscount(discountedPrice, customer));
 
+        if (specialDiscounts.isEmpty())
+            return discountedPrice;
         return specialDiscounts.values().stream().min(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
     }
 

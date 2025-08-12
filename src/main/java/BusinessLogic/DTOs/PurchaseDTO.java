@@ -1,16 +1,19 @@
 package BusinessLogic.DTOs;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PurchaseDTO {
     private final ArrayList<PurchaseItemDTO> itemsToPurchase;
     private final boolean PurchaseRegistrationFee;
+    private final LocalDate registrationFeeActivationDate;
     private final int customerID;
 
-    public PurchaseDTO(ArrayList<PurchaseItemDTO> itemsToPurchase, boolean purchaseRegistrationFee, int customerID) {
+    public PurchaseDTO(ArrayList<PurchaseItemDTO> itemsToPurchase, boolean purchaseRegistrationFee, LocalDate registrationFeeActivationDate, int customerID) {
         this.itemsToPurchase = itemsToPurchase;
-        PurchaseRegistrationFee = purchaseRegistrationFee;
+        this.PurchaseRegistrationFee = purchaseRegistrationFee;
+        this.registrationFeeActivationDate = registrationFeeActivationDate;
         this.customerID = customerID;
     }
 
@@ -22,6 +25,10 @@ public class PurchaseDTO {
         return PurchaseRegistrationFee;
     }
 
+    public LocalDate getRegistrationFeeActivationDate() {
+        return registrationFeeActivationDate;
+    }
+
     public int getCustomerID() {
         return customerID;
     }
@@ -29,7 +36,7 @@ public class PurchaseDTO {
     public BigDecimal getTotal() {
         BigDecimal total = BigDecimal.ZERO;
         for (PurchaseItemDTO purchaseItemDTO : itemsToPurchase)
-            total.add(purchaseItemDTO.getPrice());
+            total = total.add(purchaseItemDTO.getPrice());
 
         return total;
     }
