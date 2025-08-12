@@ -18,7 +18,7 @@ public class RegistrationFeeDAO {
         this.connection = ConnectionManager.getSingleInstance().getConnection();
     }
 
-    public int createRegistrationFee(RegistrationFee fee) throws DAOException {
+    public int createRegistrationFee(RegistrationFee fee) {
         if (getRegistrationFee().isPresent()) {
             throw new DAOException("RegistrationFee already exists. Use updateRegistrationFee instead.");
         }
@@ -42,7 +42,7 @@ public class RegistrationFeeDAO {
         }
     }
 
-    public void updateRegistrationFee(RegistrationFee fee) throws DAOException {
+    public void updateRegistrationFee(RegistrationFee fee) {
         String sql = "UPDATE RegistrationFee SET price = ?, description = ? WHERE id = ?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
