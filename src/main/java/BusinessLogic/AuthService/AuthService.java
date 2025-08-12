@@ -6,7 +6,6 @@ import ORM.Users.UserDAO;
 import javax.naming.AuthenticationException;
 
 public class AuthService {
-    private Session currentSession;
     private final UserDAO userDAO;
 
     public AuthService(UserDAO userDAO) {
@@ -22,15 +21,14 @@ public class AuthService {
 
             String role = this.userDAO.getRoleFromUsername(username);
             int id = this.userDAO.getIdFromUsername(username);
-            this.currentSession = new Session(id, role);
-            return this.currentSession;
+            return new Session(id, role);
         } catch (DAOException e) {
             throw new AuthenticationException("Invalid username");
         }
     }
 
-    public void logout() {
-        this.currentSession = null;
+    public void logout(Session session) {
+        if (session != null)
+            session.invalid();
     }
-
 }

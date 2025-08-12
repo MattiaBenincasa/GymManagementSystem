@@ -22,7 +22,7 @@ public class StaffDAOTest {
     void aStaffShouldBeCreated() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it");
+        Staff staff = UserDAOTestUtils.createReceptionist("staff", "mailStaff@mail.it");
         Assertions.assertDoesNotThrow(()->{
             Staff staffWithId = staffDAO.createStaff(staff);
             staffDAO.getStaffByID(staffWithId.getId());
@@ -33,7 +33,7 @@ public class StaffDAOTest {
     void aStaffShouldBeDeleted() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = staffDAO.createStaff(UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it"));
+        Staff staff = staffDAO.createStaff(UserDAOTestUtils.createReceptionist("staff", "mailStaff@mail.it"));
         Assertions.assertDoesNotThrow(()->{
             userDAO.deleteUser(staff.getId());
         });
@@ -46,7 +46,7 @@ public class StaffDAOTest {
     void aStaffShouldBeUpdated() {
         UserDAO userDAO = new UserDAO();
         StaffDAO staffDAO = new StaffDAO(userDAO);
-        Staff staff = staffDAO.createStaff(UserDAOTestUtils.createStaff("staff", "mailStaff@mail.it"));
+        Staff staff = staffDAO.createStaff(UserDAOTestUtils.createReceptionist("staff", "mailStaff@mail.it"));
 
         staff = staffDAO.getStaffByID(staff.getId());
         staff.setUsername("new_username");

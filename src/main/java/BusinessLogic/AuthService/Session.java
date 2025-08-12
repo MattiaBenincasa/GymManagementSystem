@@ -1,14 +1,14 @@
 package BusinessLogic.AuthService;
 
-import DomainModel.Users.User;
-
 public class Session {
     private final int userID;
     private final String role;
+    private boolean valid;
 
     public Session (int userID, String role) {
         this.userID = userID;
         this.role = role;
+        valid = true;
     }
 
     public int getUserID() {
@@ -17,5 +17,13 @@ public class Session {
 
     public String getRole() {
         return role;
+    }
+
+    public boolean isValid() {
+        return this.valid;
+    }
+
+    public void invalid() {
+        this.valid = false;
     }
 }

@@ -1,6 +1,5 @@
 package BusinessLogic.AuthService;
 
-import DomainModel.Users.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class PasswordUtils {

@@ -33,8 +33,20 @@ public class UserDAOTestUtils {
         return trainer;
     }
 
-    public static Staff createStaff(String username, String email) {
+    public static Staff createReceptionist(String username, String email) {
         Staff staff = new Staff(StaffRole.RECEPTIONIST);
+        staff.setUsername(username);
+        staff.setPassword("password");
+        staff.setName("name");
+        staff.setSurname("surname");
+        staff.setMail(email);
+        staff.setPhoneNumber("343434343434");
+        staff.setBirthDate(LocalDate.of(2003, 2, 18));
+        return staff;
+    }
+
+    public static Staff createAdmin(String username, String email) {
+        Staff staff = new Staff(StaffRole.ADMIN);
         staff.setUsername(username);
         staff.setPassword("password");
         staff.setName("name");
