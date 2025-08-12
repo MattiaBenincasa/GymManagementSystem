@@ -82,7 +82,7 @@ public final class DailyClass {
 
     public void cancel() {
         LocalDateTime classStartDateTime = LocalDateTime.of(this.day, this.startTime);
-        LocalDateTime twoHoursFromNow = classStartDateTime.plusHours(2);
+        LocalDateTime twoHoursFromNow = LocalDateTime.now().plusHours(2);
 
         if (classStartDateTime.isBefore(twoHoursFromNow))
             throw new LateCancellationException("A class can be cancelled up to two hours before the start time.");
