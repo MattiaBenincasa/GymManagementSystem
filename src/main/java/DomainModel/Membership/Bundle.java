@@ -5,19 +5,23 @@ import DomainModel.Users.Customer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Bundle extends Purchasable{
+public class Bundle {
+    private int id;
+    private String name;
+    private String description;
+    private final ArrayList<DiscountStrategy> discounts;
     private final ArrayList<Membership> memberships;
 
     public Bundle() {
-        super();
         this.memberships = new ArrayList<>();
+        this.discounts = new ArrayList<>();
     }
 
     public Bundle(int id) {
-        super(id);
+        this.id = id;
         this.memberships = new ArrayList<>();
+        this.discounts = new ArrayList<>();
     }
 
     public void addMembership(Membership membership) {
@@ -28,7 +32,6 @@ public class Bundle extends Purchasable{
         this.memberships.remove(membership);
     }
 
-    @Override
     public BigDecimal getPrice() {
         BigDecimal total = BigDecimal.ZERO;
         for (Membership membership : this.memberships)
@@ -44,5 +47,37 @@ public class Bundle extends Purchasable{
 
     public ArrayList<Membership> getMemberships() {
         return new ArrayList<>(this.memberships);
+    }
+
+    public void removeDiscount(DiscountStrategy discountStrategy) {
+        this.discounts.remove(discountStrategy);
+    }
+
+    public void addDiscount(DiscountStrategy discountStrategy) {
+        this.discounts.add(discountStrategy);
+    }
+
+    public ArrayList<DiscountStrategy> getDiscounts() {
+        return this.discounts;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

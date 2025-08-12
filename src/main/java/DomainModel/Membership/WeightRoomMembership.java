@@ -10,10 +10,8 @@ public class WeightRoomMembership extends Membership{
     }
 
     public WeightRoomMembership(int id, WeightRoomMembership weightRoomMembership) {
+        super(weightRoomMembership);
         this.id = id;
-        this.name = weightRoomMembership.name;
-        this.description = weightRoomMembership.description;
-        this.price = weightRoomMembership.price;
         this.durationInDays = weightRoomMembership.durationInDays;
         this.type = weightRoomMembership.type;
     }
