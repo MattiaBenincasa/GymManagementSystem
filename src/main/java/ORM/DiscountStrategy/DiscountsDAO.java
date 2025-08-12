@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.*;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class DiscountsDAO {
