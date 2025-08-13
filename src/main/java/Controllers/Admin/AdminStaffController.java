@@ -2,6 +2,7 @@ package Controllers.Admin;
 
 import BusinessLogic.Users.StaffService;
 import BusinessLogic.Users.TrainerService;
+import BusinessLogic.Users.UserService;
 import DomainModel.Users.Staff;
 import DomainModel.Users.StaffRole;
 import DomainModel.Users.Trainer;
@@ -12,10 +13,12 @@ import java.util.ArrayList;
 public class AdminStaffController {
     private final StaffService staffService;
     private final TrainerService trainerService;
+    private final UserService userService;
 
-    public AdminStaffController(StaffService staffService, TrainerService trainerService) {
+    public AdminStaffController(StaffService staffService, TrainerService trainerService, UserService userService) {
         this.staffService = staffService;
         this.trainerService = trainerService;
+        this.userService = userService;
     }
 
     public Staff createStaff(String username, String password, String mail, String name, String surname, String phoneNumber, LocalDate birthDate, StaffRole staffRole) {
@@ -56,5 +59,9 @@ public class AdminStaffController {
 
     public ArrayList<Trainer> getAllCourseCoach() {
         return trainerService.getAllCourseCoach();
+    }
+
+    public void deleteUser(int userID) {
+        this.userService.deleteUser(userID);
     }
 }
