@@ -64,4 +64,7 @@ public class AppointmentTrainerBookingService {
         return this.appointmentDAO.getAllDailyAppointment(trainerID);
     }
 
+    public ArrayList<Appointment> getAllCustomerDailyAppointment(int customerID) {
+        return this.appointmentDAO.getAllCustomerDailyAppointment(customerID);
+    }
 }

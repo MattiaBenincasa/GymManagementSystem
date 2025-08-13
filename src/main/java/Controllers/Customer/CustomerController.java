@@ -3,6 +3,7 @@ package Controllers.Customer;
 import BusinessLogic.AuthService.Session;
 import BusinessLogic.Bookings.AppointmentTrainerBookingService;
 import BusinessLogic.Bookings.ClassBookingService;
+import BusinessLogic.DailyEvents.TrainerAvailabilityService;
 import BusinessLogic.Memberships.ActivationMembershipService;
 import BusinessLogic.Users.CustomerService;
 import DomainModel.Bookings.Appointment;
@@ -21,13 +22,15 @@ public class CustomerController {
     private final ActivationMembershipService activationMembershipService;
     private final ClassBookingService classBookingService;
     private final AppointmentTrainerBookingService appointmentTrainerBookingService;
+    private final TrainerAvailabilityService trainerAvailabilityService;
     private Session session;
 
-    public CustomerController(ActivationMembershipService activationMembershipService, ClassBookingService classBookingService, CustomerService customerService, AppointmentTrainerBookingService appointmentTrainerBookingService) {
+    public CustomerController(ActivationMembershipService activationMembershipService, ClassBookingService classBookingService, CustomerService customerService, AppointmentTrainerBookingService appointmentTrainerBookingService, TrainerAvailabilityService trainerAvailabilityService) {
         this.customerService = customerService;
         this.activationMembershipService = activationMembershipService;
         this.appointmentTrainerBookingService = appointmentTrainerBookingService;
         this.classBookingService = classBookingService;
+        this.trainerAvailabilityService = trainerAvailabilityService;
     }
 
     public void setSession(Session session) {
@@ -88,9 +91,11 @@ public class CustomerController {
         this.appointmentTrainerBookingService.changeNotesForTrainer(newNotes, appointment);
     }
 
-    public ArrayList<Appointment> getAllDailyAppointment() {
-        Session.validateSession(session);
-        return appointmentTrainerBookingService.getAllDailyAppointment(this.session.getUserID());
+    public ArrayList<TrainerAvailability> getAllTrainerAvailabilitiesByTrainerID(int trainerID) {
+        return trainerAvailabilityService.getAvailabilitiesByTrainerID(trainerID);
     }
 
+    public ArrayList<Appointment> getAllCustomerAppointment() {
+        return this.appointmentTrainerBookingService.getAllCustomerDailyAppointment(this.session.getUserID());
+    }
 }

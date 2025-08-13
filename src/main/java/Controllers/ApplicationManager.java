@@ -92,7 +92,7 @@ public class ApplicationManager  {
         this.adminStaffController = new AdminStaffController(staffService, trainerService, userService);
         this.receptionistController = new ReceptionistController(staffService, customerService, purchaseService, membershipDAO, bundleDAO);
         this.trainerController = new TrainerController(trainerService, trainerAvailabilityService, dailyClassService);
-        this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService);
+        this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService, trainerAvailabilityService);
     }
 
     public Session getCurrentSession() {
@@ -173,7 +173,7 @@ public class ApplicationManager  {
         //you can take this controller also if session is invalid, so that a customer can initialize his profile
         if(this.currentSession!=null && this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "CUSTOMER"))
             throw new UnauthorizedException("You are not authorized to get this controller");
-
+        this.customerController.setSession(this.currentSession);
         return this.customerController;
     }
 

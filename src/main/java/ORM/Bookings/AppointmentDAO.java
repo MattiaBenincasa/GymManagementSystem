@@ -158,4 +158,30 @@ public class AppointmentDAO {
     }
 
 
+    public ArrayList<Appointment> getAllCustomerDailyAppointment(int customerID) {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+        String sql = "SELECT a.traineravailability_id, a.customer_id, a.notes FROM Appointment a " +
+                "INNER JOIN TrainerAvailability ta ON a.traineravailability_id = ta.id " +
+                "WHERE a.customer_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, customerID);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int trainerAvailabilityId = resultSet.getInt("traineravailability_id");
+                    int customerId = resultSet.getInt("customer_id");
+                    String notes = resultSet.getString("notes");
+
+                    TrainerAvailability trainerAvailability = trainerAvailabilityDAO.getTrainerAvailabilityByID(trainerAvailabilityId);
+                    Customer customer = customerDAO.getCustomerByID(customerId);
+                    Appointment appointment = new Appointment(customer, trainerAvailability);
+                    appointment.setAppointmentPurpose(notes);
+                    appointments.add(appointment);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT from Appointment by Trainer ID: " + e.getMessage(), e);
+        }
+        return appointments;
+    }
 }

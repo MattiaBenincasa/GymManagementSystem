@@ -14,7 +14,9 @@ import Controllers.ApplicationManager;
 import Controllers.Customer.CustomerController;
 import Controllers.Receptionist.ReceptionistController;
 import Controllers.Trainer.TrainerController;
+import DomainModel.Bookings.Appointment;
 import DomainModel.DailyEvents.DailyClass;
+import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Membership.*;
 import DomainModel.Users.*;
 import ORM.Users.StaffDAO;
@@ -329,6 +331,27 @@ public class IntegrationTest {
        receptionistController.executePurchase(purchaseDTO, new CashPayment());
     }
 
+    @Test
+    @Order(12)
+    void test12_trainerCreateAnAvailability() throws AuthenticationException {
+        applicationManager.login("gabrimorandi", "newpassword");
+        TrainerController trainerController = applicationManager.getTrainerController();
+        trainerController.addTrainerAvailability(LocalTime.of(11, 30), LocalTime.of(12, 30), LocalDate.of(2026, 5, 5));
+        applicationManager.logout();
+    }
+
+    @Test
+    @Order(13)
+    void test13_customerCanBookClassAndAppointment() throws AuthenticationException {
+        applicationManager.login("giulio.righi", "password");
+        CustomerController customerController = applicationManager.getCustomerController();
+        ArrayList<CustomerMembership> memberships = customerController.getAllCustomerMembership();
+        assertEquals(3, memberships.size());
+        ArrayList<TrainerAvailability> availabilities = customerController.getAllTrainerAvailabilitiesByTrainerID(3);
+        customerController.takeAppointmentWithTrainer(availabilities.getFirst());
+        ArrayList<Appointment> appointments = customerController.getAllCustomerAppointment();
+        assertEquals(1, appointments.size());
+    }
 
     @AfterAll
     static void teardown() {
