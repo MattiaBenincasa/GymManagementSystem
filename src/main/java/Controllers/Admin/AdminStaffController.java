@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class AdminStaffController {
+    private int userLoggedID;
     private final StaffService staffService;
     private final TrainerService trainerService;
     private final UserService userService;
@@ -21,16 +22,28 @@ public class AdminStaffController {
         this.userService = userService;
     }
 
+    public void setUserLoggedID(int userLoggedID) {
+        this.userLoggedID = userLoggedID;
+    }
+
+    public Staff getPersonalInfo(){
+        return staffService.getStaffByID(this.userLoggedID);
+    }
+
     public Staff createStaff(String username, String password, String mail, String name, String surname, String phoneNumber, LocalDate birthDate, StaffRole staffRole) {
         return staffService.createStaff(username, password, mail, name, surname, phoneNumber, birthDate, staffRole);
     }
 
-    public void changeStaffInfo(int staffID, String username, String name, String surname, String mail, String phoneNumber) {
-        staffService.changeStaffInfo(staffID, username, name, surname, mail, phoneNumber);
+    public Trainer createTrainer(String username, String password, String mail, String name, String surname, String phoneNumber, LocalDate birthDate) {
+        return trainerService.createTrainer(username, password, mail, name, surname, phoneNumber, birthDate);
     }
 
-    public void changePassword(int staffID, String oldPassword, String newPassword) {
-        staffService.changePassword(staffID, oldPassword, newPassword);
+    public void changeAdminInfo(String username, String name, String surname, String mail, String phoneNumber) {
+        staffService.changeStaffInfo(this.userLoggedID, username, name, surname, mail, phoneNumber);
+    }
+
+    public void changePassword(String oldPassword, String newPassword) {
+        staffService.changePassword(this.userLoggedID, oldPassword, newPassword);
     }
 
     public ArrayList<Staff> getAllAdmins() {
@@ -43,10 +56,6 @@ public class AdminStaffController {
 
     public Trainer setUpTrainerInfo(int trainerID, boolean isPersonalTrainer, boolean isCourseCoach) {
         return trainerService.setUpTrainerInfo(trainerID, isPersonalTrainer, isCourseCoach);
-    }
-
-    public void changeTrainerInfo(int trainerID, String username, String name, String surname, String mail, String phoneNumber) {
-        trainerService.changeTrainerInfo(trainerID, username, name, surname, mail, phoneNumber);
     }
 
     public ArrayList<Trainer> getAllTrainers() {

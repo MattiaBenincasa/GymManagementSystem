@@ -58,8 +58,50 @@ public class StaffDAO {
         }
     }
 
-    public ArrayList<Staff> getAllReceptionists() {return null;}
+    public ArrayList<Staff> getAllReceptionists() {
+        String query = "SELECT * FROM \"User\" WHERE role = ?";
+        ArrayList<Staff> receptionists = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, StaffRole.RECEPTIONIST.toString());
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    receptionists.add(extractStaffFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting all receptionists: " + e.getMessage(), e);
+        }
+        return receptionists;
+    }
 
-    public ArrayList<Staff> getAllAdmins() {return null;}
+    public ArrayList<Staff> getAllAdmins() {
+        String query = "SELECT * FROM \"User\" WHERE role = ?";
+        ArrayList<Staff> receptionists = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, StaffRole.ADMIN.toString());
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    receptionists.add(extractStaffFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting all receptionists: " + e.getMessage(), e);
+        }
+        return receptionists;
+    }
+
+    private Staff extractStaffFromResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        Staff staff = new Staff(StaffRole.valueOf(rs.getString("role")));
+        staff.setUsername(rs.getString("username"));
+        staff.setPasswordHash(rs.getString("hashpassword"));
+        staff.setMail(rs.getString("mail"));
+        staff.setName(rs.getString("name"));
+        staff.setSurname(rs.getString("surname"));
+        staff.setPhoneNumber(rs.getString("phoneNumber"));
+        staff.setBirthDate(rs.getDate("birthDate").toLocalDate());
+
+        return new Staff(id, staff);
+    }
 
 }

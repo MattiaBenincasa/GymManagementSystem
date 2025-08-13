@@ -95,6 +95,10 @@ public class ApplicationManager  {
         this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService);
     }
 
+    public Session getCurrentSession() {
+        return this.currentSession;
+    }
+
     public void login(String username, String password) throws AuthenticationException {
         this.currentSession = this.authService.login(username, password);
     }
@@ -109,17 +113,18 @@ public class ApplicationManager  {
     }
 
     public AdminStaffController getAdminStaffController() {
-        if (!this.currentSession.isValid())
+        if (this.currentSession==null||!this.currentSession.isValid())
             throw new InvalidSessionException("Current session is invalid");
 
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "ADMIN"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
+        this.adminStaffController.setUserLoggedID(this.currentSession.getUserID());
         return this.adminStaffController;
     }
 
     public AdminCourseController getAdminCourseController() {
-        if (!this.currentSession.isValid())
+        if (this.currentSession==null||!this.currentSession.isValid())
             throw new InvalidSessionException("Current session is invalid");
 
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "ADMIN"))
@@ -129,7 +134,7 @@ public class ApplicationManager  {
     }
 
     public AdminMembershipController getAdminMembershipController() {
-        if (!this.currentSession.isValid())
+        if (this.currentSession==null||!this.currentSession.isValid())
             throw new InvalidSessionException("Current session is invalid");
 
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "ADMIN"))
@@ -139,7 +144,7 @@ public class ApplicationManager  {
     }
 
     public ReceptionistController getReceptionistController() {
-        if (!this.currentSession.isValid())
+        if (this.currentSession==null||!this.currentSession.isValid())
             throw new InvalidSessionException("Current session is invalid");
 
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "RECEPTIONIST"))
@@ -149,7 +154,7 @@ public class ApplicationManager  {
     }
 
     public TrainerController getTrainerController() {
-        if (!this.currentSession.isValid())
+        if (this.currentSession==null||!this.currentSession.isValid())
             throw new InvalidSessionException("Current session is invalid");
 
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "TRAINER"))
@@ -159,7 +164,7 @@ public class ApplicationManager  {
     }
 
     public CustomerController getCustomerController() {
-        if (!this.currentSession.isValid())
+        if (this.currentSession==null||!this.currentSession.isValid())
             throw new InvalidSessionException("Current session is invalid");
 
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "CUSTOMER"))

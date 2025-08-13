@@ -4,7 +4,6 @@ import BusinessLogic.DailyEvents.DailyClassService;
 import BusinessLogic.DailyEvents.TrainerAvailabilityService;
 import BusinessLogic.Users.TrainerService;
 import DomainModel.DailyEvents.TrainerAvailability;
-import DomainModel.Users.Trainer;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -20,10 +19,6 @@ public class TrainerController {
         this.trainerService = trainerService;
         this.trainerAvailabilityService = trainerAvailabilityService;
         this.dailyClassService = dailyClassService;
-    }
-
-    public Trainer createTrainer(String username, String password, String name, String surname, String email, String phoneNumber, LocalDate birthDate) {
-        return trainerService.createTrainer(username, password, name, surname, email, phoneNumber, birthDate);
     }
 
     public void changeTrainerInfo(int trainerID, String username, String name, String surname, String mail, String phoneNumber) {

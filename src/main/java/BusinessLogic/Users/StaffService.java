@@ -54,4 +54,7 @@ public class StaffService {
         return this.staffDAO.getAllReceptionists();
     }
 
+    public Staff getStaffByID(int userLoggedID) {
+        return staffDAO.getStaffByID(userLoggedID);
+    }
 }

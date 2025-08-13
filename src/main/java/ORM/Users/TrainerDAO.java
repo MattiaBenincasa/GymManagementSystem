@@ -84,6 +84,35 @@ public class TrainerDAO {
         }
     }
 
-    public ArrayList<Trainer> getAllTrainers() {return null;}
+    public ArrayList<Trainer> getAllTrainers() {
+        String sql = "SELECT u.id, u.username, u.hashPassword, u.name, u.surname, u.mail, u.phoneNumber, u.birthDate, u.role, t.isPersonalTrainer, t.isCourseCoach " +
+                "FROM \"User\" u JOIN Trainer t ON u.id = t.id";
+
+        ArrayList<Trainer> trainers = new ArrayList<>();
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Trainer trainer = new Trainer();
+                    trainer.setUsername(resultSet.getString("username"));
+                    trainer.setPasswordHash(resultSet.getString("hashpassword"));
+                    trainer.setName(resultSet.getString("name"));
+                    trainer.setSurname(resultSet.getString("surname"));
+                    trainer.setMail(resultSet.getString("mail"));
+                    trainer.setPhoneNumber(resultSet.getString("phoneNumber"));
+                    trainer.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
+                    trainer.setIsPersonalTrainer(resultSet.getBoolean("isPersonalTrainer"));
+                    trainer.setIsCourseCoach(resultSet.getBoolean("isCourseCoach"));
+                    trainers.add(new Trainer(resultSet.getInt("id"), trainer));
+
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error during SELECT from User and Trainer: " + e.getMessage(), e);
+        }
+
+        return trainers;
+    }
 
 }
