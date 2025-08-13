@@ -1,22 +1,22 @@
 package IntegrationTest;
 
 import BusinessLogic.AuthService.PasswordUtils;
+import BusinessLogic.DTOs.ItemType;
+import BusinessLogic.DTOs.PurchaseDTO;
+import BusinessLogic.DTOs.PurchaseItemDTO;
 import BusinessLogic.Exceptions.InvalidSessionException;
 import BusinessLogic.Exceptions.UnauthorizedException;
+import BusinessLogic.Purchase.CashPayment;
 import Controllers.Admin.AdminCourseController;
 import Controllers.Admin.AdminMembershipController;
 import Controllers.Admin.AdminStaffController;
 import Controllers.ApplicationManager;
+import Controllers.Customer.CustomerController;
 import Controllers.Receptionist.ReceptionistController;
 import Controllers.Trainer.TrainerController;
 import DomainModel.DailyEvents.DailyClass;
-import DomainModel.Membership.CourseMembership;
-import DomainModel.Membership.WRMembershipType;
-import DomainModel.Membership.WeightRoomMembership;
-import DomainModel.Users.CustomerCategory;
-import DomainModel.Users.Staff;
-import DomainModel.Users.StaffRole;
-import DomainModel.Users.Trainer;
+import DomainModel.Membership.*;
+import DomainModel.Users.*;
 import ORM.Users.StaffDAO;
 import ORM.Users.UserDAO;
 import ORMTest.Users.UserDAOTestUtils;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@TestMethodOrder(MethodOrderer.MethodName.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IntegrationTest {
     static ApplicationManager applicationManager;
 
@@ -48,6 +48,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(1)
     void test1_loginLogoutAdmin() throws AuthenticationException {
         //admin log in
         applicationManager.login("mario.rossi", "password");
@@ -73,6 +74,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(2)
     void test2_changeAdminInfo() throws AuthenticationException {
         //admin log in
         applicationManager.login("mario.rossi", "password");
@@ -92,6 +94,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(3)
     void test3_CRUDStaffAndTrainer() {
         //admin is always logged in
         AdminStaffController adminStaffController = applicationManager.getAdminStaffController();
@@ -131,6 +134,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(4)
     void test4_changePersonalInfoOfUsersCreatedByAdmin() throws AuthenticationException {
         // receptionist log in
         applicationManager.login("chiara.solari", "temporary");
@@ -156,6 +160,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(5)
     void test5_CRUDCourse() throws AuthenticationException {
         //admin log in
         applicationManager.login("mariorossi", "newpassword");
@@ -206,6 +211,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(6)
     void test6_CRUDMembership() {
         // admin is always logged in
         AdminMembershipController adminMembershipController = applicationManager.getAdminMembershipController();
@@ -233,13 +239,13 @@ public class IntegrationTest {
         //Boxe one year
         adminMembershipController.createCourseMembership(2, "Abbonamento Boxe",
                 "Abbonamento di Boxe 3 volte a settimana annuale",
-                new BigDecimal(600),
+                new BigDecimal("600.00"),
                 365, 3);
 
         //Weight room memberships
         adminMembershipController.createWRMembership("Abbonamento sala pesi",
                 "abbonamento sala pesi base",
-                new BigDecimal("450"),
+                new BigDecimal("450.00"),
                 365, WRMembershipType.BASE);
 
         adminMembershipController.createWRMembership("Abbonamento sala pesi",
@@ -266,9 +272,13 @@ public class IntegrationTest {
         assertEquals(4, allCourseMembership.size());
         ArrayList<WeightRoomMembership> allWRmembership = adminMembershipController.getAllWeightRoomMembership();
         assertEquals(2, allWRmembership.size());
+
+        //create registration fee
+        adminMembershipController.updateRegistrationFee("Tassa iscrizione", new BigDecimal("35"));
     }
 
     @Test
+    @Order(7)
     void test7_CRUDDiscount() {
         AdminMembershipController adminMembershipController = applicationManager.getAdminMembershipController();
         adminMembershipController.createFixedDiscount("Sconto bundle sala pesi + boxe", false, 60);
@@ -277,6 +287,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Order(8)
     void test8_CRUDBundle() {
         List<Integer> membershipsIDs = new ArrayList<>();
         membershipsIDs.add(4); //boxe annuale
@@ -285,14 +296,39 @@ public class IntegrationTest {
         discountsIDs.add(1);
         AdminMembershipController adminMembershipController = applicationManager.getAdminMembershipController();
         adminMembershipController.createBundle("Sala pesi + Boxe", "Offerta su sala pesi e pugilato insieme", membershipsIDs, discountsIDs);
+        applicationManager.logout();
     }
 
     @Test
-    void test9_executePurchase() throws AuthenticationException {
+    @Order(9)
+    void test9_aCustomerInitializeHisProfile() {
+        CustomerController customerController = applicationManager.getCustomerController();
+        Customer customer = customerController.createCustomer("giulio.righi", "password", "giulio@gmail.com");
+    }
+
+    @Test
+    @Order(11)
+    void test11_receptionistActivateMemberships() throws AuthenticationException {
         //receptionist log in
         applicationManager.login("chiarasolari", "newpassword");
+        ReceptionistController receptionistController = applicationManager.getReceptionistController();
+        Customer customer = receptionistController.completeCustomerCreation(6, "Giulio", "Righi", "2222222", LocalDate.of(2003, 3, 12), CustomerCategory.STUDENT);
+        receptionistController.addMedicalCertificate(6, LocalDate.now(), 12, false);
 
+        //get all necessary elements
+        Bundle bundle = receptionistController.getBundleByID(1);
+        Membership membership = receptionistController.getMembershipByID(1);
+        //creation of DTOs
+       PurchaseItemDTO purchaseItemDTO = new PurchaseItemDTO(ItemType.MEMBERSHIP, 1, membership.getDiscountedPrice(customer), LocalDate.now());
+       PurchaseItemDTO bundlePurchaseItemDTO = new PurchaseItemDTO(ItemType.BUNDLE, 1, bundle.getDiscountedPrice(customer), LocalDate.now());
+       ArrayList<PurchaseItemDTO> purchaseItemDTOS = new ArrayList<>();
+       purchaseItemDTOS.add(purchaseItemDTO);
+       purchaseItemDTOS.add(bundlePurchaseItemDTO);
+       PurchaseDTO purchaseDTO = new PurchaseDTO(purchaseItemDTOS, true, LocalDate.now(), customer.getId());
+       assertEquals(new BigDecimal("1240.00"), purchaseDTO.getTotal()); //with discounts
+       receptionistController.executePurchase(purchaseDTO, new CashPayment());
     }
+
 
     @AfterAll
     static void teardown() {

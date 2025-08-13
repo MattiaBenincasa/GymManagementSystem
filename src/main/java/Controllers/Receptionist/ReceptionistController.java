@@ -6,9 +6,13 @@ import BusinessLogic.Purchase.PaymentMethod;
 import BusinessLogic.Purchase.PurchaseService;
 import BusinessLogic.Users.CustomerService;
 import BusinessLogic.Users.StaffService;
+import DomainModel.Membership.Bundle;
+import DomainModel.Membership.Membership;
 import DomainModel.Users.Customer;
 import DomainModel.Users.CustomerCategory;
 import DomainModel.Users.Staff;
+import ORM.Membership.BundleDAO;
+import ORM.Membership.MembershipDAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,12 +21,16 @@ public class ReceptionistController {
     private final CustomerService customerService;
     private final PurchaseService purchaseService;
     private final StaffService staffService;
+    private final MembershipDAO membershipDAO;
+    private final BundleDAO bundleDAO;
     private Session session;
 
-    public ReceptionistController(StaffService staffService, CustomerService customerService, PurchaseService purchaseService) {
+    public ReceptionistController(StaffService staffService, CustomerService customerService, PurchaseService purchaseService, MembershipDAO membershipDAO, BundleDAO bundleDAO) {
         this.customerService = customerService;
         this.staffService = staffService;
         this.purchaseService = purchaseService;
+        this.membershipDAO = membershipDAO;
+        this.bundleDAO = bundleDAO;
     }
 
     public void setSession(Session session) {
@@ -77,5 +85,14 @@ public class ReceptionistController {
     public void executePurchase(PurchaseDTO purchaseDTO, PaymentMethod paymentMethod) {
         Session.validateSession(this.session);
         purchaseService.executePurchase(purchaseDTO, paymentMethod);
+    }
+
+    public Membership getMembershipByID(int membershipID) {
+        return this.membershipDAO.getMembershipByID(membershipID);
+    }
+
+
+    public Bundle getBundleByID(int bundleID) {
+        return this.bundleDAO.getBundleByID(bundleID);
     }
 }

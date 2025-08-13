@@ -7,6 +7,7 @@ import BusinessLogic.Validators.*;
 import DomainModel.Bookings.Booking;
 import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Customer;
+import ORM.Users.CustomerDAO;
 import ORM.Users.UserDAO;
 import ORM.Bookings.BookingDAO;
 import java.time.LocalTime;
@@ -15,10 +16,12 @@ import java.util.List;
 public class ClassBookingService {
     private final BookingDAO bookingDAO;
     private final UserDAO userDAO;
+    private final CustomerDAO customerDAO;
 
-    public ClassBookingService(BookingDAO bookingDAO, UserDAO userDAO) {
+    public ClassBookingService(BookingDAO bookingDAO, UserDAO userDAO, CustomerDAO customerDAO) {
         this.bookingDAO = bookingDAO;
         this.userDAO = userDAO;
+        this.customerDAO = customerDAO;
     }
 
     /*
@@ -26,7 +29,8 @@ public class ClassBookingService {
     * specific daily class. If all validators pass then instantiate a Booking and save
     * it with BookingDAO
     * */
-    public void bookAClass(Customer customer, DailyClass dailyClass) {
+    public void bookAClass(int customerID, DailyClass dailyClass) {
+        Customer customer = this.customerDAO.getCustomerByID(customerID);
         if (!dailyClass.isActive())
             throw new IllegalStateException("Daily class selected is cancelled");
 

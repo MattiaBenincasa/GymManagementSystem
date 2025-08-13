@@ -77,7 +77,9 @@ public class UserDAO {
             statement.setString(4, user.getSurname());
             statement.setString(5, user.getMail());
             statement.setString(6, user.getPhoneNumber());
-            statement.setDate(7, Date.valueOf(user.getBirthDate()));
+            if (user.getBirthDate()!= null)
+                statement.setDate(7, Date.valueOf(user.getBirthDate()));
+            else statement.setNull(7, Types.DATE);
             statement.setString(8, role);
             statement.executeUpdate();
 

@@ -84,13 +84,13 @@ public class ApplicationManager  {
         DiscountService discountService = new DiscountService(discountsDAO);
         DailyClassService dailyClassService = new DailyClassService(dailyClassDAO, courseDAO);
         TrainerAvailabilityService trainerAvailabilityService = new TrainerAvailabilityService(trainerAvailabilityDAO, trainerDAO);
-        ClassBookingService classBookingService = new ClassBookingService(bookingDAO, userDAO);
-        AppointmentTrainerBookingService appointmentTrainerBookingService = new AppointmentTrainerBookingService(userDAO, appointmentDAO);
+        ClassBookingService classBookingService = new ClassBookingService(bookingDAO, userDAO, customerDAO);
+        AppointmentTrainerBookingService appointmentTrainerBookingService = new AppointmentTrainerBookingService(userDAO, appointmentDAO, customerDAO);
 
         this.adminCourseController = new AdminCourseController(courseService, dailyClassService);
         this.adminMembershipController = new AdminMembershipController(courseMembershipService, wrMembershipService, discountService, staffService, trainerService, bundleService, registrationFeeService);
         this.adminStaffController = new AdminStaffController(staffService, trainerService, userService);
-        this.receptionistController = new ReceptionistController(staffService, customerService, purchaseService);
+        this.receptionistController = new ReceptionistController(staffService, customerService, purchaseService, membershipDAO, bundleDAO);
         this.trainerController = new TrainerController(trainerService, trainerAvailabilityService, dailyClassService);
         this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService);
     }
@@ -170,10 +170,8 @@ public class ApplicationManager  {
     }
 
     public CustomerController getCustomerController() {
-        if (this.currentSession==null||!this.currentSession.isValid())
-            throw new InvalidSessionException("Current session is invalid");
-
-        if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "CUSTOMER"))
+        //you can take this controller also if session is invalid, so that a customer can initialize his profile
+        if(this.currentSession!=null && this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "CUSTOMER"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
         return this.customerController;

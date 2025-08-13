@@ -27,7 +27,10 @@ public class CustomerDAO {
         try (PreparedStatement statement = this.connection.prepareStatement(sql);
              PreparedStatement statement_med_cert = this.connection.prepareStatement(sql_med_cert)){
             statement.setInt(1, userId);
-            statement.setString(2, customer.getCustomerCategory().name());
+            if (customer.getCustomerCategory() != null)
+                statement.setString(2, customer.getCustomerCategory().name());
+            else statement.setNull(2, Types.VARCHAR);
+
             statement.executeUpdate();
 
             statement_med_cert.setInt(1, userId);
@@ -83,8 +86,12 @@ public class CustomerDAO {
                     customer.setSurname(resultSet.getString("surname"));
                     customer.setMail(resultSet.getString("mail"));
                     customer.setPhoneNumber(resultSet.getString("phoneNumber"));
-                    customer.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
-                    customer.setCustomerCategory(CustomerCategory.valueOf(resultSet.getString("customerCategory")));
+                    if (resultSet.getDate("birthDate")!=null)
+                        customer.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
+                    else customer.setBirthDate(null);
+                    if (resultSet.getString("customerCategory")!= null)
+                        customer.setCustomerCategory(CustomerCategory.valueOf(resultSet.getString("customerCategory")));
+                    else customer.setCustomerCategory(null);
                     customer.setMedicalCertificate(this.getMedicalCertificateByCustomerID(customerID));
                     return new Customer(resultSet.getInt("id"), customer);
                 } else {

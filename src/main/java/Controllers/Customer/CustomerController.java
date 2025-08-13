@@ -1,5 +1,6 @@
 package Controllers.Customer;
 
+import BusinessLogic.AuthService.Session;
 import BusinessLogic.Bookings.AppointmentTrainerBookingService;
 import BusinessLogic.Bookings.ClassBookingService;
 import BusinessLogic.Memberships.ActivationMembershipService;
@@ -20,6 +21,7 @@ public class CustomerController {
     private final ActivationMembershipService activationMembershipService;
     private final ClassBookingService classBookingService;
     private final AppointmentTrainerBookingService appointmentTrainerBookingService;
+    private Session session;
 
     public CustomerController(ActivationMembershipService activationMembershipService, ClassBookingService classBookingService, CustomerService customerService, AppointmentTrainerBookingService appointmentTrainerBookingService) {
         this.customerService = customerService;
@@ -28,53 +30,67 @@ public class CustomerController {
         this.classBookingService = classBookingService;
     }
 
+    public void setSession(Session session) {
+        this.session = session;
+    }
 
     public Customer createCustomer(String username, String password, String email) {
         return customerService.createCustomer(username, password, email);
     }
 
-    public void changeCustomerInfo(int customerID, String username, String name, String surname, String mail, String phoneNumber) {
-        customerService.changeCustomerInfo(customerID, username, name, surname, mail, phoneNumber);
+    public void changePersonalInfo(String username, String name, String surname, String mail, String phoneNumber) {
+        Session.validateSession(this.session);
+        customerService.changeCustomerInfo(this.session.getUserID(), username, name, surname, mail, phoneNumber);
     }
 
-    public void changePassword(int customerID, String oldPassword, String newPassword) {
-        customerService.changePassword(customerID, oldPassword, newPassword);
+    public void changePassword(String oldPassword, String newPassword) {
+        Session.validateSession(this.session);
+        customerService.changePassword(this.session.getUserID(), oldPassword, newPassword);
     }
 
-    public ArrayList<CustomerMembership> getAllCustomerMembership(int customerID) {
-        return this.activationMembershipService.getAllCustomerMembership(customerID);
+    public ArrayList<CustomerMembership> getAllCustomerMembership() {
+        Session.validateSession(session);
+        return this.activationMembershipService.getAllCustomerMembership(this.session.getUserID());
     }
 
-    public LocalDate getActiveCustomerFeeExpiry(int customerID) {
-        return this.activationMembershipService.getActiveCustomerFeeExpiry(customerID);
+    public LocalDate getActiveCustomerFeeExpiry() {
+        Session.validateSession(session);
+        return this.activationMembershipService.getActiveCustomerFeeExpiry(this.session.getUserID());
     }
 
-    public void bookAClass(Customer customer, DailyClass dailyClass) {
-        this.classBookingService.bookAClass(customer, dailyClass);
+    public void bookAClass(DailyClass dailyClass) {
+        Session.validateSession(session);
+        this.classBookingService.bookAClass(this.session.getUserID(), dailyClass);
     }
 
     public void deleteClassBooking(Booking booking) {
+        Session.validateSession(session);
         this.classBookingService.deleteClassBooking(booking);
     }
 
-    public List<Booking> getAllCustomerBookings(int customerID) {
-        return this.classBookingService.getAllCustomerBookings(customerID);
+    public List<Booking> getAllCustomerBookings() {
+        Session.validateSession(session);
+        return this.classBookingService.getAllCustomerBookings(this.session.getUserID());
     }
 
-    public void takeAppointmentWithTrainer(Customer customer, TrainerAvailability trainerAvailability) {
-        this.appointmentTrainerBookingService.takeAppointmentWithTrainer(customer, trainerAvailability);
+    public void takeAppointmentWithTrainer(TrainerAvailability trainerAvailability) {
+        Session.validateSession(session);
+        this.appointmentTrainerBookingService.takeAppointmentWithTrainer(this.session.getUserID(), trainerAvailability);
     }
 
     public void deleteAnAppointmentWithTrainer(Appointment appointment) {
+        Session.validateSession(session);
         this.appointmentTrainerBookingService.deleteAnAppointmentWithTrainer(appointment);
     }
 
     public void changeNotesForTrainer(String newNotes, Appointment appointment) {
+        Session.validateSession(session);
         this.appointmentTrainerBookingService.changeNotesForTrainer(newNotes, appointment);
     }
 
-    public ArrayList<Appointment> getAllDailyAppointment(int trainerID) {
-        return appointmentTrainerBookingService.getAllDailyAppointment(trainerID);
+    public ArrayList<Appointment> getAllDailyAppointment() {
+        Session.validateSession(session);
+        return appointmentTrainerBookingService.getAllDailyAppointment(this.session.getUserID());
     }
 
 }

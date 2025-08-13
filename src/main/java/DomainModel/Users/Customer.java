@@ -31,7 +31,7 @@ public class Customer extends User {
     }
 
     public void setCustomerCategory(CustomerCategory customerCategory) {
-        if (!customerCategory.isValidFor(this))
+        if (customerCategory!=null && !customerCategory.isValidFor(this))
             throw new IllegalStateException("This category is not applicable to this customer");
         this.customerCategory = customerCategory;
     }
