@@ -4,11 +4,16 @@ import BusinessLogic.AuthService.PasswordUtils;
 import BusinessLogic.Exceptions.InvalidSessionException;
 import BusinessLogic.Exceptions.UnauthorizedException;
 import Controllers.Admin.AdminCourseController;
+import Controllers.Admin.AdminMembershipController;
 import Controllers.Admin.AdminStaffController;
 import Controllers.ApplicationManager;
 import Controllers.Receptionist.ReceptionistController;
 import Controllers.Trainer.TrainerController;
 import DomainModel.DailyEvents.DailyClass;
+import DomainModel.Membership.CourseMembership;
+import DomainModel.Membership.WRMembershipType;
+import DomainModel.Membership.WeightRoomMembership;
+import DomainModel.Users.CustomerCategory;
 import DomainModel.Users.Staff;
 import DomainModel.Users.StaffRole;
 import DomainModel.Users.Trainer;
@@ -20,10 +25,12 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import javax.naming.AuthenticationException;
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -198,7 +205,94 @@ public class IntegrationTest {
         assertEquals(1, boxeDailyClass.size());
     }
 
+    @Test
+    void test6_CRUDMembership() {
+        // admin is always logged in
+        AdminMembershipController adminMembershipController = applicationManager.getAdminMembershipController();
 
+        //1 is the Yoga course id
+        adminMembershipController.createCourseMembership(1,
+                "abbonamento Yoga",
+                "Abbonamento corso di Yoga 2 volta a settimana",
+                new BigDecimal("250.00"),
+                90, 2);
+
+        //2 is the Boxe course id
+        adminMembershipController.createCourseMembership(2, "Abbonamento Boxe",
+                "Abbonamento di Boxe 3 volte a settimana",
+                new BigDecimal(350),
+                90, 3);
+
+        //Yoga full access
+        adminMembershipController.createCourseMembership(1,
+                "abbonamento Yoga",
+                "Abbonamento Yoga 6 volte a settimana",
+                new BigDecimal("500.00"),
+                3, 6);
+
+        //Boxe one year
+        adminMembershipController.createCourseMembership(2, "Abbonamento Boxe",
+                "Abbonamento di Boxe 3 volte a settimana annuale",
+                new BigDecimal(600),
+                365, 3);
+
+        //Weight room memberships
+        adminMembershipController.createWRMembership("Abbonamento sala pesi",
+                "abbonamento sala pesi base",
+                new BigDecimal("450"),
+                365, WRMembershipType.BASE);
+
+        adminMembershipController.createWRMembership("Abbonamento sala pesi",
+                "abbonamento sala pesi PERSONAL",
+                new BigDecimal("850"),
+                365, WRMembershipType.PERSONAL);
+
+        //memberships to delete
+        CourseMembership courseMembership = adminMembershipController.createCourseMembership(1,
+                "Membership to delete",
+                "Membership to delete",
+                new BigDecimal("1100"),
+                300, 4);
+
+        WeightRoomMembership weightRoomMembership = adminMembershipController.createWRMembership("Membership to delete",
+                "membership to delete",
+                new BigDecimal("1100"),
+                300, WRMembershipType.BASE);
+
+        adminMembershipController.deleteCourseMembership(courseMembership.getId());
+        adminMembershipController.deleteWRMembership(weightRoomMembership.getId());
+
+        ArrayList<CourseMembership> allCourseMembership = adminMembershipController.getAllCourseMembership();
+        assertEquals(4, allCourseMembership.size());
+        ArrayList<WeightRoomMembership> allWRmembership = adminMembershipController.getAllWeightRoomMembership();
+        assertEquals(2, allWRmembership.size());
+    }
+
+    @Test
+    void test7_CRUDDiscount() {
+        AdminMembershipController adminMembershipController = applicationManager.getAdminMembershipController();
+        adminMembershipController.createFixedDiscount("Sconto bundle sala pesi + boxe", false, 60);
+        adminMembershipController.createCustomerBasedDiscount(CustomerCategory.STUDENT, 10, "sconto studenti");
+        adminMembershipController.addDiscountToCourseMembership(2, 1); //student disconut to Yoga course
+    }
+
+    @Test
+    void test8_CRUDBundle() {
+        List<Integer> membershipsIDs = new ArrayList<>();
+        membershipsIDs.add(4); //boxe annuale
+        membershipsIDs.add(5); //sala pesi base
+        List<Integer> discountsIDs = new ArrayList<>();
+        discountsIDs.add(1);
+        AdminMembershipController adminMembershipController = applicationManager.getAdminMembershipController();
+        adminMembershipController.createBundle("Sala pesi + Boxe", "Offerta su sala pesi e pugilato insieme", membershipsIDs, discountsIDs);
+    }
+
+    @Test
+    void test9_executePurchase() throws AuthenticationException {
+        //receptionist log in
+        applicationManager.login("chiarasolari", "newpassword");
+
+    }
 
     @AfterAll
     static void teardown() {

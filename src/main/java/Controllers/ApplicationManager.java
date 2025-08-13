@@ -143,6 +143,7 @@ public class ApplicationManager  {
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "ADMIN"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
+        this.adminMembershipController.setSession(this.currentSession);
         return this.adminMembershipController;
     }
 

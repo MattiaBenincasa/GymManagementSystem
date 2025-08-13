@@ -23,6 +23,10 @@ public class DAOTestUtils {
                 "wrmembership",
                 "membershipinbundle",
                 "bundle",
+                "bundlediscounts",
+                "discounts",
+                "membershipdiscounts",
+                "monthwithdiscounts",
                 "membership",
                 "dailyclass",
                 "course",
@@ -40,7 +44,8 @@ public class DAOTestUtils {
                 "membership_id_seq",
                 "bundle_id_seq",
                 "registrationfee_id_seq",
-                "customerfee_id_seq"
+                "customerfee_id_seq",
+                "discounts_id_seq"
         };
 
         try (Statement statement = connection.createStatement()) {
