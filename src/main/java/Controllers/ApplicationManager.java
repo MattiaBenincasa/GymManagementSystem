@@ -100,6 +100,8 @@ public class ApplicationManager  {
     }
 
     public void login(String username, String password) throws AuthenticationException {
+        if (this.currentSession!=null && this.currentSession.isValid())
+            this.logout();
         this.currentSession = this.authService.login(username, password);
     }
 
@@ -130,6 +132,7 @@ public class ApplicationManager  {
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "ADMIN"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
+        this.adminCourseController.setSession(this.currentSession);
         return this.adminCourseController;
     }
 

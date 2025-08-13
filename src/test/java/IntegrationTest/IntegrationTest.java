@@ -3,10 +3,12 @@ package IntegrationTest;
 import BusinessLogic.AuthService.PasswordUtils;
 import BusinessLogic.Exceptions.InvalidSessionException;
 import BusinessLogic.Exceptions.UnauthorizedException;
+import Controllers.Admin.AdminCourseController;
 import Controllers.Admin.AdminStaffController;
 import Controllers.ApplicationManager;
 import Controllers.Receptionist.ReceptionistController;
 import Controllers.Trainer.TrainerController;
+import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Staff;
 import DomainModel.Users.StaffRole;
 import DomainModel.Users.Trainer;
@@ -18,8 +20,11 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import javax.naming.AuthenticationException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class IntegrationTest {
@@ -140,7 +145,60 @@ public class IntegrationTest {
         Trainer trainerPersonalInfo = trainerController.getPersonalInfo();
         assertEquals("gabrimorandi", trainerPersonalInfo.getUsername());
         assertTrue(PasswordUtils.checkPassword("newpassword", trainerPersonalInfo.getHashPassword()));
+        applicationManager.logout();
     }
+
+    @Test
+    void test5_CRUDCourse() throws AuthenticationException {
+        //admin log in
+        applicationManager.login("mariorossi", "newpassword");
+        AdminCourseController adminCourseController = applicationManager.getAdminCourseController();
+        AdminStaffController adminStaffController = applicationManager.getAdminStaffController();
+
+        adminCourseController.createCourse("Yoga", "Corso di Yoga");
+        ArrayList<Trainer> trainers = adminStaffController.getAllCourseCoach();
+
+        Trainer trainerOfInterest = new Trainer();
+        for (Trainer trainer : trainers)
+            if (Objects.equals(trainer.getUsername(), "viola.pasqui"))
+                trainerOfInterest = trainer;
+
+        adminCourseController.addTrainerToCourse(1, trainerOfInterest.getId());
+
+
+        //add weekly daily classes
+        ArrayList<DailyClass> dailyClasses = adminCourseController.addWeeklyClassSchedule(DayOfWeek.MONDAY,
+                LocalDate.of(2026, 3, 1),
+                LocalDate.of(2026, 3, 31),
+                1,
+                LocalTime.of(18, 30),
+                LocalTime.of(19, 30),
+                20,
+                trainerOfInterest);
+
+        //delete last class
+        for (DailyClass dailyClass : dailyClasses)
+            if (dailyClass.getDay().isEqual(LocalDate.of(2026, 3, 30)))
+                adminCourseController.deleteDailyClass(dailyClass.getId());
+
+        ArrayList<DailyClass> allDailyClass = adminCourseController.getAllDailyClasses();
+        assertEquals(4, allDailyClass.size());
+
+        //create new course
+        adminCourseController.createCourse("Boxe", "Corso di Boxe");
+
+        for (Trainer trainer : trainers)
+            if (Objects.equals(trainer.getUsername(), "gabrimorandi"))
+                trainerOfInterest = trainer;
+
+        adminCourseController.addTrainerToCourse(2, trainerOfInterest.getId());
+        adminCourseController.addDailyClass(LocalDate.of(2026, 3, 3), LocalTime.of(10, 30), LocalTime.of(11, 30), 12, 2, trainerOfInterest);
+
+        ArrayList<DailyClass> boxeDailyClass = adminCourseController.getAllDailyClassesByCourseID(2);
+        assertEquals(1, boxeDailyClass.size());
+    }
+
+
 
     @AfterAll
     static void teardown() {

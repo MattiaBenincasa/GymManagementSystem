@@ -41,7 +41,7 @@ public class DailyClassService {
     public void RemoveDailyClass(int dailyClassID) {
         DailyClass dailyClass = this.dailyClassDAO.getDailyClassByID(dailyClassID);
         LocalDateTime classStartDateTime = LocalDateTime.of(dailyClass.getDay(), dailyClass.getStartTime());
-        LocalDateTime oneDaysFromNow = classStartDateTime.plusDays(1);
+        LocalDateTime oneDaysFromNow = LocalDateTime.now().plusDays(1);
 
         if (classStartDateTime.isBefore(oneDaysFromNow))
             throw new LateCancellationException("A class can be removed at least 1 day before the class starts");
@@ -70,8 +70,7 @@ public class DailyClassService {
                         .isActive(true)
                         .coach(coach)
                         .build();
-                this.dailyClassDAO.createDailyClass(dailyClass);
-                classesCreated.add(dailyClass);
+                classesCreated.add(this.dailyClassDAO.createDailyClass(dailyClass));
             }
             currentDate = currentDate.plusDays(1);
         }
