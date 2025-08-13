@@ -1,5 +1,6 @@
 package ORM.Users;
 
+import BusinessLogic.DTOs.CustomerInfo;
 import BusinessLogic.Exceptions.DAOException;
 import DomainModel.Users.Customer;
 import DomainModel.Users.CustomerCategory;
@@ -137,4 +138,8 @@ public class CustomerDAO {
     }
 
     public ArrayList<Customer> getAllCustomers() {return null;}
+
+    public CustomerInfo getCustomerBookingInfo(Customer customer) {
+        return this.userDAO.getCustomerBookingInfo(customer);
+    }
 }

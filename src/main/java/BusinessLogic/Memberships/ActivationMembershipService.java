@@ -1,5 +1,6 @@
 package BusinessLogic.Memberships;
 
+import BusinessLogic.DTOs.CustomerInfo;
 import DomainModel.Membership.CustomerFee;
 import DomainModel.Membership.CustomerMembership;
 import DomainModel.Membership.Membership;
@@ -42,5 +43,11 @@ public class ActivationMembershipService {
     public ArrayList<CustomerMembership> getAllCustomerMembership(int customerID) {
         Customer customer = this.customerDAO.getCustomerByID(customerID);
         return this.customerMembershipDAO.getAllCustomerMembership(customer);
+    }
+
+    public LocalDate getActiveCustomerFeeExpiry(int customerID) {
+        Customer customer = this.customerDAO.getCustomerByID(customerID);
+        CustomerInfo customerInfo = this.customerDAO.getCustomerBookingInfo(customer);
+        return customerInfo.getFeeExpiry();
     }
 }

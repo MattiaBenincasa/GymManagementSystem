@@ -45,7 +45,7 @@ public class TrainerController {
     }
 
     public ArrayList<TrainerAvailability> addWeeklyTrainerAvailabilities(DayOfWeek dayOfWeek, LocalDate startDate, LocalDate endDate, int trainerID, LocalTime startTime, LocalTime endTime) {
-        return this.addWeeklyTrainerAvailabilities(dayOfWeek, startDate, endDate, trainerID, startTime, endTime);
+        return this.trainerAvailabilityService.addWeeklyTrainerAvailabilities(dayOfWeek, startDate, endDate, trainerID, startTime, endTime);
     }
 
     public void deleteTrainerAvailability(int availabilityId) {
