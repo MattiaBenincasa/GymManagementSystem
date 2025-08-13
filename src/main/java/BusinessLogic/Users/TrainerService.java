@@ -78,4 +78,7 @@ public class TrainerService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public Trainer getTrainerByID(int trainerID) {
+        return this.trainerDAO.getTrainerByID(trainerID);
+    }
 }

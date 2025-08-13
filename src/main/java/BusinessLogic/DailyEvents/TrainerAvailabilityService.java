@@ -1,6 +1,7 @@
 package BusinessLogic.DailyEvents;
 
 import BusinessLogic.Exceptions.LateCancellationException;
+import BusinessLogic.Exceptions.UnauthorizedException;
 import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Trainer;
 import ORM.DailyEvents.TrainerAvailabilityDAO;
@@ -29,8 +30,11 @@ public class TrainerAvailabilityService {
         return this.trainerAvailabilityDAO.createTrainerAvailability(trainerAvailability);
     }
 
-    public void deleteTrainerAvailability(int trainerAvailabilityID) {
+    public void deleteTrainerAvailability(int trainerID, int trainerAvailabilityID) {
         TrainerAvailability trainerAvailability = this.trainerAvailabilityDAO.getTrainerAvailabilityByID(trainerAvailabilityID);
+
+        if (trainerAvailability.getTrainer().getId() != trainerID)
+            throw new UnauthorizedException("You can delete only yours availabilities");
 
         LocalDateTime classStartDateTime = LocalDateTime.of(trainerAvailability.getDay(), trainerAvailability.getStartTime());
         LocalDateTime oneDaysFromNow = classStartDateTime.plusDays(1);

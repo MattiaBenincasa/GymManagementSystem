@@ -1,9 +1,11 @@
 package Controllers.Trainer;
 
+import BusinessLogic.AuthService.Session;
 import BusinessLogic.DailyEvents.DailyClassService;
 import BusinessLogic.DailyEvents.TrainerAvailabilityService;
 import BusinessLogic.Users.TrainerService;
 import DomainModel.DailyEvents.TrainerAvailability;
+import DomainModel.Users.Trainer;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -14,6 +16,7 @@ public class TrainerController {
     private final TrainerService trainerService;
     private final TrainerAvailabilityService trainerAvailabilityService;
     private final DailyClassService dailyClassService;
+    private Session session;
 
     public TrainerController(TrainerService trainerService, TrainerAvailabilityService trainerAvailabilityService, DailyClassService dailyClassService) {
         this.trainerService = trainerService;
@@ -21,38 +24,54 @@ public class TrainerController {
         this.dailyClassService = dailyClassService;
     }
 
-    public void changeTrainerInfo(int trainerID, String username, String name, String surname, String mail, String phoneNumber) {
-        trainerService.changeTrainerInfo(trainerID, username, name, surname, mail, phoneNumber);
+    public void setSession(Session session) {
+        this.session = session;
     }
 
-    public void changePassword(int trainerID, String oldPassword, String newPassword) {
-        trainerService.changePassword(trainerID, oldPassword, newPassword);
+    public void changePersonalInfo(String username, String name, String surname, String mail, String phoneNumber) {
+        Session.validateSession(this.session);
+        trainerService.changeTrainerInfo(this.session.getUserID(), username, name, surname, mail, phoneNumber);
+    }
+
+    public void changePassword(String oldPassword, String newPassword) {
+        Session.validateSession(this.session);
+        trainerService.changePassword(this.session.getUserID(), oldPassword, newPassword);
     }
 
     // Metodi da DailyClassService
     public void cancelDailyClass(int dailyClassID) {
+        Session.validateSession(this.session);
         dailyClassService.cancelDailyClass(dailyClassID);
     }
 
     // Metodi da TrainerAvailabilityService
-    public TrainerAvailability addTrainerAvailability(int trainerId, LocalTime startTime, LocalTime endTime, LocalDate day) {
-        return trainerAvailabilityService.addtrainerAvailability(trainerId, startTime, endTime, day);
+    public TrainerAvailability addTrainerAvailability(LocalTime startTime, LocalTime endTime, LocalDate day) {
+        Session.validateSession(this.session);
+        return trainerAvailabilityService.addtrainerAvailability(this.session.getUserID(), startTime, endTime, day);
     }
 
-    public ArrayList<TrainerAvailability> addWeeklyTrainerAvailabilities(DayOfWeek dayOfWeek, LocalDate startDate, LocalDate endDate, int trainerID, LocalTime startTime, LocalTime endTime) {
-        return this.trainerAvailabilityService.addWeeklyTrainerAvailabilities(dayOfWeek, startDate, endDate, trainerID, startTime, endTime);
+    public ArrayList<TrainerAvailability> addWeeklyTrainerAvailabilities(DayOfWeek dayOfWeek, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        Session.validateSession(this.session);
+        return this.trainerAvailabilityService.addWeeklyTrainerAvailabilities(dayOfWeek, startDate, endDate, this.session.getUserID(), startTime, endTime);
     }
 
     public void deleteTrainerAvailability(int availabilityId) {
-        this.trainerAvailabilityService.deleteTrainerAvailability(availabilityId);
+        Session.validateSession(this.session);
+        this.trainerAvailabilityService.deleteTrainerAvailability(this.session.getUserID(), availabilityId);
     }
 
     public ArrayList<TrainerAvailability> getTrainerAvailabilities(int trainerId) {
+        Session.validateSession(this.session);
         return trainerAvailabilityService.getAvailabilitiesByTrainerID(trainerId);
     }
 
     public ArrayList<TrainerAvailability> getAvailabilitiesOfAllTrainers() {
+        Session.validateSession(this.session);
         return trainerAvailabilityService.getAvailabilitiesOfAllTrainers();
     }
 
+    public Trainer getPersonalInfo() {
+        Session.validateSession(this.session);
+        return trainerService.getTrainerByID(this.session.getUserID());
+    }
 }

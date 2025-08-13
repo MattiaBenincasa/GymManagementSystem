@@ -119,7 +119,7 @@ public class ApplicationManager  {
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "ADMIN"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
-        this.adminStaffController.setUserLoggedID(this.currentSession.getUserID());
+        this.adminStaffController.setSession(this.currentSession);
         return this.adminStaffController;
     }
 
@@ -150,6 +150,7 @@ public class ApplicationManager  {
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "RECEPTIONIST"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
+        this.receptionistController.setSession(this.currentSession);
         return this.receptionistController;
     }
 
@@ -160,6 +161,7 @@ public class ApplicationManager  {
         if(this.currentSession.isValid() && !Objects.equals(this.currentSession.getRole(), "TRAINER"))
             throw new UnauthorizedException("You are not authorized to get this controller");
 
+        this.trainerController.setSession(this.currentSession);
         return this.trainerController;
     }
 

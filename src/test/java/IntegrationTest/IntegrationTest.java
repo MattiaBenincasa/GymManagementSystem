@@ -5,6 +5,8 @@ import BusinessLogic.Exceptions.InvalidSessionException;
 import BusinessLogic.Exceptions.UnauthorizedException;
 import Controllers.Admin.AdminStaffController;
 import Controllers.ApplicationManager;
+import Controllers.Receptionist.ReceptionistController;
+import Controllers.Trainer.TrainerController;
 import DomainModel.Users.Staff;
 import DomainModel.Users.StaffRole;
 import DomainModel.Users.Trainer;
@@ -12,14 +14,14 @@ import ORM.Users.StaffDAO;
 import ORM.Users.UserDAO;
 import ORMTest.Users.UserDAOTestUtils;
 import TestUtils.DAOTestUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import javax.naming.AuthenticationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class IntegrationTest {
     static ApplicationManager applicationManager;
 
@@ -78,7 +80,7 @@ public class IntegrationTest {
     }
 
     @Test
-    void test3_CRUDStaffAndTrainer() throws AuthenticationException {
+    void test3_CRUDStaffAndTrainer() {
         //admin is always logged in
         AdminStaffController adminStaffController = applicationManager.getAdminStaffController();
         Staff receptionist = adminStaffController.createStaff("chiara.solari", "temporary", "chiara.sol@gmail.com", "chiara", "solari", "3452221345" , LocalDate.of(2000, 7, 12), StaffRole.RECEPTIONIST);
@@ -113,7 +115,31 @@ public class IntegrationTest {
         //get all personal trainers
         ArrayList<Trainer> allPersonalTrainers = adminStaffController.getAllPersonalTrainers();
         assertEquals(2, allPersonalTrainers.size());
+        applicationManager.logout();
+    }
 
+    @Test
+    void test4_changePersonalInfoOfUsersCreatedByAdmin() throws AuthenticationException {
+        // receptionist log in
+        applicationManager.login("chiara.solari", "temporary");
+        ReceptionistController receptionistController = applicationManager.getReceptionistController();
+
+        receptionistController.changePersonalInfo("chiarasolari", "chiara", "solari", "chiara.sol@gmail.com", "3452221345");
+        receptionistController.changePassword("temporary", "newpassword");
+        Staff receptionistPersonalInfo = receptionistController.getPersonalInfo();
+
+        assertEquals("chiarasolari", receptionistPersonalInfo.getUsername());
+        assertTrue(PasswordUtils.checkPassword("newpassword", receptionistPersonalInfo.getHashPassword()));
+        applicationManager.logout();
+
+        //trainer 1 log in
+        applicationManager.login("gabri.morandi", "temporary");
+        TrainerController trainerController = applicationManager.getTrainerController();
+        trainerController.changePersonalInfo("gabrimorandi", "Gabriele", "Morandi", "gabri@gmail.com", "22222222");
+        trainerController.changePassword("temporary", "newpassword");
+        Trainer trainerPersonalInfo = trainerController.getPersonalInfo();
+        assertEquals("gabrimorandi", trainerPersonalInfo.getUsername());
+        assertTrue(PasswordUtils.checkPassword("newpassword", trainerPersonalInfo.getHashPassword()));
     }
 
     @AfterAll

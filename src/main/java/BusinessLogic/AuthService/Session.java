@@ -1,5 +1,7 @@
 package BusinessLogic.AuthService;
 
+import BusinessLogic.Exceptions.InvalidSessionException;
+
 public class Session {
     private final int userID;
     private final String role;
@@ -25,5 +27,10 @@ public class Session {
 
     public void invalid() {
         this.valid = false;
+    }
+
+    public static void validateSession(Session session) {
+        if (session==null || !session.isValid())
+            throw new InvalidSessionException("Current session is invalid");
     }
 }
