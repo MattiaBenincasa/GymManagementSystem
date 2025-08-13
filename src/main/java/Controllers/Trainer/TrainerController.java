@@ -1,9 +1,11 @@
 package Controllers.Trainer;
 
 import BusinessLogic.AuthService.Session;
+import BusinessLogic.Bookings.AppointmentTrainerBookingService;
 import BusinessLogic.DailyEvents.DailyClassService;
 import BusinessLogic.DailyEvents.TrainerAvailabilityService;
 import BusinessLogic.Users.TrainerService;
+import DomainModel.Bookings.Appointment;
 import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Trainer;
 
@@ -16,12 +18,14 @@ public class TrainerController {
     private final TrainerService trainerService;
     private final TrainerAvailabilityService trainerAvailabilityService;
     private final DailyClassService dailyClassService;
+    private final AppointmentTrainerBookingService appointmentTrainerBookingService;
     private Session session;
 
-    public TrainerController(TrainerService trainerService, TrainerAvailabilityService trainerAvailabilityService, DailyClassService dailyClassService) {
+    public TrainerController(TrainerService trainerService, TrainerAvailabilityService trainerAvailabilityService, DailyClassService dailyClassService, AppointmentTrainerBookingService appointmentTrainerBookingService) {
         this.trainerService = trainerService;
         this.trainerAvailabilityService = trainerAvailabilityService;
         this.dailyClassService = dailyClassService;
+        this.appointmentTrainerBookingService = appointmentTrainerBookingService;
     }
 
     public void setSession(Session session) {
@@ -73,5 +77,10 @@ public class TrainerController {
     public Trainer getPersonalInfo() {
         Session.validateSession(this.session);
         return trainerService.getTrainerByID(this.session.getUserID());
+    }
+
+    public ArrayList<Appointment> getAllAppointments() {
+        Session.validateSession(this.session);
+        return this.appointmentTrainerBookingService.getAllDailyAppointment(this.session.getUserID());
     }
 }

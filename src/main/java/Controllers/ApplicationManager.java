@@ -91,7 +91,7 @@ public class ApplicationManager  {
         this.adminMembershipController = new AdminMembershipController(courseMembershipService, wrMembershipService, discountService, staffService, trainerService, bundleService, registrationFeeService);
         this.adminStaffController = new AdminStaffController(staffService, trainerService, userService);
         this.receptionistController = new ReceptionistController(staffService, customerService, purchaseService, membershipDAO, bundleDAO);
-        this.trainerController = new TrainerController(trainerService, trainerAvailabilityService, dailyClassService);
+        this.trainerController = new TrainerController(trainerService, trainerAvailabilityService, dailyClassService, appointmentTrainerBookingService);
         this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService, trainerAvailabilityService);
     }
 

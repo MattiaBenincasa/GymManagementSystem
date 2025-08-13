@@ -353,6 +353,15 @@ public class IntegrationTest {
         assertEquals(1, appointments.size());
     }
 
+    @Test
+    @Order(14)
+    void test14_trainerNowCanSeeOneAppointment() throws AuthenticationException {
+        applicationManager.login("gabrimorandi", "newpassword");
+        TrainerController trainerController = applicationManager.getTrainerController();
+        ArrayList<Appointment> appointments = trainerController.getAllAppointments();
+        assertEquals(1, appointments.size());
+    }
+
     @AfterAll
     static void teardown() {
         DAOTestUtils.resetDatabase();
