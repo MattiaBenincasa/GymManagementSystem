@@ -18,11 +18,11 @@ public class Appointment {
     }
 
     public Customer getCustomer() {
-        return customer;
+        return new Customer(customer);
     }
 
     public TrainerAvailability getTrainerAvailability() {
-        return trainerAvailability;
+        return new TrainerAvailability(trainerAvailability);
     }
 
     public String getAppointmentPurpose() {
