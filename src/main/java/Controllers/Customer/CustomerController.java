@@ -3,6 +3,7 @@ package Controllers.Customer;
 import BusinessLogic.AuthService.Session;
 import BusinessLogic.Bookings.AppointmentTrainerBookingService;
 import BusinessLogic.Bookings.ClassBookingService;
+import BusinessLogic.DailyEvents.DailyClassService;
 import BusinessLogic.DailyEvents.TrainerAvailabilityService;
 import BusinessLogic.Memberships.ActivationMembershipService;
 import BusinessLogic.Users.CustomerService;
@@ -23,14 +24,16 @@ public class CustomerController {
     private final ClassBookingService classBookingService;
     private final AppointmentTrainerBookingService appointmentTrainerBookingService;
     private final TrainerAvailabilityService trainerAvailabilityService;
+    private final DailyClassService dailyClassService;
     private Session session;
 
-    public CustomerController(ActivationMembershipService activationMembershipService, ClassBookingService classBookingService, CustomerService customerService, AppointmentTrainerBookingService appointmentTrainerBookingService, TrainerAvailabilityService trainerAvailabilityService) {
+    public CustomerController(ActivationMembershipService activationMembershipService, ClassBookingService classBookingService, CustomerService customerService, AppointmentTrainerBookingService appointmentTrainerBookingService, TrainerAvailabilityService trainerAvailabilityService, DailyClassService dailyClassService) {
         this.customerService = customerService;
         this.activationMembershipService = activationMembershipService;
         this.appointmentTrainerBookingService = appointmentTrainerBookingService;
         this.classBookingService = classBookingService;
         this.trainerAvailabilityService = trainerAvailabilityService;
+        this.dailyClassService = dailyClassService;
     }
 
     public void setSession(Session session) {
@@ -64,6 +67,16 @@ public class CustomerController {
     public void bookAClass(DailyClass dailyClass) {
         Session.validateSession(session);
         this.classBookingService.bookAClass(this.session.getUserID(), dailyClass);
+    }
+
+    public ArrayList<DailyClass> getAllDailyClasses() {
+        Session.validateSession(this.session);
+        return dailyClassService.getAllDailyClass();
+    }
+
+    public ArrayList<DailyClass> getAllDailyClassesByCourseID(int courseID) {
+        Session.validateSession(this.session);
+        return dailyClassService.getAllDailyClassOfCourse(courseID);
     }
 
     public void deleteClassBooking(Booking booking) {

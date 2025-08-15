@@ -90,9 +90,9 @@ public class ApplicationManager  {
         this.adminCourseController = new AdminCourseController(courseService, dailyClassService);
         this.adminMembershipController = new AdminMembershipController(courseMembershipService, wrMembershipService, discountService, staffService, trainerService, bundleService, registrationFeeService);
         this.adminStaffController = new AdminStaffController(staffService, trainerService, userService);
-        this.receptionistController = new ReceptionistController(staffService, customerService, purchaseService, membershipDAO, bundleDAO);
+        this.receptionistController = new ReceptionistController(staffService, customerService, purchaseService);
         this.trainerController = new TrainerController(trainerService, trainerAvailabilityService, dailyClassService, appointmentTrainerBookingService);
-        this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService, trainerAvailabilityService);
+        this.customerController = new CustomerController(activationMembershipService, classBookingService, customerService, appointmentTrainerBookingService, trainerAvailabilityService, dailyClassService);
     }
 
     public Session getCurrentSession() {
