@@ -63,7 +63,7 @@ public abstract class Membership {
     }
 
     public ArrayList<DiscountStrategy> getDiscounts() {
-        return this.discounts;
+        return new ArrayList<>(this.discounts);
     }
 
     public int getId() {

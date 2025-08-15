@@ -1,4 +1,4 @@
-package BusinessLogic.Exceptions;
+package Exceptions;
 
 public class UnauthorizedException extends RuntimeException {
     public UnauthorizedException(String message) {

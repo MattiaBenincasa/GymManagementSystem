@@ -72,6 +72,6 @@ public class Course {
     }
 
     public void setTrainers(ArrayList<Trainer> trainers) {
-        this.trainers = trainers;
+        this.trainers = new ArrayList<>(trainers);
     }
 }

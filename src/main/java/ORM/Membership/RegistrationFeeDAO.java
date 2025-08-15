@@ -1,6 +1,6 @@
 package ORM.Membership;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.Membership.RegistrationFee;
 import ORM.ConnectionManager;
 

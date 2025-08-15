@@ -1,4 +1,4 @@
-package BusinessLogic.Exceptions;
+package Exceptions;
 
 public class LateCancellationException extends RuntimeException {
     public LateCancellationException(String message) {

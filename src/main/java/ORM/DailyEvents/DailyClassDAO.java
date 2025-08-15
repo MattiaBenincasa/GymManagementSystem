@@ -1,6 +1,6 @@
 package ORM.DailyEvents;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.DailyEvents.DailyClass;
 import ORM.ConnectionManager;
 import ORM.Membership.CourseDAO;

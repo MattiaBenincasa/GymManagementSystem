@@ -1,5 +1,5 @@
 package ORMTest.DailyEventsTest;
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.Membership.Course;
 import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Trainer;

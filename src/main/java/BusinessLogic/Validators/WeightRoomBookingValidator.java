@@ -1,7 +1,7 @@
 package BusinessLogic.Validators;
 
 import BusinessLogic.DTOs.WeightRoomBookingInfo;
-import BusinessLogic.Exceptions.ValidatorException;
+import Exceptions.ValidatorException;
 import DomainModel.Membership.WRMembershipType;
 
 public class WeightRoomBookingValidator extends Validator {

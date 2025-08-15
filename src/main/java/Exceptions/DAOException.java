@@ -1,4 +1,4 @@
-package BusinessLogic.Exceptions;
+package Exceptions;
 
 public class DAOException extends RuntimeException {
 

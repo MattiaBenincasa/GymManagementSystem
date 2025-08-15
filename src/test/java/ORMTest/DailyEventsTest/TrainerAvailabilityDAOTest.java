@@ -1,6 +1,6 @@
 package ORMTest.DailyEventsTest;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Trainer;
 import ORM.DailyEvents.TrainerAvailabilityDAO;

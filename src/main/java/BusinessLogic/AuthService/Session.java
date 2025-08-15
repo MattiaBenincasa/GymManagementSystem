@@ -1,6 +1,6 @@
 package BusinessLogic.AuthService;
 
-import BusinessLogic.Exceptions.InvalidSessionException;
+import Exceptions.InvalidSessionException;
 
 public class Session {
     private final int userID;

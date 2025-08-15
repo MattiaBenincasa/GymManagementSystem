@@ -1,6 +1,6 @@
 package ORMTest.Users;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.Users.Staff;
 import ORM.Users.StaffDAO;
 import ORM.Users.UserDAO;

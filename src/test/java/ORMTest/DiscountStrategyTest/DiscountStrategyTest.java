@@ -1,6 +1,6 @@
 package ORMTest.DiscountStrategyTest;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.DiscountStrategy.*;
 import DomainModel.Users.CustomerCategory;
 import ORM.DiscountStrategy.DiscountsDAO;

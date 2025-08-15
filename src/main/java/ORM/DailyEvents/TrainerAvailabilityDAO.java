@@ -1,6 +1,6 @@
 package ORM.DailyEvents;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Trainer;
 import ORM.ConnectionManager;
@@ -8,8 +8,6 @@ import ORM.Users.TrainerDAO;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.sql.*;
 

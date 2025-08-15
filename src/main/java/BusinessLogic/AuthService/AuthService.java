@@ -1,6 +1,6 @@
 package BusinessLogic.AuthService;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import ORM.Users.UserDAO;
 
 import javax.naming.AuthenticationException;

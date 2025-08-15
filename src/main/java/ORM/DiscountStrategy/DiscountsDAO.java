@@ -4,7 +4,7 @@ import DomainModel.DiscountStrategy.*;
 import DomainModel.Users.CustomerCategory;
 import ORM.ConnectionManager;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

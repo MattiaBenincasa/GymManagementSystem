@@ -1,6 +1,6 @@
 package ORMTest.MembershipTest;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.DiscountStrategy.FixedDiscount;
 import DomainModel.DiscountStrategy.PercentageDiscount;
 import DomainModel.Membership.Course;

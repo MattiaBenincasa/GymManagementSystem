@@ -1,6 +1,6 @@
 package ORM.Users;
 
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.Users.Staff;
 import DomainModel.Users.StaffRole;
 import ORM.ConnectionManager;

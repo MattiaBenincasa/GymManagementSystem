@@ -1,7 +1,7 @@
 package BusinessLogic.DailyEvents;
 
-import BusinessLogic.Exceptions.LateCancellationException;
-import BusinessLogic.Exceptions.UnauthorizedException;
+import Exceptions.LateCancellationException;
+import Exceptions.UnauthorizedException;
 import DomainModel.DailyEvents.TrainerAvailability;
 import DomainModel.Users.Trainer;
 import ORM.DailyEvents.TrainerAvailabilityDAO;

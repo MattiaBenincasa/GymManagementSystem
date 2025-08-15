@@ -1,7 +1,7 @@
 package BusinessLogicTest.ValidatorsTest;
 
 import BusinessLogic.DTOs.ClassBookingInfo;
-import BusinessLogic.Exceptions.ValidatorException;
+import Exceptions.ValidatorException;
 import BusinessLogic.Validators.CheckBookingsValidator;
 import BusinessLogic.Validators.MembershipValidator;
 import BusinessLogic.Validators.Validator;

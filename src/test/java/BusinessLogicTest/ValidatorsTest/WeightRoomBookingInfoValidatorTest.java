@@ -1,7 +1,7 @@
 package BusinessLogicTest.ValidatorsTest;
 
 import BusinessLogic.DTOs.WeightRoomBookingInfo;
-import BusinessLogic.Exceptions.ValidatorException;
+import Exceptions.ValidatorException;
 import BusinessLogic.Validators.MembershipValidator;
 import BusinessLogic.Validators.Validator;
 import BusinessLogic.Validators.WeightRoomBookingValidator;

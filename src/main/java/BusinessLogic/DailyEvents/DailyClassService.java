@@ -1,6 +1,6 @@
 package BusinessLogic.DailyEvents;
 
-import BusinessLogic.Exceptions.LateCancellationException;
+import Exceptions.LateCancellationException;
 import DomainModel.Membership.Course;
 import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Trainer;

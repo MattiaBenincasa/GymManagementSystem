@@ -1,7 +1,7 @@
 package ORM.Bookings;
 
 import BusinessLogic.DTOs.ClassBookingInfo;
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.Bookings.Booking;
 import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Users.Customer;

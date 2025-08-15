@@ -1,7 +1,7 @@
 package ORM.Users;
 
 import BusinessLogic.DTOs.CustomerInfo;
-import BusinessLogic.Exceptions.DAOException;
+import Exceptions.DAOException;
 import DomainModel.Users.Customer;
 import DomainModel.Users.User;
 import ORM.ConnectionManager;
