@@ -33,11 +33,4 @@ public class PurchaseDTO {
         return customerID;
     }
 
-    public BigDecimal getTotal() {
-        BigDecimal total = BigDecimal.ZERO;
-        for (PurchaseItemDTO purchaseItemDTO : itemsToPurchase)
-            total = total.add(purchaseItemDTO.getPrice());
-
-        return total;
-    }
 }

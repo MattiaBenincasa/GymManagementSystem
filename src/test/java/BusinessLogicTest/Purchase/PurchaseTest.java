@@ -57,7 +57,7 @@ public class PurchaseTest {
         this.customerFeeDAO = new CustomerFeeDAO(userDAO);
         this.customerMembershipDAO = new CustomerMembershipDAO(courseDAO, membershipDAO);
         this.activationMembershipService = new ActivationMembershipService(customerMembershipDAO, customerFeeDAO, customerDAO, membershipDAO);
-        this.purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, customerFeeDAO, bundleDAO, customerDAO);
+        this.purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, customerFeeDAO, bundleDAO, customerDAO, membershipDAO);
     }
 
     @Test
@@ -95,13 +95,13 @@ public class PurchaseTest {
 
         //creation of purchaseDTO
         PurchaseItemDTO purchaseItemDTO = new PurchaseItemDTO(ItemType.BUNDLE,
-                bundle.getId(), bundle.getDiscountedPrice(customer), LocalDate.now());
+                bundle.getId(), LocalDate.now());
 
         ArrayList<PurchaseItemDTO> purchaseItemDTOS = new ArrayList<>();
         purchaseItemDTOS.add(purchaseItemDTO);
         PurchaseDTO purchaseDTO = new PurchaseDTO(purchaseItemDTOS, true, LocalDate.now(), customer.getId());
 
-        assertEquals(new BigDecimal("250.00"), purchaseDTO.getTotal());
+        assertEquals(new BigDecimal("250.00"), this.purchaseService.calculateTotal(purchaseDTO));
         this.purchaseService.executePurchase(purchaseDTO, new CashPayment());
 
         //now customer should have two membership activated and registration fee activated

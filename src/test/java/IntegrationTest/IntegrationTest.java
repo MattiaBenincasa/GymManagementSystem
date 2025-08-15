@@ -316,19 +316,16 @@ public class IntegrationTest {
         ReceptionistController receptionistController = applicationManager.getReceptionistController();
         Customer customer = receptionistController.completeCustomerCreation(6, "Giulio", "Righi", "2222222", LocalDate.of(2003, 3, 12), CustomerCategory.STUDENT);
         receptionistController.addMedicalCertificate(6, LocalDate.now(), 12, false);
-
-        //get all necessary elements
-        Bundle bundle = receptionistController.getBundleByID(1);
-        Membership membership = receptionistController.getMembershipByID(1);
         //creation of DTOs
-       PurchaseItemDTO purchaseItemDTO = new PurchaseItemDTO(ItemType.MEMBERSHIP, 1, membership.getDiscountedPrice(customer), LocalDate.now());
-       PurchaseItemDTO bundlePurchaseItemDTO = new PurchaseItemDTO(ItemType.BUNDLE, 1, bundle.getDiscountedPrice(customer), LocalDate.now());
-       ArrayList<PurchaseItemDTO> purchaseItemDTOS = new ArrayList<>();
-       purchaseItemDTOS.add(purchaseItemDTO);
-       purchaseItemDTOS.add(bundlePurchaseItemDTO);
-       PurchaseDTO purchaseDTO = new PurchaseDTO(purchaseItemDTOS, true, LocalDate.now(), customer.getId());
-       assertEquals(new BigDecimal("1240.00"), purchaseDTO.getTotal()); //with discounts
-       receptionistController.executePurchase(purchaseDTO, new CashPayment());
+
+        PurchaseItemDTO purchaseItemDTO = new PurchaseItemDTO(ItemType.MEMBERSHIP, 1, LocalDate.now());
+        PurchaseItemDTO bundlePurchaseItemDTO = new PurchaseItemDTO(ItemType.BUNDLE, 1, LocalDate.now());
+        ArrayList<PurchaseItemDTO> purchaseItemDTOS = new ArrayList<>();
+        purchaseItemDTOS.add(purchaseItemDTO);
+        purchaseItemDTOS.add(bundlePurchaseItemDTO);
+        PurchaseDTO purchaseDTO = new PurchaseDTO(purchaseItemDTOS, true, LocalDate.now(), customer.getId());
+        assertEquals(new BigDecimal("1240.00"), receptionistController.calculateTotal(purchaseDTO)); //with discounts
+        receptionistController.executePurchase(purchaseDTO, new CashPayment());
     }
 
     @Test

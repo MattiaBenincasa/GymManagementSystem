@@ -80,7 +80,7 @@ public class ApplicationManager  {
         CourseService courseService = new CourseService(courseDAO, trainerDAO);
         RegistrationFeeService registrationFeeService = new RegistrationFeeService(registrationFeeDAO);
         WRMembershipService wrMembershipService = new WRMembershipService(weightRoomMembershipDAO, discountsDAO);
-        PurchaseService purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, customerFeeDAO, bundleDAO, customerDAO);
+        PurchaseService purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, customerFeeDAO, bundleDAO, customerDAO, membershipDAO);
         DiscountService discountService = new DiscountService(discountsDAO);
         DailyClassService dailyClassService = new DailyClassService(dailyClassDAO, courseDAO);
         TrainerAvailabilityService trainerAvailabilityService = new TrainerAvailabilityService(trainerAvailabilityDAO, trainerDAO);

@@ -14,6 +14,7 @@ import DomainModel.Users.Staff;
 import ORM.Membership.BundleDAO;
 import ORM.Membership.MembershipDAO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -85,6 +86,11 @@ public class ReceptionistController {
     public void executePurchase(PurchaseDTO purchaseDTO, PaymentMethod paymentMethod) {
         Session.validateSession(this.session);
         purchaseService.executePurchase(purchaseDTO, paymentMethod);
+    }
+
+    public BigDecimal calculateTotal(PurchaseDTO purchaseDTO) {
+        Session.validateSession(this.session);
+        return purchaseService.calculateTotal(purchaseDTO);
     }
 
     public Membership getMembershipByID(int membershipID) {
