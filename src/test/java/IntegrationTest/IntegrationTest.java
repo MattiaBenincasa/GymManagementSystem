@@ -309,21 +309,28 @@ public class IntegrationTest {
     }
 
     @Test
-    @Order(11)
-    void test11_receptionistActivateMemberships() throws AuthenticationException {
+    @Order(10)
+    void test9_receptionistCompleteCustomerCreation() throws AuthenticationException {
         //receptionist log in
         applicationManager.login("chiarasolari", "newpassword");
         ReceptionistController receptionistController = applicationManager.getReceptionistController();
         Customer customer = receptionistController.completeCustomerCreation(6, "Giulio", "Righi", "2222222", LocalDate.of(2003, 3, 12), CustomerCategory.STUDENT);
         receptionistController.addMedicalCertificate(6, LocalDate.now(), 12, false);
-        //creation of DTOs
+    }
 
+    @Test
+    @Order(11)
+    void test11_receptionistActivateMemberships() {
+        //receptionist is always logged in
+        ReceptionistController receptionistController = applicationManager.getReceptionistController();
+
+        //creation of DTOs
         PurchaseItemDTO purchaseItemDTO = new PurchaseItemDTO(ItemType.MEMBERSHIP, 1, LocalDate.now());
         PurchaseItemDTO bundlePurchaseItemDTO = new PurchaseItemDTO(ItemType.BUNDLE, 1, LocalDate.now());
         ArrayList<PurchaseItemDTO> purchaseItemDTOS = new ArrayList<>();
         purchaseItemDTOS.add(purchaseItemDTO);
         purchaseItemDTOS.add(bundlePurchaseItemDTO);
-        PurchaseDTO purchaseDTO = new PurchaseDTO(purchaseItemDTOS, true, LocalDate.now(), customer.getId());
+        PurchaseDTO purchaseDTO = new PurchaseDTO(purchaseItemDTOS, true, LocalDate.now(), 6);
         assertEquals(new BigDecimal("1240.00"), receptionistController.calculateTotal(purchaseDTO)); //with discounts
         receptionistController.executePurchase(purchaseDTO, new CashPayment());
     }
