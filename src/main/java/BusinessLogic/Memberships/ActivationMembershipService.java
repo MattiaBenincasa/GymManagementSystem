@@ -1,6 +1,6 @@
 package BusinessLogic.Memberships;
 
-import BusinessLogic.DTOs.CustomerInfo;
+import DTOs.CustomerInfo;
 import DomainModel.Membership.CustomerFee;
 import DomainModel.Membership.CustomerMembership;
 import DomainModel.Membership.Membership;

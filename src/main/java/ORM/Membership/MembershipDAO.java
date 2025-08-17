@@ -6,7 +6,7 @@ import DomainModel.Membership.CourseMembership;
 import DomainModel.Membership.Membership;
 import DomainModel.Membership.WeightRoomMembership;
 import ORM.ConnectionManager;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,6 @@
 package BusinessLogic.Validators;
 
-import BusinessLogic.DTOs.CustomerInfo;
+import DTOs.CustomerInfo;
 import Exceptions.ValidatorException;
 
 import java.time.LocalDate;

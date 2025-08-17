@@ -30,10 +30,6 @@ public class TrainerAvailabilityService {
         return this.trainerAvailabilityDAO.createTrainerAvailability(trainerAvailability);
     }
 
-    public ArrayList<TrainerAvailability> getTrainerAvailabilities(int trainerID) {
-        return this.trainerAvailabilityDAO.getAllTrainerAvailabilityByTrainerID(trainerID);
-    }
-
     public void deleteTrainerAvailability(int trainerID, int trainerAvailabilityID) {
         TrainerAvailability trainerAvailability = this.trainerAvailabilityDAO.getTrainerAvailabilityByID(trainerAvailabilityID);
 

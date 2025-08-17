@@ -1,6 +1,6 @@
 package ORMTest.BookingsTest;
 
-import BusinessLogic.DTOs.WeightRoomBookingInfo;
+import DTOs.WeightRoomBookingInfo;
 import Exceptions.DAOException;
 import DomainModel.Bookings.Appointment;
 import DomainModel.DailyEvents.TrainerAvailability;
@@ -11,7 +11,7 @@ import DomainModel.Users.Customer;
 import DomainModel.Users.Trainer;
 import ORM.Bookings.AppointmentDAO;
 import ORM.DailyEvents.TrainerAvailabilityDAO;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.CourseDAO;
 import ORM.Membership.CustomerMembershipDAO;
 import ORM.Membership.MembershipDAO;

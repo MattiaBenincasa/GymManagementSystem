@@ -3,7 +3,7 @@ package BusinessLogic.Memberships;
 import DomainModel.DiscountStrategy.DiscountStrategy;
 import DomainModel.Membership.Course;
 import DomainModel.Membership.CourseMembership;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.CourseDAO;
 import ORM.Membership.CourseMembershipDAO;
 

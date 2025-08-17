@@ -1,8 +1,8 @@
-package BusinessLogic.DiscountService;
+package BusinessLogic;
 
 import DomainModel.DiscountStrategy.*;
 import DomainModel.Users.CustomerCategory;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 
 import java.time.Clock;
 import java.time.Month;

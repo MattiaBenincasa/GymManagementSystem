@@ -5,7 +5,7 @@ import DomainModel.DiscountStrategy.DiscountStrategy;
 import DomainModel.Membership.Bundle;
 import DomainModel.Membership.Membership;
 import ORM.ConnectionManager;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

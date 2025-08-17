@@ -1,7 +1,7 @@
 package BusinessLogic.Bookings;
 
-import BusinessLogic.DTOs.CustomerInfo;
-import BusinessLogic.DTOs.WeightRoomBookingInfo;
+import DTOs.CustomerInfo;
+import DTOs.WeightRoomBookingInfo;
 import Exceptions.LateCancellationException;
 import BusinessLogic.Validators.*;
 import DomainModel.Bookings.Appointment;

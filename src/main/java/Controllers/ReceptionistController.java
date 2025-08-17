@@ -1,7 +1,7 @@
-package Controllers.Receptionist;
+package Controllers;
 
 import BusinessLogic.AuthService.Session;
-import BusinessLogic.DTOs.PurchaseDTO;
+import DTOs.PurchaseDTO;
 import BusinessLogic.Purchase.PaymentMethod;
 import BusinessLogic.Purchase.PurchaseService;
 import BusinessLogic.Users.CustomerService;

@@ -1,9 +1,9 @@
 package IntegrationTest;
 
 import BusinessLogic.AuthService.PasswordUtils;
-import BusinessLogic.DTOs.ItemType;
-import BusinessLogic.DTOs.PurchaseDTO;
-import BusinessLogic.DTOs.PurchaseItemDTO;
+import DTOs.ItemType;
+import DTOs.PurchaseDTO;
+import DTOs.PurchaseItemDTO;
 import Exceptions.InvalidSessionException;
 import Exceptions.UnauthorizedException;
 import BusinessLogic.Purchase.CashPayment;
@@ -11,9 +11,9 @@ import Controllers.Admin.AdminCourseController;
 import Controllers.Admin.AdminMembershipController;
 import Controllers.Admin.AdminStaffController;
 import Controllers.ApplicationManager;
-import Controllers.Customer.CustomerController;
-import Controllers.Receptionist.ReceptionistController;
-import Controllers.Trainer.TrainerController;
+import Controllers.CustomerController;
+import Controllers.ReceptionistController;
+import Controllers.TrainerController;
 import DomainModel.Bookings.Appointment;
 import DomainModel.DailyEvents.DailyClass;
 import DomainModel.DailyEvents.TrainerAvailability;

@@ -1,7 +1,7 @@
 package BusinessLogic.Bookings;
 
-import BusinessLogic.DTOs.ClassBookingInfo;
-import BusinessLogic.DTOs.CustomerInfo;
+import DTOs.ClassBookingInfo;
+import DTOs.CustomerInfo;
 import Exceptions.LateCancellationException;
 import BusinessLogic.Validators.*;
 import DomainModel.Bookings.Booking;

@@ -6,7 +6,7 @@ import BusinessLogic.Bookings.AppointmentTrainerBookingService;
 import BusinessLogic.Bookings.ClassBookingService;
 import BusinessLogic.DailyEvents.DailyClassService;
 import BusinessLogic.DailyEvents.TrainerAvailabilityService;
-import BusinessLogic.DiscountService.DiscountService;
+import BusinessLogic.DiscountService;
 import Exceptions.InvalidSessionException;
 import Exceptions.UnauthorizedException;
 import BusinessLogic.Memberships.*;
@@ -18,14 +18,11 @@ import BusinessLogic.Users.UserService;
 import Controllers.Admin.AdminCourseController;
 import Controllers.Admin.AdminMembershipController;
 import Controllers.Admin.AdminStaffController;
-import Controllers.Customer.CustomerController;
-import Controllers.Receptionist.ReceptionistController;
-import Controllers.Trainer.TrainerController;
 import ORM.Bookings.AppointmentDAO;
 import ORM.Bookings.BookingDAO;
 import ORM.DailyEvents.DailyClassDAO;
 import ORM.DailyEvents.TrainerAvailabilityDAO;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.*;
 import ORM.Users.CustomerDAO;
 import ORM.Users.StaffDAO;
@@ -80,7 +77,7 @@ public class ApplicationManager  {
         CourseService courseService = new CourseService(courseDAO, trainerDAO);
         RegistrationFeeService registrationFeeService = new RegistrationFeeService(registrationFeeDAO);
         WRMembershipService wrMembershipService = new WRMembershipService(weightRoomMembershipDAO, discountsDAO);
-        PurchaseService purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, customerFeeDAO, bundleDAO, customerDAO, membershipDAO);
+        PurchaseService purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, bundleDAO, customerDAO, membershipDAO);
         DiscountService discountService = new DiscountService(discountsDAO);
         DailyClassService dailyClassService = new DailyClassService(dailyClassDAO, courseDAO);
         TrainerAvailabilityService trainerAvailabilityService = new TrainerAvailabilityService(trainerAvailabilityDAO, trainerDAO);
@@ -108,10 +105,6 @@ public class ApplicationManager  {
     public void logout() {
         if (this.currentSession!=null)
             this.authService.logout(this.currentSession);
-    }
-
-    public void setCurrentSession(Session session) {
-        this.currentSession = session;
     }
 
     public AdminStaffController getAdminStaffController() {

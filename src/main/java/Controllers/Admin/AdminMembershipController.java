@@ -1,7 +1,7 @@
 package Controllers.Admin;
 
 import BusinessLogic.AuthService.Session;
-import BusinessLogic.DiscountService.DiscountService;
+import BusinessLogic.DiscountService;
 import BusinessLogic.Memberships.BundleService;
 import BusinessLogic.Memberships.CourseMembershipService;
 import BusinessLogic.Memberships.RegistrationFeeService;

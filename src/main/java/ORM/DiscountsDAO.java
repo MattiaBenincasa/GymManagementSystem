@@ -1,8 +1,7 @@
-package ORM.DiscountStrategy;
+package ORM;
 
 import DomainModel.DiscountStrategy.*;
 import DomainModel.Users.CustomerCategory;
-import ORM.ConnectionManager;
 
 import Exceptions.DAOException;
 import java.sql.Connection;

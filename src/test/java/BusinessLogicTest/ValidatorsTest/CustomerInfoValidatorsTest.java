@@ -1,6 +1,6 @@
 package BusinessLogicTest.ValidatorsTest;
 
-import BusinessLogic.DTOs.CustomerInfo;
+import DTOs.CustomerInfo;
 import Exceptions.ValidatorException;
 import BusinessLogic.Validators.FeeValidator;
 import BusinessLogic.Validators.MedCertificateValidator;

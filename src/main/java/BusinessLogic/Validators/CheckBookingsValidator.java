@@ -1,6 +1,6 @@
 package BusinessLogic.Validators;
 
-import BusinessLogic.DTOs.ClassBookingInfo;
+import DTOs.ClassBookingInfo;
 import Exceptions.ValidatorException;
 
 public class CheckBookingsValidator extends Validator{

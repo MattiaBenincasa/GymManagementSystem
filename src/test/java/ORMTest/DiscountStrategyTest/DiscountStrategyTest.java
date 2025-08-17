@@ -3,7 +3,7 @@ package ORMTest.DiscountStrategyTest;
 import Exceptions.DAOException;
 import DomainModel.DiscountStrategy.*;
 import DomainModel.Users.CustomerCategory;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import TestUtils.DAOTestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

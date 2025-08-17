@@ -1,7 +1,7 @@
 package BusinessLogic.Memberships;
 
 import DomainModel.Membership.Bundle;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.BundleDAO;
 import ORM.Membership.MembershipDAO;
 

@@ -1,5 +1,5 @@
 package ORM.Bookings;
-import BusinessLogic.DTOs.WeightRoomBookingInfo;
+import DTOs.WeightRoomBookingInfo;
 import Exceptions.DAOException;
 import DomainModel.Bookings.Appointment;
 import DomainModel.DailyEvents.TrainerAvailability;

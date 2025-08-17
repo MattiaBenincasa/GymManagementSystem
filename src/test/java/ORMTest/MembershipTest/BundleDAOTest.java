@@ -6,7 +6,7 @@ import DomainModel.DiscountStrategy.PercentageDiscount;
 import DomainModel.Membership.Bundle;
 import DomainModel.Membership.WRMembershipType;
 import DomainModel.Membership.WeightRoomMembership;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.BundleDAO;
 import ORM.Membership.MembershipDAO;
 import ORM.Membership.WeightRoomMembershipDAO;

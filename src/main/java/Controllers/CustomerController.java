@@ -1,4 +1,4 @@
-package Controllers.Customer;
+package Controllers;
 
 import BusinessLogic.AuthService.Session;
 import BusinessLogic.Bookings.AppointmentTrainerBookingService;

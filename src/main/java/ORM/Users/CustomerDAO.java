@@ -1,6 +1,6 @@
 package ORM.Users;
 
-import BusinessLogic.DTOs.CustomerInfo;
+import DTOs.CustomerInfo;
 import Exceptions.DAOException;
 import DomainModel.Users.Customer;
 import DomainModel.Users.CustomerCategory;

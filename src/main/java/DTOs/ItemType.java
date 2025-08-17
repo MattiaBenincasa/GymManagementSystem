@@ -1,4 +1,4 @@
-package BusinessLogic.DTOs;
+package DTOs;
 
 public enum ItemType {
     MEMBERSHIP,

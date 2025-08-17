@@ -1,6 +1,6 @@
 package BusinessLogic.Validators;
 
-import BusinessLogic.DTOs.WeightRoomBookingInfo;
+import DTOs.WeightRoomBookingInfo;
 import Exceptions.ValidatorException;
 import DomainModel.Membership.WRMembershipType;
 

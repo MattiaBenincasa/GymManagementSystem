@@ -1,15 +1,13 @@
 package BusinessLogic.Purchase;
 
-import BusinessLogic.DTOs.ItemType;
-import BusinessLogic.DTOs.PurchaseDTO;
-import BusinessLogic.DTOs.PurchaseItemDTO;
+import DTOs.ItemType;
+import DTOs.PurchaseDTO;
+import DTOs.PurchaseItemDTO;
 import BusinessLogic.Memberships.ActivationMembershipService;
 import DomainModel.Membership.Bundle;
-import DomainModel.Membership.CustomerFee;
 import DomainModel.Membership.Membership;
 import DomainModel.Users.Customer;
 import ORM.Membership.BundleDAO;
-import ORM.Membership.CustomerFeeDAO;
 import ORM.Membership.MembershipDAO;
 import ORM.Membership.RegistrationFeeDAO;
 import ORM.Users.CustomerDAO;
@@ -18,14 +16,12 @@ import java.math.BigDecimal;
 
 public class PurchaseService {
     private final ActivationMembershipService activationMembershipService;
-    private final CustomerFeeDAO customerFeeDAO;
     private final RegistrationFeeDAO registrationFeeDAO;
     private final BundleDAO bundleDAO;
     private final CustomerDAO customerDAO;
     private final MembershipDAO membershipDAO;
 
-    public PurchaseService(RegistrationFeeDAO registrationFeeDAO, ActivationMembershipService activationMembershipService, CustomerFeeDAO customerFeeDAO, BundleDAO bundleDAO, CustomerDAO customerDAO, MembershipDAO membershipDAO) {
-        this.customerFeeDAO = customerFeeDAO;
+    public PurchaseService(RegistrationFeeDAO registrationFeeDAO, ActivationMembershipService activationMembershipService, BundleDAO bundleDAO, CustomerDAO customerDAO, MembershipDAO membershipDAO) {
         this.activationMembershipService = activationMembershipService;
         this.bundleDAO = bundleDAO;
         this.customerDAO = customerDAO;
@@ -60,10 +56,7 @@ public class PurchaseService {
         }
 
         if (purchaseDTO.isPurchaseRegistrationFee()) {
-            CustomerFee customerFee = new CustomerFee(purchaseDTO.getRegistrationFeeActivationDate(),
-                    this.customerDAO.getCustomerByID(purchaseDTO.getCustomerID()));
-
-            this.customerFeeDAO.createCustomerFee(customerFee);
+            this.activationMembershipService.activateFee(purchaseDTO.getRegistrationFeeActivationDate(), purchaseDTO.getCustomerID());
         }
 
     }

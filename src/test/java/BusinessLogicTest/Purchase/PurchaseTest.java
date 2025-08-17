@@ -1,9 +1,9 @@
 package BusinessLogicTest.Purchase;
 
-import BusinessLogic.DTOs.CustomerInfo;
-import BusinessLogic.DTOs.ItemType;
-import BusinessLogic.DTOs.PurchaseDTO;
-import BusinessLogic.DTOs.PurchaseItemDTO;
+import DTOs.CustomerInfo;
+import DTOs.ItemType;
+import DTOs.PurchaseDTO;
+import DTOs.PurchaseItemDTO;
 import BusinessLogic.Memberships.ActivationMembershipService;
 import BusinessLogic.Purchase.CashPayment;
 import BusinessLogic.Purchase.PurchaseService;
@@ -11,7 +11,7 @@ import DomainModel.DiscountStrategy.FixedDiscount;
 import DomainModel.Membership.*;
 import DomainModel.Users.Customer;
 import ORM.DailyEvents.TrainerAvailabilityDAO;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.*;
 import ORM.Users.CustomerDAO;
 import ORM.Users.TrainerDAO;
@@ -57,7 +57,7 @@ public class PurchaseTest {
         this.customerFeeDAO = new CustomerFeeDAO(userDAO);
         this.customerMembershipDAO = new CustomerMembershipDAO(courseDAO, membershipDAO);
         this.activationMembershipService = new ActivationMembershipService(customerMembershipDAO, customerFeeDAO, customerDAO, membershipDAO);
-        this.purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, customerFeeDAO, bundleDAO, customerDAO, membershipDAO);
+        this.purchaseService = new PurchaseService(registrationFeeDAO, activationMembershipService, bundleDAO, customerDAO, membershipDAO);
     }
 
     @Test

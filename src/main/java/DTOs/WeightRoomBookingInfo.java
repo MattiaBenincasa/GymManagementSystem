@@ -1,4 +1,4 @@
-package BusinessLogic.DTOs;
+package DTOs;
 
 import DomainModel.Membership.WRMembershipType;
 

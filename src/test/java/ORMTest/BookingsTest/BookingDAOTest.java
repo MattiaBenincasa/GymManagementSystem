@@ -1,6 +1,6 @@
 package ORMTest.BookingsTest;
 
-import BusinessLogic.DTOs.ClassBookingInfo;
+import DTOs.ClassBookingInfo;
 import DomainModel.Bookings.Booking;
 import DomainModel.DailyEvents.DailyClass;
 import DomainModel.Membership.*;
@@ -8,7 +8,7 @@ import DomainModel.Users.Customer;
 import DomainModel.Users.Trainer;
 import ORM.Bookings.BookingDAO;
 import ORM.DailyEvents.DailyClassDAO;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.CourseDAO;
 import ORM.Membership.CourseMembershipDAO;
 import ORM.Membership.CustomerMembershipDAO;

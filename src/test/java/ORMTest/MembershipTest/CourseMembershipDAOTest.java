@@ -5,7 +5,7 @@ import DomainModel.DiscountStrategy.FixedDiscount;
 import DomainModel.DiscountStrategy.PercentageDiscount;
 import DomainModel.Membership.Course;
 import DomainModel.Membership.CourseMembership;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.CourseDAO;
 import ORM.Membership.CourseMembershipDAO;
 import ORM.Membership.MembershipDAO;

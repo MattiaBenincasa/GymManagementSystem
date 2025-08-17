@@ -1,6 +1,5 @@
-package BusinessLogic.DTOs;
+package DTOs;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 

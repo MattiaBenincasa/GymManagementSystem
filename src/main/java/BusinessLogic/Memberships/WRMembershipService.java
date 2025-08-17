@@ -3,7 +3,7 @@ package BusinessLogic.Memberships;
 import DomainModel.DiscountStrategy.DiscountStrategy;
 import DomainModel.Membership.WRMembershipType;
 import DomainModel.Membership.WeightRoomMembership;
-import ORM.DiscountStrategy.DiscountsDAO;
+import ORM.DiscountsDAO;
 import ORM.Membership.WeightRoomMembershipDAO;
 
 import java.math.BigDecimal;
