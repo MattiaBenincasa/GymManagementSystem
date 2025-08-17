@@ -4,6 +4,7 @@ import BusinessLogic.AuthService.PasswordUtils;
 import DTOs.ItemType;
 import DTOs.PurchaseDTO;
 import DTOs.PurchaseItemDTO;
+import DomainModel.Bookings.Booking;
 import Exceptions.InvalidSessionException;
 import Exceptions.UnauthorizedException;
 import BusinessLogic.Purchase.CashPayment;
@@ -351,10 +352,18 @@ public class IntegrationTest {
         CustomerController customerController = applicationManager.getCustomerController();
         ArrayList<CustomerMembership> memberships = customerController.getAllCustomerMembership();
         assertEquals(3, memberships.size());
+
+        //book an appointment with trainer
         ArrayList<TrainerAvailability> availabilities = customerController.getAllTrainerAvailabilitiesByTrainerID(3);
         customerController.takeAppointmentWithTrainer(availabilities.getFirst());
         ArrayList<Appointment> appointments = customerController.getAllCustomerAppointment();
         assertEquals(1, appointments.size());
+
+        //book a dailyClass
+        ArrayList<DailyClass> dailyClasses = customerController.getAllDailyClassesByCourseID(2);
+        customerController.bookAClass(dailyClasses.getFirst());
+        List<Booking> customerBookings = customerController.getAllCustomerBookings();
+        assertEquals(1, customerBookings.size());
     }
 
     @Test
